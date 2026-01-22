@@ -1,4 +1,4 @@
-# skinsync_admin
+# skinsync_clinic_portal
 
 A new Flutter project.
 

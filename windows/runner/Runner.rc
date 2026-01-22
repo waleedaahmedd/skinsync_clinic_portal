@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.skinsync.admin" "\0"
-            VALUE "FileDescription", "skinsync_admin" "\0"
+            VALUE "CompanyName", "com.skinsync.portal" "\0"
+            VALUE "FileDescription", "skinsync_clinic_portal" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "skinsync_admin" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2026 com.skinsync.admin. All rights reserved." "\0"
-            VALUE "OriginalFilename", "skinsync_admin.exe" "\0"
-            VALUE "ProductName", "skinsync_admin" "\0"
+            VALUE "InternalName", "skinsync_clinic_portal" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2026 com.skinsync.portal. All rights reserved." "\0"
+            VALUE "OriginalFilename", "skinsync_clinic_portal.exe" "\0"
+            VALUE "ProductName", "skinsync_clinic_portal" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

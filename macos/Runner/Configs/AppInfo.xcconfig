@@ -5,10 +5,10 @@
 // 'flutter create' template.
 
 // The application's name. By default this is also the title of the Flutter window.
-PRODUCT_NAME = skinsync_admin
+PRODUCT_NAME = skinsync_clinic_portal
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.skinsync.admin.skinsyncAdmin
+PRODUCT_BUNDLE_IDENTIFIER = com.skinsync.portal.skinsyncAdmin
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2026 com.skinsync.admin. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2026 com.skinsync.portal. All rights reserved.

@@ -7,7 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:skinsync_admin/app_init.dart';
+import 'package:skinsync_clinic_portal/app_init.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
