@@ -152,11 +152,16 @@ class PatientManagementScreen extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Image.asset(
-                                        PngAssets.treatmentImage,
-                                        height: 248.h,
-                                        width: double.infinity,
-                                        fit: BoxFit.fill,
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(
+                                          15.r,
+                                        ),
+                                        child: Image.asset(
+                                          PngAssets.treatmentImage,
+                                          height: 248.h,
+                                          width: double.infinity,
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                       SizedBox(height: 19.h),
                                       Text(
