@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 
 import '../../utils/assets.dart';
 import '../../utils/theme.dart';
@@ -22,7 +23,7 @@ class PaymentAndWalletScreen extends StatelessWidget {
             SizedBox(height: 20.h),
             Text(
               'Patient Management',
-              style: Theme.of(context).textTheme.headlineMedium,
+              style: CustomFonts.black22w600
             ),
             SizedBox(height: 14.h),
             Divider(color: AppTheme.fillCOlor),
@@ -31,11 +32,8 @@ class PaymentAndWalletScreen extends StatelessWidget {
             SizedBox(height: 10.h),
             Text(
               "Payments are processed securely through Stripe. All transactions are encrypted and compliant with PCI DSS and HIPAA standards.",
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
-                color: AppTheme.textSecondary,
-              ),
+              style: CustomFonts.grey14w500
+              
             ),
             SizedBox(height: 20.h),
             totalEraning(),
@@ -60,6 +58,7 @@ class PaymentAndWalletScreen extends StatelessWidget {
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w500,
                     color: AppTheme.textPrimary,
+                    fontFamily: 'Degular'
                   ),
                 ),
               ],
@@ -98,19 +97,11 @@ class PaymentAndWalletScreen extends StatelessWidget {
             children: [
               Text(
                 "Available Balance",
-                style: TextStyle(
-                  fontSize: 22.sp,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                ),
+                style: CustomFonts.white22w600
               ),
               Text(
                 "\$ 228,565",
-                style: TextStyle(
-                  fontSize: 40.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
+                style: CustomFonts.white40w700
               ),
             ],
           ),
@@ -123,19 +114,11 @@ class PaymentAndWalletScreen extends StatelessWidget {
           SizedBox(width: 10.w),
           Text(
             "\$ 20,600 ",
-            style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w600,
-              color: AppTheme.greenColor,
-            ),
+            style: CustomFonts.green16w600
           ),
           Text(
             "Last Week ",
-            style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
-            ),
+            style: CustomFonts.white16w600
           ),
           SizedBox(width: 20.w),
           Container(
@@ -155,11 +138,7 @@ class PaymentAndWalletScreen extends StatelessWidget {
                 SizedBox(width: 8.w),
                 Text(
                   "Withdraw Balance",
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w500,
-                    color: AppTheme.purpleColor,
-                  ),
+                  style: CustomFonts.purple14w500
                 ),
               ],
             ),
@@ -183,19 +162,11 @@ class PaymentAndWalletScreen extends StatelessWidget {
             children: [
               Text(
                 "\$ 4500",
-                style: TextStyle(
-                  fontSize: 30.sp,
-                  fontWeight: FontWeight.w600,
-                  color: AppTheme.textPrimary,
-                ),
+                style: CustomFonts.black30w600
               ),
               Text(
                 "Today’s Earnings",
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppTheme.textSecondary,
-                ),
+                style: CustomFonts.grey18w500
               ),
             ],
           ),
@@ -205,19 +176,11 @@ class PaymentAndWalletScreen extends StatelessWidget {
             children: [
               Text(
                 "Next Deposit Will Be ",
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppTheme.textSecondary,
-                ),
+                 style: CustomFonts.grey18w500
               ),
               Text(
                 "Added After 12:00 am",
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppTheme.textSecondary,
-                ),
+                   style: CustomFonts.grey18w500
               ),
             ],
           ),
@@ -260,11 +223,7 @@ class PaymentAndWalletScreen extends StatelessWidget {
               SizedBox(width: 10.w),
               Text(
                 "All Status",
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppTheme.textSecondary,
-                ),
+                 style: CustomFonts.grey18w500
               ),
               SizedBox(width: 10.w),
               Icon(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 
 import '../utils/theme.dart';
 
@@ -34,15 +35,11 @@ class TranscationTileWidget extends StatelessWidget {
             children: [
               Text(
                 "Sarah Johnson",
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppTheme.textPrimary,
-                ),
+                style: CustomFonts.black18w500
               ),
               Text(
                 "Botox",
-                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500),
+               style: CustomFonts.grey18w500
               ),
               Row(
                 children: [
@@ -54,10 +51,7 @@ class TranscationTileWidget extends StatelessWidget {
                   SizedBox(width: 10.w),
                   Text(
                     "10/29/2025",
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: CustomFonts.grey18w500
                   ),
                   SizedBox(width: 20.w),
                   Icon(
@@ -68,10 +62,7 @@ class TranscationTileWidget extends StatelessWidget {
                   SizedBox(width: 10.w),
                   Text(
                     "3:00 PM",
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style:CustomFonts.grey18w500
                   ),
                 ],
               ),
@@ -84,7 +75,9 @@ class TranscationTileWidget extends StatelessWidget {
               fontSize: 22.sp,
               fontWeight: FontWeight.w600,
               color: Color(0xFF312C85),
+              fontFamily: 'Degular'
             ),
+
           ),
           SizedBox(width: 10.w),
           Container(

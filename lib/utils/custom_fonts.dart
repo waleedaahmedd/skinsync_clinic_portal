@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:skinsync_clinic_portal/utils/theme.dart';
 
 import 'color_constant.dart';
 
@@ -15,6 +16,13 @@ class CustomFonts {
     height: 0,
     fontSize: 50.sp,
     fontWeight: FontWeight.w600,
+    color: CustomColors.whiteColor,
+    fontFamily: 'Degular',
+  );
+  static TextStyle white40w700 = TextStyle(
+    height: 0,
+    fontSize: 40.sp,
+    fontWeight: FontWeight.w700,
     color: CustomColors.whiteColor,
     fontFamily: 'Degular',
   );
@@ -46,6 +54,13 @@ class CustomFonts {
     color: CustomColors.whiteColor,
     fontFamily: 'Degular',
   );
+  static TextStyle white18w500 = TextStyle(
+    height: 0,
+    fontSize: 18.sp,
+    fontWeight: FontWeight.w500,
+    color: CustomColors.whiteColor,
+    fontFamily: 'Degular',
+  );
   static TextStyle white12w600 = TextStyle(
     height: 0,
     fontSize: 12.sp,
@@ -71,6 +86,13 @@ class CustomFonts {
     height: 0,
     fontSize: 17.sp,
     fontWeight: FontWeight.w500,
+    color: CustomColors.whiteColor,
+    fontFamily: 'Degular',
+  );
+  static TextStyle white16w600 = TextStyle(
+    height: 0,
+    fontSize: 16.sp,
+    fontWeight: FontWeight.w600,
     color: CustomColors.whiteColor,
     fontFamily: 'Degular',
   );
@@ -130,6 +152,13 @@ class CustomFonts {
     color: CustomColors.textGreyColor,
     fontFamily: 'Degular',
   );
+  static TextStyle grey14w500 = TextStyle(
+    height: 0,
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w500,
+    color: CustomColors.textGreyColor,
+    fontFamily: 'Degular',
+  );
   static TextStyle grey14w400LineThrough = TextStyle(
     height: 0,
     fontSize: 14.sp,
@@ -161,6 +190,13 @@ class CustomFonts {
     color: CustomColors.textGreyColor,
     fontFamily: 'Degular',
   );
+  static TextStyle grey18w700 = TextStyle(
+    height: 0,
+    fontSize: 18.sp,
+    fontWeight: FontWeight.w700,
+    color: CustomColors.textGreyColor,
+    fontFamily: 'Degular',
+  );
   static TextStyle grey22w500 = TextStyle(
     height: 0,
     fontSize: 22.sp,
@@ -186,6 +222,13 @@ class CustomFonts {
     height: 0,
     fontSize: 18.sp,
     fontWeight: FontWeight.w500,
+    color: CustomColors.blackColor,
+    fontFamily: 'Degular',
+  );
+  static TextStyle black13w400 = TextStyle(
+    height: 0,
+    fontSize: 13.sp,
+    fontWeight: FontWeight.w400,
     color: CustomColors.blackColor,
     fontFamily: 'Degular',
   );
@@ -286,6 +329,28 @@ class CustomFonts {
     fontWeight: FontWeight.w600,
     decoration: TextDecoration.underline,
     color: CustomColors.purpleColor,
+    fontFamily: 'Degular',
+  );
+
+  static TextStyle red18w500 = TextStyle(
+    height: 0,
+    fontSize: 18.sp,
+    fontWeight: FontWeight.w500,
+    color: CustomColors.errorColor,
+    fontFamily: 'Degular',
+  );
+
+  static TextStyle green16w600 = TextStyle(
+    fontSize: 16.sp,
+    fontWeight: FontWeight.w600,
+    color: AppTheme.greenColor,
+    fontFamily: 'Degular',
+  );
+
+  static TextStyle purple14w500 = TextStyle(
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w500,
+    color: AppTheme.purpleColor,
     fontFamily: 'Degular',
   );
 }

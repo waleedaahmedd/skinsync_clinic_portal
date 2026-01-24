@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:skinsync_clinic_portal/utils/color_constant.dart';
+import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 
 import '../../utils/assets.dart';
 import '../../utils/theme.dart';
@@ -17,10 +19,7 @@ class PatientManagementScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 20.h),
-            Text(
-              'Patient Management',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
+            Text('Patient Management', style: CustomFonts.black22w600),
             SizedBox(height: 14.h),
             Divider(color: AppTheme.fillCOlor),
             SizedBox(height: 50.h),
@@ -49,7 +48,7 @@ class PatientManagementScreen extends StatelessWidget {
                           children: [
                             Text(
                               "Allergies",
-                              style: Theme.of(context).textTheme.headlineMedium,
+                              style: CustomFonts.black22w600,
                             ),
                             SizedBox(height: 20.h),
                             Container(
@@ -63,8 +62,7 @@ class PatientManagementScreen extends StatelessWidget {
                               ),
                               child: Text(
                                 "New",
-                                style: Theme.of(context).textTheme.titleMedium!
-                                    .copyWith(color: Colors.white),
+                                style: CustomFonts.white18w600,
                               ),
                             ),
                           ],
@@ -83,11 +81,7 @@ class PatientManagementScreen extends StatelessWidget {
                               child: Center(
                                 child: Text(
                                   "Treatments",
-                                  style: Theme.of(context).textTheme.titleLarge!
-                                      .copyWith(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w500,
-                                      ),
+                                  style:CustomFonts.white18w500
                                 ),
                               ),
                             ),
@@ -103,11 +97,7 @@ class PatientManagementScreen extends StatelessWidget {
                               child: Center(
                                 child: Text(
                                   "AI Simulations",
-                                  style: Theme.of(context).textTheme.titleLarge!
-                                      .copyWith(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w500,
-                                      ),
+                                  style: CustomFonts.black18w500
                                 ),
                               ),
                             ),
@@ -126,7 +116,7 @@ class PatientManagementScreen extends StatelessWidget {
                           children: [
                             Text(
                               "Treatment History",
-                              style: Theme.of(context).textTheme.headlineMedium,
+                              style: CustomFonts.black22w600,
                             ),
                             SizedBox(height: 20.h),
                             TextField(
@@ -166,17 +156,14 @@ class PatientManagementScreen extends StatelessWidget {
                                       SizedBox(height: 19.h),
                                       Text(
                                         "Botox - Forehead",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleMedium!
-                                            .copyWith(
-                                              color: AppTheme.textSecondary,
-                                            ),
+                                        style: CustomFonts.grey18w700
                                       ),
                                       SizedBox(height: 19.h),
-                                      Text("Provider: Dr. Smith"),
+                                      Text("Provider: Dr. Smith",
+                                       style: CustomFonts.grey18w500),
                                       SizedBox(height: 9.h),
-                                      Text("Oct 29, 2025"),
+                                      Text("Oct 29, 2025",
+                                       style: CustomFonts.grey18w500),
                                     ],
                                   ),
                                 );
@@ -208,10 +195,10 @@ class PatientManagementScreen extends StatelessWidget {
         children: [
           Text(
             "Medical Information",
-            style: Theme.of(context).textTheme.headlineMedium,
+            style: CustomFonts.black22w600,
           ),
           SizedBox(height: 20.h),
-          Text("Allergies", style: Theme.of(context).textTheme.bodyMedium),
+          Text("Allergies", style:CustomFonts.grey18w500),
           SizedBox(height: 9.h),
           Container(
             padding: EdgeInsets.all(14.w),
@@ -221,25 +208,19 @@ class PatientManagementScreen extends StatelessWidget {
             ),
             child: Text(
               "Latex",
-              style: Theme.of(
-                context,
-              ).textTheme.titleMedium!.copyWith(color: AppTheme.errorColor),
+              style: CustomFonts.red18w500
+              
             ),
           ),
           SizedBox(height: 19.h),
           Text(
             "Notes",
-            style: Theme.of(
-              context,
-            ).textTheme.titleMedium!.copyWith(color: AppTheme.textSecondary),
-          ),
+            style: CustomFonts.grey18w700),
+          
           SizedBox(height: 19.h),
           Text(
             "Prefers natural-looking results",
-            style: Theme.of(
-              context,
-            ).textTheme.titleMedium!.copyWith(color: AppTheme.textSecondary),
-          ),
+             style: CustomFonts.grey18w500)
         ],
       ),
     );
@@ -264,14 +245,8 @@ class PatientManagementScreen extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "Sarah Johnson",
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  Text(
-                    "Patient ID: 1",
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
+                  Text("Sarah Johnson", style: CustomFonts.black18w500),
+                  Text("Patient ID: 1", style: CustomFonts.grey16w400),
                 ],
               ),
             ],
@@ -289,15 +264,27 @@ class PatientManagementScreen extends StatelessWidget {
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text(
-                        "Email",
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
+                      Text("Email", style: CustomFonts.grey16w400),
                       SizedBox(height: 10.h),
-                      Text(
-                        "sarah.johnson@email.com",
-                        style: Theme.of(context).textTheme.bodyMedium,
+                      Text.rich(
+                        TextSpan(
+                          children: [
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: Icon(
+                                Icons.email_outlined,
+                                size: 16.sp,
+                                color: CustomColors.textGreyColor,
+                              ),
+                            ),
+                            TextSpan(
+                              text: "  sarah.johnson@email.com",
+                              style: CustomFonts.grey16w400,
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -314,14 +301,25 @@ class PatientManagementScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Email",
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
+                      Text("Phone", style: CustomFonts.grey16w400),
                       SizedBox(height: 10.h),
-                      Text(
-                        "sarah.johnson@email.com",
-                        style: Theme.of(context).textTheme.bodyMedium,
+                      Text.rich(
+                        TextSpan(
+                          children: [
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: Icon(
+                                Icons.call_outlined,
+                                size: 16.sp,
+                                color: CustomColors.textGreyColor,
+                              ),
+                            ),
+                            TextSpan(
+                              text: "  +1 (555) 123-4567",
+                              style: CustomFonts.grey16w400,
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -343,14 +341,25 @@ class PatientManagementScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Email",
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
+                      Text("Last Visit", style: CustomFonts.grey16w400),
                       SizedBox(height: 10.h),
-                      Text(
-                        "sarah.johnson@email.com",
-                        style: Theme.of(context).textTheme.bodyMedium,
+                      Text.rich(
+                        TextSpan(
+                          children: [
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: Icon(
+                                Icons.calendar_today,
+                                size: 16.sp,
+                                color: CustomColors.textGreyColor,
+                              ),
+                            ),
+                            TextSpan(
+                              text: "  Oct 29, 2025",
+                              style: CustomFonts.grey16w400,
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -367,14 +376,25 @@ class PatientManagementScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Email",
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
+                      Text("Next Appointment", style: CustomFonts.grey16w400),
                       SizedBox(height: 10.h),
-                      Text(
-                        "sarah.johnson@email.com",
-                        style: Theme.of(context).textTheme.bodyMedium,
+                      Text.rich(
+                        TextSpan(
+                          children: [
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: Icon(
+                                Icons.calendar_today,
+                                size: 16.sp,
+                                color: CustomColors.textGreyColor,
+                              ),
+                            ),
+                            TextSpan(
+                              text: "  Nov 5, 2025",
+                              style: CustomFonts.grey16w400,
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -423,13 +443,10 @@ class PatientManagementScreen extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "Sarah Johnson",
-                          style: Theme.of(context).textTheme.headlineMedium,
-                        ),
+                        Text("Sarah Johnson", style: CustomFonts.black22w600),
                         Text(
                           "sarah.johnson@email.com",
-                          style: Theme.of(context).textTheme.bodyMedium,
+                          style: CustomFonts.black13w400,
                         ),
                       ],
                     ),
