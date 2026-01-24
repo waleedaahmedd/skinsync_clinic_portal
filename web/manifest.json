@@ -1,6 +1,6 @@
 {
-    "name": "skinsync_clinic_portal",
-    "short_name": "skinsync_clinic_portal",
+    "name": "SkinSync Clinic",
+    "short_name": "SkinSync Clinic",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
