@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
-
+import 'package:flutter/cupertino.dart';
 import '../../utils/assets.dart';
 import '../../utils/theme.dart';
 
@@ -46,10 +46,7 @@ class PatientManagementScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              "Allergies",
-                              style: CustomFonts.black22w600,
-                            ),
+                            Text("Allergies", style: CustomFonts.black22w600),
                             SizedBox(height: 20.h),
                             Container(
                               padding: EdgeInsets.symmetric(
@@ -81,7 +78,7 @@ class PatientManagementScreen extends StatelessWidget {
                               child: Center(
                                 child: Text(
                                   "Treatments",
-                                  style:CustomFonts.white18w500
+                                  style: CustomFonts.white18w500,
                                 ),
                               ),
                             ),
@@ -97,7 +94,7 @@ class PatientManagementScreen extends StatelessWidget {
                               child: Center(
                                 child: Text(
                                   "AI Simulations",
-                                  style: CustomFonts.black18w500
+                                  style: CustomFonts.black18w500,
                                 ),
                               ),
                             ),
@@ -119,11 +116,8 @@ class PatientManagementScreen extends StatelessWidget {
                               style: CustomFonts.black22w600,
                             ),
                             SizedBox(height: 20.h),
-                            TextField(
-                              decoration: InputDecoration(
-                                hintText: "Search",
-                                prefixIcon: Icon(Icons.search, size: 16.sp),
-                              ),
+                            CupertinoSearchTextField(
+                              backgroundColor: Color(0xFFF3F3F5),
                             ),
                             SizedBox(height: 19.h),
                             ListView.builder(
@@ -156,14 +150,18 @@ class PatientManagementScreen extends StatelessWidget {
                                       SizedBox(height: 19.h),
                                       Text(
                                         "Botox - Forehead",
-                                        style: CustomFonts.grey18w700
+                                        style: CustomFonts.grey18w700,
                                       ),
                                       SizedBox(height: 19.h),
-                                      Text("Provider: Dr. Smith",
-                                       style: CustomFonts.grey18w500),
+                                      Text(
+                                        "Provider: Dr. Smith",
+                                        style: CustomFonts.grey18w500,
+                                      ),
                                       SizedBox(height: 9.h),
-                                      Text("Oct 29, 2025",
-                                       style: CustomFonts.grey18w500),
+                                      Text(
+                                        "Oct 29, 2025",
+                                        style: CustomFonts.grey18w500,
+                                      ),
                                     ],
                                   ),
                                 );
@@ -193,12 +191,9 @@ class PatientManagementScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Medical Information",
-            style: CustomFonts.black22w600,
-          ),
+          Text("Medical Information", style: CustomFonts.black22w600),
           SizedBox(height: 20.h),
-          Text("Allergies", style:CustomFonts.grey18w500),
+          Text("Allergies", style: CustomFonts.grey18w500),
           SizedBox(height: 9.h),
           Container(
             padding: EdgeInsets.all(14.w),
@@ -206,21 +201,16 @@ class PatientManagementScreen extends StatelessWidget {
               color: AppTheme.errorColor.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(15.r),
             ),
-            child: Text(
-              "Latex",
-              style: CustomFonts.red18w500
-              
-            ),
+            child: Text("Latex", style: CustomFonts.red18w500),
           ),
           SizedBox(height: 19.h),
-          Text(
-            "Notes",
-            style: CustomFonts.grey18w700),
-          
+          Text("Notes", style: CustomFonts.grey18w700),
+
           SizedBox(height: 19.h),
           Text(
             "Prefers natural-looking results",
-             style: CustomFonts.grey18w500)
+            style: CustomFonts.grey18w500,
+          ),
         ],
       ),
     );
@@ -412,12 +402,7 @@ class PatientManagementScreen extends StatelessWidget {
       width: 386.w,
       child: Column(
         children: [
-          TextField(
-            decoration: InputDecoration(
-              hintText: "Search patients...",
-              prefixIcon: Icon(Icons.search, size: 19.sp),
-            ),
-          ),
+          CupertinoSearchTextField(backgroundColor: Color(0xFFF3F3F5)),
           SizedBox(height: 14.h),
           ListView.separated(
             separatorBuilder: (context, index) => SizedBox(height: 15.h),
