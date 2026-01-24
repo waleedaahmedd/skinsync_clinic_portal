@@ -13,7 +13,7 @@ class TranscationTileWidget extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15.r),
-        border: Border.all(color: AppTheme.fillCOlor),
+        border: Border.all(color:Colors.grey.shade300),
       ),
       child: Row(
         children: [

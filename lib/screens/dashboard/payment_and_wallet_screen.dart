@@ -23,7 +23,7 @@ class PaymentAndWalletScreen extends StatelessWidget {
             SizedBox(height: 20.h),
             Text('Patient Management', style: CustomFonts.black22w600),
             SizedBox(height: 14.h),
-            Divider(color: AppTheme.fillCOlor),
+            Divider(color:Colors.grey.shade300),
             SizedBox(height: 20.h),
             walletInfo(),
             SizedBox(height: 10.h),
@@ -170,7 +170,7 @@ class PaymentAndWalletScreen extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.r),
             color: Colors.white,
-            border: Border.all(color: AppTheme.fillCOlor),
+            border: Border.all(color:Colors.grey.shade300),
           ),
           child: Row(
             children: [

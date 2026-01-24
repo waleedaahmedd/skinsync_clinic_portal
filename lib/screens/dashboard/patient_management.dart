@@ -38,10 +38,11 @@ class PatientManagementScreen extends StatelessWidget {
                       medicalInfo(context: context),
                       SizedBox(height: 19.h),
                       Container(
+                        width: double.infinity,
                         padding: EdgeInsets.all(15.w),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15.r),
-                          border: Border.all(color: AppTheme.fillCOlor),
+                          border: Border.all(color:Colors.grey.shade300),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,12 +51,12 @@ class PatientManagementScreen extends StatelessWidget {
                             SizedBox(height: 20.h),
                             Container(
                               padding: EdgeInsets.symmetric(
-                                horizontal: 9.w,
-                                vertical: 6.h,
+                                horizontal: 9.65.w,
+                                vertical: 5.39.h,
                               ),
                               decoration: BoxDecoration(
                                 color: Colors.black,
-                                borderRadius: BorderRadius.circular(15.r),
+                                borderRadius: BorderRadius.circular(10.r),
                               ),
                               child: Text(
                                 "New",
@@ -106,7 +107,7 @@ class PatientManagementScreen extends StatelessWidget {
                         padding: EdgeInsets.all(15.w),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15.r),
-                          border: Border.all(color: AppTheme.fillCOlor),
+                          border: Border.all(color:Colors.grey.shade300),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -129,7 +130,7 @@ class PatientManagementScreen extends StatelessWidget {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(15.r),
                                     border: Border.all(
-                                      color: AppTheme.fillCOlor,
+                                     color:Colors.grey.shade300
                                     ),
                                   ),
                                   child: Column(
@@ -183,13 +184,15 @@ class PatientManagementScreen extends StatelessWidget {
 
   Widget medicalInfo({required BuildContext context}) {
     return Container(
+      width: double.infinity,
       padding: EdgeInsets.all(15.w),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15.r),
-        border: Border.all(color: AppTheme.fillCOlor),
+        border: Border.all(color:Colors.grey.shade300),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        
         children: [
           Text("Medical Information", style: CustomFonts.black22w600),
           SizedBox(height: 20.h),
@@ -221,7 +224,7 @@ class PatientManagementScreen extends StatelessWidget {
       padding: EdgeInsets.all(15.w),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15.r),
-        border: Border.all(color: AppTheme.fillCOlor),
+        border: Border.all(color:Colors.grey.shade300 ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
