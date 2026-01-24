@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CustomColors {
+abstract class CustomColors {
   static const Color lightBlueColor = Color(0xff88E3FB);
   static const Color lightPurpleColor = Color(0xffE7C6E8);
   static const Color bottomNavText = Color(0xff636363);
@@ -10,8 +10,10 @@ class CustomColors {
   static const Color silverColor = Color(0xff657296);
   static const Color greyColor = Color(0xffE9E9E9);
   static const Color iconColor = Color(0xffF2F2F2);
-  static const Color textGreyColor = Color(0xff494949);
+  static const Color textGreyColor = Color(0xff565656);
   static const Color textFeildBoaderColor = Color(0xff939393);
+  static const Color blueColor = Color(0xFF74D8F2);
+  static const Color navigationRailBackground = Color(0x2688E3FB);
 
   static const LinearGradient purpleBlueGradient = LinearGradient(
     begin: Alignment.topCenter,
@@ -28,13 +30,10 @@ class CustomColors {
       Color(0xffE7C6E8),
     ],
   );
-   static LinearGradient whitePurpleGradient = LinearGradient(
+  static LinearGradient whitePurpleGradient = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
-    colors: [
-      Color(0xffFFF0FF),
-      Color(0xffE7C6E8),
-    ],
+    colors: [Color(0xffFFF0FF), Color(0xffE7C6E8)],
   );
   static const LinearGradient purpleWhiteBlueGradient = LinearGradient(
     begin: Alignment.topCenter,

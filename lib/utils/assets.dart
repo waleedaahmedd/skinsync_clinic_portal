@@ -1,6 +1,6 @@
 // ignore_for_file: camel_case_types
 
-class PngAssets {
+abstract class PngAssets {
   static const String _assets = 'assets/png/';
   static const String splashLogo = '${_assets}splash_logo.png';
   static const String beautyNear = '${_assets}beauty_near.png';
@@ -20,9 +20,13 @@ class PngAssets {
   static const String beforeAfter = "${_assets}before_after.png";
   static const String syringe = "${_assets}syringe.png";
   static const String hand = "${_assets}hand.png";
+  static const String logo = '${_assets}logo.png';
+  static const String person = '${_assets}person.png';
+  static const String treatmentImage = '${_assets}treatmentimage.png';
+  static const String treatmentImage2 = '${_assets}image.png';
 }
 
-class SvgAssets {
+abstract class SvgAssets {
   static const String _assets = 'assets/svg/';
   static const String apple = '${_assets}apple.svg';
   static const String google = '${_assets}google.svg';
@@ -55,6 +59,14 @@ class SvgAssets {
   static const String glasses = "${_assets}glasses.svg";
   static const String tick = "${_assets}trick.svg";
   static const String flame = "${_assets}flame.svg";
+  static const String user = '${_assets}user.svg';
+  static const String patient = '${_assets}patient.svg';
+  static const String clinic = '${_assets}clinic.svg';
+  static const String withdraw = '${_assets}withdraw.svg';
+  static const String filter = '${_assets}filter.svg';
+  static const String ai = '${_assets}ai.svg';
+  static const String payments = '${_assets}payments.svg';
+  static const String aiStar = '${_assets}ai_star.svg';
 
   // bottom nav icons
   static const String notification = "${_assets}notification.svg";
@@ -78,4 +90,9 @@ class DummyAssets {
   static const String profile = "${_assets}profile.png";
   static const String treatmentimage = "${_assets}treatmentimage.png";
   static const String doctorImage = "${_assets}doctor_image.png";
+}
+
+abstract class DemoAssets {
+  static const String _asset = 'assets/demo/';
+  static const String person = '${_asset}person.png';
 }

@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../utils/assets.dart';
 import '../utils/color_constant.dart';
-import 'bottom_nav_screens/user_management.dart';
+import 'dashboard/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -31,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
       await Future.delayed(Duration(milliseconds: _duration - 800));
 
       if (mounted) {
-        context.go(UserManagement.routeName);
+        context.go(HomeScreen.routeName);
       }
     });
   }
