@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:skinsync_clinic_portal/screens/sign_in_screen.dart';
 
 import '../utils/assets.dart';
 import '../utils/color_constant.dart';
@@ -31,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
       await Future.delayed(Duration(milliseconds: _duration - 800));
 
       if (mounted) {
-        context.go(HomeScreen.routeName);
+        context.go(SignInScreen.routeName);
       }
     });
   }

@@ -2,8 +2,11 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:skinsync_clinic_portal/screens/dashboard/dashboard.dart';
 
 import '../utils/assets.dart';
+import 'dashboard/home_screen.dart';
 
 class SignInScreen extends StatefulWidget {
   static const String routeName = '/sign-in-screen';
@@ -248,6 +251,9 @@ class _SignInScreenState extends State<SignInScreen> {
 
                             // Create Account Button
                             GestureDetector(
+                              onTap: () {
+                                context.goNamed(HomeScreen.routeName);
+                              },
                               child: Container(
                                 width: 215.w,
                                 // height: 50.h,
