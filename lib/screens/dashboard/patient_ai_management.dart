@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../utils/custom_fonts.dart';
+import '../../widgets/comming_soon_widget.dart';
 
 class PatientAiManagement extends StatelessWidget {
   static const String routeName = '/patient-ai-management';
@@ -8,8 +8,6 @@ class PatientAiManagement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(child: Text('Coming Soon!', style: CustomFonts.black22w600)),
-    );
+    return const ComingSoonWidget();
   }
 }

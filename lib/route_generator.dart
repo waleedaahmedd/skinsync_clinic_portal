@@ -1,5 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/profile_screen.dart';
+import 'package:skinsync_clinic_portal/screens/sign_in_screen.dart';
+import 'package:skinsync_clinic_portal/screens/signup_screen.dart';
 
 import 'screens/dashboard/appointment_screen.dart';
 import 'screens/dashboard/dashboard.dart';
@@ -11,12 +13,25 @@ import 'screens/splash_screen.dart';
 
 class RouteGenerator {
   static final GoRouter router = GoRouter(
+    initialLocation: SplashScreen.routeName,
+
     routes: [
       GoRoute(
         name: SplashScreen.routeName,
         path: SplashScreen.routeName,
         builder: (_, _) => SplashScreen(),
       ),
+      GoRoute(
+        name: SignInScreen.routeName,
+        path: SignInScreen.routeName,
+        builder: (_, _) => SignInScreen(),
+      ),
+      GoRoute(
+        name: SignUpScreen.routeName,
+        path: SignUpScreen.routeName,
+        builder: (_, _) => SignUpScreen(),
+      ),
+
       ShellRoute(
         builder: (_, _, child) {
           return Dashboard(child: child);

@@ -166,7 +166,7 @@ class _AppointmentsCalendarState extends State<AppointmentsCalendar> {
 
   Widget _calendar() {
     return TableCalendar(
-      rowHeight: 150,
+      // rowHeight: 150.h,
       shouldFillViewport: true,
       firstDay: DateTime.utc(2020, 1, 1),
       lastDay: DateTime.utc(2030, 12, 31),
@@ -239,7 +239,7 @@ class _AppointmentsCalendarState extends State<AppointmentsCalendar> {
 
   Widget _appointmentCard(Appointment a) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 6),
+      // margin: const EdgeInsets.only(bottom: 6),
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: a.highlighted
@@ -252,17 +252,17 @@ class _AppointmentsCalendarState extends State<AppointmentsCalendar> {
         children: [
           Text(
             a.clinic,
-            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+            style: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 4),
           Text(
             a.service,
-            style: const TextStyle(fontSize: 11, color: Colors.black54),
+            style: TextStyle(fontSize: 9.sp, color: Colors.black54),
           ),
           const SizedBox(height: 4),
           Text(
             a.time,
-            style: const TextStyle(fontSize: 10, color: Colors.black45),
+            style: TextStyle(fontSize: 9.sp, color: Colors.black45),
           ),
         ],
       ),

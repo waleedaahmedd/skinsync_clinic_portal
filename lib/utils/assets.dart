@@ -67,6 +67,7 @@ abstract class SvgAssets {
   static const String ai = '${_assets}ai.svg';
   static const String payments = '${_assets}payments.svg';
   static const String aiStar = '${_assets}ai_star.svg';
+  static const String stethoscope = '${_assets}stethoscope.svg';
 
   // bottom nav icons
   static const String notification = "${_assets}notification.svg";
