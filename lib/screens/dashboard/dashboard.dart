@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/appointment_screen.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/payment_and_wallet_screen.dart';
+import 'package:skinsync_clinic_portal/utils/responsive.dart';
 
 import '../../utils/assets.dart';
 import '../../utils/color_constant.dart';
@@ -21,63 +22,96 @@ class Dashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(),
+      // appBar: CustomAppBar(),
+      drawer: Responsive.when(
+        defaultValue: SizedBox.shrink(),
+        mobile: () => _buildDrawer(),
+        tablet: () => _buildDrawer(),
+      ),
       body: Row(
         children: [
-          _buildDrawer(context),
-          Expanded(child: Center(child: child)),
+          Responsive.when(
+            defaultValue: SizedBox.shrink(),
+            desktop: () => _buildDrawer(),
+          ),
+          Expanded(
+            child: Column(
+              children: [
+                CustomAppBar(),
+                Expanded(child: child),
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildDrawer(BuildContext context) {
-    return Container(
-      width: 270.w,
-      padding: EdgeInsets.symmetric(vertical: 38.h),
-      color: CustomColors.navigationRailBackground,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 10.h,
-        children: [
-          _buildRailItem(
-            context: context,
-            title: 'Home',
-            icon: SvgAssets.home,
-            routeName: HomeScreen.routeName,
+  Widget _buildDrawer() {
+    return Builder(
+      builder: (context) {
+        return Container(
+          width: 270.w,
+          padding: EdgeInsets.symmetric(vertical: 38.h),
+          margin: EdgeInsets.all(10.w),
+          decoration: BoxDecoration(
+            color: Responsive.when(
+              defaultValue: CustomColors.navigationRailBackground,
+              mobile: () =>
+                  CustomColors.navigationRailBackground.withValues(alpha: 1),
+              tablet: () =>
+                  CustomColors.navigationRailBackground.withValues(alpha: 1),
+            ),
+            borderRadius: BorderRadiusGeometry.circular(10.r),
           ),
-          _buildRailItem(
-            context: context,
-            title: 'Patient Management',
-            icon: SvgAssets.user,
-            routeName: PatientManagementScreen.routeName,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            spacing: 10.h,
+            children: [
+              Image.asset(PngAssets.splashLogo, width: 48.w, height: 48.w),
+              SizedBox(width: 5.w),
+              Image.asset(PngAssets.logo, height: 20.h),
+              SizedBox(width: 40.w),
+              _buildRailItem(
+                context: context,
+                title: 'Home',
+                icon: SvgAssets.home,
+                routeName: HomeScreen.routeName,
+              ),
+              _buildRailItem(
+                context: context,
+                title: 'Patient Management',
+                icon: SvgAssets.user,
+                routeName: PatientManagementScreen.routeName,
+              ),
+              _buildRailItem(
+                context: context,
+                title: 'Patient AI Management',
+                icon: SvgAssets.ai,
+                routeName: PatientAiManagement.routeName,
+              ),
+              _buildRailItem(
+                context: context,
+                title: 'Appointments',
+                icon: SvgAssets.appointments,
+                routeName: AppointmentScreen.routeName,
+              ),
+              _buildRailItem(
+                context: context,
+                title: 'Payments & Wallets',
+                icon: SvgAssets.payments,
+                routeName: PaymentAndWalletScreen.routeName,
+              ),
+              _buildRailItem(
+                context: context,
+                title: 'Profile',
+                icon: SvgAssets.profile,
+                routeName: ProfileScreen.routeName,
+              ),
+            ],
           ),
-          _buildRailItem(
-            context: context,
-            title: 'Patient AI Management',
-            icon: SvgAssets.ai,
-            routeName: PatientAiManagement.routeName,
-          ),
-          _buildRailItem(
-            context: context,
-            title: 'Appointments',
-            icon: SvgAssets.appointments,
-            routeName: AppointmentScreen.routeName,
-          ),
-          _buildRailItem(
-            context: context,
-            title: 'Payments & Wallets',
-            icon: SvgAssets.payments,
-            routeName: PaymentAndWalletScreen.routeName,
-          ),
-          _buildRailItem(
-            context: context,
-            title: 'Profile',
-            icon: SvgAssets.profile,
-            routeName: ProfileScreen.routeName,
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -92,6 +126,9 @@ class Dashboard extends StatelessWidget {
     return ElevatedButton.icon(
       onPressed: () {
         context.go(routeName);
+        if (Scaffold.of(context).hasDrawer) {
+          Scaffold.of(context).closeDrawer();
+        }
       },
       label: Text(
         title,
@@ -107,7 +144,13 @@ class Dashboard extends StatelessWidget {
         icon,
         width: 20.w,
         height: 20.w,
-        color: isSelected ? CustomColors.blueColor : CustomColors.textGreyColor,
+        color: isSelected
+            ? Responsive.when(
+                defaultValue: CustomColors.blueColor,
+                mobile: () => Colors.black,
+                tablet: () => Colors.black,
+              )
+            : CustomColors.textGreyColor,
       ),
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.transparent,

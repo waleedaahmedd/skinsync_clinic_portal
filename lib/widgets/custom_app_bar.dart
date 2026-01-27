@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 
 import '../utils/assets.dart';
+import '../utils/responsive.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
@@ -17,13 +18,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       padding: EdgeInsets.symmetric(horizontal: 30.w),
       child: Row(
         children: [
-          Image.asset(PngAssets.splashLogo, width: 48.w, height: 48.w),
-          SizedBox(width: 5.w),
-          Image.asset(PngAssets.logo, height: 20.h),
-          SizedBox(width: 40.w),
-          SizedBox(
-            width: 380.w,
-            child: CupertinoSearchTextField(backgroundColor: Color(0xFFF3F3F5)),
+          Responsive.when(
+            defaultValue: SizedBox(
+              width: 380.w,
+              child: CupertinoSearchTextField(
+                backgroundColor: Color(0xFFF3F3F5),
+              ),
+            ),
+            mobile: () => _buildMobileActions(context),
+            tablet: () => _buildMobileActions(context),
           ),
           Spacer(),
           IconButton(
@@ -34,23 +37,46 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ClipOval(
             child: Image.asset(PngAssets.person, width: 44.w, height: 44.w),
           ),
-          SizedBox(width: 20.w),
-          Text(
-            'Scarlet Fox',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 14.sp,
-              color: CustomColors.blackColor,
+          Responsive.when(
+            defaultValue: SizedBox.shrink(),
+            desktop: () => Row(
+              children: [
+                SizedBox(width: 20.w),
+                Text(
+                  'Scarlet Fox',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14.sp,
+                    color: CustomColors.blackColor,
+                  ),
+                ),
+                SizedBox(width: 20.w),
+                Icon(
+                  Icons.arrow_drop_down_circle_outlined,
+                  size: 18.sp,
+                  color: CustomColors.blackColor,
+                ),
+              ],
             ),
-          ),
-          SizedBox(width: 20.w),
-          Icon(
-            Icons.arrow_drop_down_circle_outlined,
-            size: 18.sp,
-            color: CustomColors.blackColor,
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildMobileActions(BuildContext context) {
+    return Row(
+      children: [
+        IconButton(
+          onPressed: () => Scaffold.of(context).openDrawer(),
+          icon: Icon(Icons.menu),
+        ),
+        SizedBox(width: 10.w),
+        Image.asset(PngAssets.splashLogo, width: 48.w, height: 48.w),
+        SizedBox(width: 5.w),
+        Image.asset(PngAssets.logo, height: 20.h),
+        SizedBox(width: 40.w),
+      ],
     );
   }
 
