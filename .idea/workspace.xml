@@ -4,20 +4,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3620f7d8-3f35-4b2e-83b7-eb383f1a2dc5" name="Changes" comment="update - responsiveness fixed.">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/utils/responsive.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/app_init.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/app_init.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/route_generator.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/route_generator.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/dashboard/dashboard.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/dashboard/dashboard.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/utils/screen_size.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utils/screen_size.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/widgets/custom_app_bar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/custom_app_bar.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/index.html" afterDir="false" />
-    </list>
+    <list default="true" id="3620f7d8-3f35-4b2e-83b7-eb383f1a2dc5" name="Changes" comment="update - responsiveness fixed." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -144,7 +131,23 @@
       <option name="project" value="LOCAL" />
       <updated>1769411346553</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="update - responsiveness fixed.">
+      <option name="closed" value="true" />
+      <created>1769498503773</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1769498503773</updated>
+    </task>
+    <task id="LOCAL-00008" summary="update - responsiveness fixed.">
+      <option name="closed" value="true" />
+      <created>1769498512891</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1769498512891</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
