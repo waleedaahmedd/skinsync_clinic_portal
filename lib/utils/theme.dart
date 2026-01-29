@@ -44,7 +44,6 @@ class AppTheme {
         secondary: secondaryColor,
         error: errorColor,
         surface: surfaceColor,
-        background: backgroundColor,
       ),
       scaffoldBackgroundColor: backgroundColor,
       appBarTheme: const AppBarTheme(
@@ -144,7 +143,7 @@ class AppTheme {
         bodyLarge: TextStyle(fontSize: 16.sp, color: textPrimary),
         bodyMedium: TextStyle(fontSize: 14.sp, color: textSecondary),
         bodySmall: TextStyle(fontSize: 12.sp, color: textTertiary),
-      ),
+      ).apply(fontFamily: 'Degular'),
     );
   }
 
@@ -159,7 +158,6 @@ class AppTheme {
         secondary: secondaryColor,
         error: errorColor,
         surface: surfaceColor,
-        background: backgroundColor,
       ),
       scaffoldBackgroundColor: backgroundColor,
       appBarTheme: const AppBarTheme(
@@ -259,7 +257,7 @@ class AppTheme {
         bodyLarge: TextStyle(fontSize: 16.sp, color: textPrimary),
         bodyMedium: TextStyle(fontSize: 14.sp, color: textSecondary),
         bodySmall: TextStyle(fontSize: 12.sp, color: textTertiary),
-      ),
+      ).apply(fontFamily: 'Degular'),
     );
   }
 }

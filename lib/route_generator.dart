@@ -3,6 +3,7 @@ import 'package:skinsync_clinic_portal/screens/dashboard/profile_screen.dart';
 import 'package:skinsync_clinic_portal/screens/sign_in_screen.dart';
 import 'package:skinsync_clinic_portal/screens/signup_screen.dart';
 
+import 'app_init.dart';
 import 'screens/dashboard/appointment_screen.dart';
 import 'screens/dashboard/dashboard.dart';
 import 'screens/dashboard/home_screen.dart';
@@ -13,8 +14,8 @@ import 'screens/splash_screen.dart';
 
 class RouteGenerator {
   static final GoRouter router = GoRouter(
+    navigatorKey: navigatorKey,
     initialLocation: SplashScreen.routeName,
-
     routes: [
       GoRoute(
         name: SplashScreen.routeName,
