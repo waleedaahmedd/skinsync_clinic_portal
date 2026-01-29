@@ -22,6 +22,7 @@ class Dashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: CustomColors.dashboardBackgroundColor,
       // appBar: CustomAppBar(),
       drawer: Responsive.when(
         defaultValue: SizedBox.shrink(),
