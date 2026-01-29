@@ -10,11 +10,15 @@ abstract class CustomColors {
   static const Color silverColor = Color(0xff657296);
   static const Color greyColor = Color(0xffE9E9E9);
   static const Color iconColor = Color(0xffF2F2F2);
+  static const Color dashboardBackgroundColor = Color(0xffF9FAFB);
+  static const Color borderColor = Color(0x1010101A);
+
   static const Color textGreyColor = Color(0xff6B7280);
   static const Color textFeildBoaderColor = Color(0xff939393);
   static const Color blueColor = Color(0xFF74D8F2);
   static const Color navigationRailBackground = Color(0x2688E3FB);
   static const Color drakPurpleColor = Color(0xFF4F39F6);
+  static const Color fillColor = Color(0xffF3F3F5);
 
   static const Color errorColor = Color(0xFFEF4444);
 
