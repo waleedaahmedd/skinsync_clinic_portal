@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/appointment_screen.dart';
+import 'package:skinsync_clinic_portal/screens/dashboard/patient_management_detail.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/payment_and_wallet_screen.dart';
 import 'package:skinsync_clinic_portal/utils/responsive.dart';
 
@@ -83,7 +84,7 @@ class Dashboard extends StatelessWidget {
                 context: context,
                 title: 'Patient Management',
                 icon: SvgAssets.user,
-                routeName: PatientManagementScreen.routeName,
+                routeName: PatientManagementDetailScreen.routeName,
               ),
               _buildRailItem(
                 context: context,

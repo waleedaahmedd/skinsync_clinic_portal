@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:skinsync_clinic_portal/screens/dashboard/patient_management_detail.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/profile_screen.dart';
 import 'package:skinsync_clinic_portal/screens/sign_in_screen.dart';
 import 'package:skinsync_clinic_portal/screens/signup_screen.dart';
@@ -44,9 +45,9 @@ class RouteGenerator {
             builder: (_, _) => HomeScreen(),
           ),
           GoRoute(
-            name: PatientManagementScreen.routeName,
-            path: PatientManagementScreen.routeName,
-            builder: (_, _) => PatientManagementScreen(),
+            name: PatientManagementDetailScreen.routeName,
+            path: PatientManagementDetailScreen.routeName,
+            builder: (_, _) => PatientManagementDetailScreen(),
           ),
           GoRoute(
             name: PatientAiManagement.routeName,
