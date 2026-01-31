@@ -281,6 +281,13 @@ class CustomFonts {
     color: CustomColors.blackColor,
     fontFamily: 'Degular',
   );
+  static TextStyle black20w700 = TextStyle(
+    height: 0,
+    fontSize: 20.sp,
+    fontWeight: FontWeight.w700,
+    color: CustomColors.blackColor,
+    fontFamily: 'Degular',
+  );
   static TextStyle black20w500 = TextStyle(
     height: 0,
     fontSize: 20.sp,

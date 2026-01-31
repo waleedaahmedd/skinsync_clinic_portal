@@ -8,11 +8,72 @@ import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:skinsync_clinic_portal/widgets/patient_selection_tile.dart';
 import '../../utils/assets.dart';
+import 'package:intl/intl.dart';
 import '../../utils/theme.dart';
 
-class MangeStaffScreen extends StatelessWidget {
+class MangeStaffScreen extends StatefulWidget {
   static const String routeName = '/manage-staff';
   const MangeStaffScreen({super.key});
+
+  @override
+  State<MangeStaffScreen> createState() => _MangeStaffScreenState();
+}
+
+class _MangeStaffScreenState extends State<MangeStaffScreen> {
+  bool isSchedule = true;
+
+  DateTime? scheduleStartDateTime;
+  DateTime? scheduleEndDateTime;
+
+  DateTime? timeOffStartDateTime;
+  DateTime? timeOffEndDateTime;
+
+  DateTime selectedDate = DateTime.now();
+  
+  String getSelectedDayName() {
+  return DateFormat('EEEE').format(selectedDate);
+} // from calendar
+
+  String formatDateTime(DateTime? dt) {
+    if (dt == null) return "";
+    return TimeOfDay.fromDateTime(dt).format(context);
+  }
+
+  Future<void> pickTime({
+    required bool isStart,
+    required bool isScheduleTab,
+  }) async {
+    final picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+
+    if (picked != null) {
+      final combined = DateTime(
+        selectedDate.year,
+        selectedDate.month,
+        selectedDate.day,
+        picked.hour,
+        picked.minute,
+      );
+
+      setState(() {
+        if (isScheduleTab) {
+          if (isStart) {
+            scheduleStartDateTime = combined;
+          } else {
+            scheduleEndDateTime = combined;
+          }
+        } else {
+          if (isStart) {
+            timeOffStartDateTime = combined;
+          } else {
+            timeOffEndDateTime = combined;
+          }
+        }
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,129 +109,14 @@ class MangeStaffScreen extends StatelessWidget {
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       patientInfo(context: context),
                       SizedBox(height: 19.h),
                       medicalInfo(context: context),
                       SizedBox(height: 19.h),
-                      Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.all(15.w),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15.r),
-                          border: Border.all(color: Colors.grey.shade300),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        "Schedule",
-                                        style: CustomFonts.black20w600,
-                                      ),
-                                      SizedBox(height: 4.h),
-                                      Divider(height: 2.h, color: Colors.black),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(width: 20.w),
-                                Expanded(
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        "Time Off",
-                                        style: CustomFonts.grey20w600,
-                                      ),
-                                      SizedBox(height: 4.h),
-                                      Divider(
-                                        height: 2.h,
-                                        color: Colors.grey.shade500,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 20.h),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Theme(
-                                    data: Theme.of(context).copyWith(
-                                      textTheme: Theme.of(context).textTheme.copyWith(
-                                        bodyLarge: CustomFonts.black22w600
-                                  
-                                      ),
-                                      colorScheme: ColorScheme.light(
-                                        
-                                        primary: CustomColors
-                                            .purpleColor, // Header background color
-                                        onPrimary: Colors.white, // Header text color
-                                        onSurface:
-                                            Colors.black, // Body text color (dates)
-                                      ),
-                                      textButtonTheme: TextButtonThemeData(
-                                        style: TextButton.styleFrom(
-                                          foregroundColor:
-                                              Colors.black, // Button text color
-                                        ),
-                                      ),
-                                    ),
-                                    child: CalendarDatePicker(
-                                      
-                                      initialDate: DateTime.now(),
-                                      firstDate:
-                                          DateTime.now(), // Disables previous dates
-                                      lastDate: DateTime(2100),
-                                      onDateChanged: (value) {},
-                                      currentDate: DateTime.now(),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    mainAxisAlignment: .start,
-                                    children: [
-                                      Text("Saturday",style: CustomFonts.black20w600,),
-                                      SizedBox(height: 4.h,),
-                                      Divider(color: Colors.grey.shade300,),
-                                      SizedBox(height: 20.h,),
-                                      Container(
-                                        padding: EdgeInsets.symmetric(horizontal: 18.w,vertical: 14.h),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(10.r),
-                                          border: Border.all(
-                                            color: Colors.grey.shade300,
-                                          )
-                                        ),
-                                        child: Text("Select Date",style: CustomFonts.grey14w500,),
-                                      ),
-                                      SizedBox(height: 10.h,),
-                                      Container(
-                                        padding: EdgeInsets.symmetric(horizontal: 18.w,vertical: 14.h),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(10.r),
-                                          border: Border.all(
-                                            color: Colors.grey.shade300,
-                                          )
-                                        ),
-                                        child: Text("Select Date",style: CustomFonts.grey14w500,),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                           
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 19.h),
+                      calendarAndTimeOffTap(),
+                      SizedBox(height: 20.h),
                     ],
                   ),
                 ),
@@ -179,6 +125,255 @@ class MangeStaffScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget calendarAndTimeOffTap() {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(15.w),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15.r),
+        border: Border.all(color: Colors.grey.shade300),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isSchedule = true;
+                        });
+                      },
+                      child: Text(
+                        "Schedule",
+                        style: isSchedule
+                            ? CustomFonts.black20w600
+                            : CustomFonts.grey20w600,
+                      ),
+                    ),
+                    SizedBox(height: 4.h),
+                    Divider(
+                      height: 2.h,
+                      color: isSchedule ? Colors.black : Colors.grey.shade500,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: 20.w),
+              Expanded(
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isSchedule = false;
+                        });
+                      },
+                      child: Text(
+                        "Time Off",
+                        style: !isSchedule
+                            ? CustomFonts.black20w600
+                            : CustomFonts.grey20w600,
+                      ),
+                    ),
+                    SizedBox(height: 4.h),
+                    Divider(
+                      height: 2.h,
+                      color: !isSchedule ? Colors.black : Colors.grey.shade500,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 20.h),
+          if (isSchedule) scheduleTap(),
+          if (!isSchedule) timeOffTap(),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {},
+              child: Text("Save Schedule"),
+            ),
+          ),
+          SizedBox(height: 20.h),
+        ],
+      ),
+    );
+  }
+
+  Widget timeOffTap() {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Text("18 Dec, 2020", style: CustomFonts.black20w700),
+            SizedBox(width: 24.w),
+            Expanded(child: Divider(color: Colors.grey.shade300)),
+            SizedBox(width: 9.w),
+            Icon(
+              Icons.delete_outline_rounded,
+              size: 31.sp,
+              color: CustomColors.silverColor,
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            GestureDetector(
+              onTap: () => pickTime(isStart: true, isScheduleTab: false),
+              child: Container(
+                width: 182.w,
+                padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 14.h),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.r),
+                  border: Border.all(color: Colors.grey.shade300),
+                ),
+                child: Text(
+                  timeOffStartDateTime == null
+                      ? "Select Start Time"
+                      : formatDateTime(timeOffStartDateTime),
+                  style: timeOffStartDateTime == null
+                      ? CustomFonts.grey18w400
+                      : CustomFonts.black18w500,
+                ),
+              ),
+            ),
+
+            SizedBox(width: 10.w),
+
+            GestureDetector(
+              onTap: () => pickTime(isStart: false, isScheduleTab: false),
+              child: Container(
+                width: 182.w,
+                padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 14.h),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.r),
+                  border: Border.all(color: Colors.grey.shade300),
+                ),
+                child: Text(
+                  timeOffEndDateTime == null
+                      ? "Select End Time"
+                      : formatDateTime(timeOffEndDateTime),
+                  style: timeOffEndDateTime == null
+                      ? CustomFonts.grey18w400
+                      : CustomFonts.black18w500,
+                ),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 20.h),
+      ],
+    );
+  }
+
+  Widget scheduleTap() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: Theme(
+            data: Theme.of(context).copyWith(
+              textTheme: Theme.of(
+                context,
+              ).textTheme.copyWith(bodyLarge: CustomFonts.black22w600),
+              colorScheme: ColorScheme.light(
+                primary: CustomColors.purpleColor,
+                onPrimary: Colors.white,
+                onSurface: Colors.black,
+              ),
+              textButtonTheme: TextButtonThemeData(
+                style: TextButton.styleFrom(foregroundColor: Colors.black),
+              ),
+            ),
+            child: ClipRect(
+              child: Align(
+                alignment: Alignment.topCenter,
+                heightFactor: 0.80, // 🔥 trims bottom internal padding
+                child: CalendarDatePicker(
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime.now(),
+                  lastDate: DateTime(2100),
+                  onDateChanged: (value) {
+                    setState(() {
+                      selectedDate = value;
+                    });
+                  },
+                  currentDate: DateTime.now(),
+                ),
+              ),
+            ),
+          ),
+        ),
+
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(getSelectedDayName(), style: CustomFonts.black20w600),
+              SizedBox(height: 4.h),
+              Divider(color: Colors.grey.shade300),
+              SizedBox(height: 20.h),
+              // START TIME
+              GestureDetector(
+                onTap: () => pickTime(isStart: true, isScheduleTab: true),
+                child: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 18.w,
+                    vertical: 14.h,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.r),
+                    border: Border.all(color: Colors.grey.shade300),
+                  ),
+                  child: Text(
+                    scheduleStartDateTime == null
+                        ? "Select Start Time"
+                        : formatDateTime(scheduleStartDateTime),
+                    style: scheduleStartDateTime == null
+                        ? CustomFonts.grey18w400
+                        : CustomFonts.black18w500,
+                  ),
+                ),
+              ),
+
+              SizedBox(height: 10.h),
+
+              GestureDetector(
+                onTap: () => pickTime(isStart: false, isScheduleTab: true),
+                child: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 18.w,
+                    vertical: 14.h,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.r),
+                    border: Border.all(color: Colors.grey.shade300),
+                  ),
+                  child: Text(
+                    scheduleEndDateTime == null
+                        ? "Select End Time"
+                        : formatDateTime(scheduleEndDateTime),
+                    style: scheduleEndDateTime == null
+                        ? CustomFonts.grey18w400
+                        : CustomFonts.black18w500,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
@@ -269,7 +464,7 @@ class MangeStaffScreen extends StatelessWidget {
           ListView.separated(
             separatorBuilder: (context, index) => SizedBox(height: 15.h),
             shrinkWrap: true,
-            itemCount: 6,
+            itemCount: 4,
             itemBuilder: (context, index) {
               return PatientSelectionTile(title: "Sarah Johnson");
             },
