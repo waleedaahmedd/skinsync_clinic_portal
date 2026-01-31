@@ -45,9 +45,9 @@ class RouteGenerator {
             builder: (_, _) => HomeScreen(),
           ),
           GoRoute(
-            name: PatientManagementDetailScreen.routeName,
-            path: PatientManagementDetailScreen.routeName,
-            builder: (_, _) => PatientManagementDetailScreen(),
+            name: PatientManagementScreen.routeName,
+            path: PatientManagementScreen.routeName,
+            builder: (_, _) => PatientManagementScreen(),
           ),
           GoRoute(
             name: PatientAiManagement.routeName,

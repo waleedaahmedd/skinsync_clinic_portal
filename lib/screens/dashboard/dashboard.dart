@@ -84,7 +84,7 @@ class Dashboard extends StatelessWidget {
                 context: context,
                 title: 'Patient Management',
                 icon: SvgAssets.user,
-                routeName: PatientManagementDetailScreen.routeName,
+                routeName: PatientManagementScreen.routeName,
               ),
               _buildRailItem(
                 context: context,

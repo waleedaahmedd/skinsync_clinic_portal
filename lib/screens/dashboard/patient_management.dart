@@ -121,7 +121,9 @@ class PatientManagementScreen extends StatelessWidget {
                               backgroundColor: Color(0xFFF3F3F5),
                             ),
                             SizedBox(height: 19.h),
-                            ListView.builder(
+                            ListView.separated(
+                              separatorBuilder: (context, index) =>
+                                  SizedBox(height: 15.h),
                               shrinkWrap: true,
                               itemCount: 3,
                               itemBuilder: (context, index) {
@@ -129,9 +131,9 @@ class PatientManagementScreen extends StatelessWidget {
                                   padding: EdgeInsets.all(15.w),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(15.r),
-                                    border: Border.all(
-                                     color:Colors.grey.shade300
-                                    ),
+                                    // border: Border.all(
+                                    //  color:Colors.grey.shade300
+                                    // ),
                                   ),
                                   child: Column(
                                     crossAxisAlignment:

@@ -10,7 +10,7 @@ class PatientTreatmentSelectionTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(24.w),
+      padding: EdgeInsets.all(15.w),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15.r),
         border: Border.all(color: AppTheme.titleBorderColor),
@@ -21,7 +21,8 @@ class PatientTreatmentSelectionTile extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.r),
               image: DecorationImage(
-                fit: BoxFit.fill,
+                fit: BoxFit.cover ,
+              
                 image: AssetImage(PngAssets.treatmentImage))
           ),
           ),
