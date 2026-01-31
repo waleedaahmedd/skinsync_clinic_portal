@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,7 +10,7 @@ import 'package:skinsync_clinic_portal/widgets/pateint_treatment_selection_tile.
 import '../../utils/assets.dart';
 
 class PatientManagementDetailScreen extends StatelessWidget {
-  static const String routeName = '/patient-management_detail';
+  static const String routeName = '/patient-management-detail';
   const PatientManagementDetailScreen({super.key});
 
   @override
@@ -20,7 +23,12 @@ class PatientManagementDetailScreen extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.arrow_back, size: 24.sp),
+                GestureDetector(
+                  onTap: () {
+                    context.pop();
+                  },
+                  child: Icon(Icons.arrow_back, size: 24.sp),
+                ),
                 SizedBox(width: 10.w),
                 Text("Patient Management", style: CustomFonts.black22w600),
               ],
@@ -41,9 +49,7 @@ class PatientManagementDetailScreen extends StatelessWidget {
                       treamentInfo(context: context),
                       SizedBox(height: 19.h),
                       // Replace the old container with the new stepper
-                      TreatmentJourneyStepper(
-                        steps: _getTreatmentSteps(),
-                      ),
+                      TreatmentJourneyStepper(steps: _getTreatmentSteps()),
                     ],
                   ),
                 ),
@@ -60,28 +66,32 @@ class PatientManagementDetailScreen extends StatelessWidget {
     return [
       TreatmentStep(
         title: "Botox Treatment",
-        description: "Mild swelling or redness is normal. Follow aftercare tips for best results.",
-        date: "02 Feb 2025",
-        imageAsset: PngAssets.treatmentImage,
-        isCompleted: true,
-      ),
-       TreatmentStep(
-        title: "Botox Treatment",
-        description: "Mild swelling or redness is normal. Follow aftercare tips for best results.",
-        date: "02 Feb 2025",
-        imageAsset: PngAssets.treatmentImage,
-        isCompleted: true,
-      ),
-       TreatmentStep(
-        title: "Botox Treatment",
-        description: "Mild swelling or redness is normal. Follow aftercare tips for best results.",
+        description:
+            "Mild swelling or redness is normal. Follow aftercare tips for best results.",
         date: "02 Feb 2025",
         imageAsset: PngAssets.treatmentImage,
         isCompleted: true,
       ),
       TreatmentStep(
         title: "Botox Treatment",
-        description: "Mild swelling or redness is normal. Follow aftercare tips for best results.",
+        description:
+            "Mild swelling or redness is normal. Follow aftercare tips for best results.",
+        date: "02 Feb 2025",
+        imageAsset: PngAssets.treatmentImage,
+        isCompleted: true,
+      ),
+      TreatmentStep(
+        title: "Botox Treatment",
+        description:
+            "Mild swelling or redness is normal. Follow aftercare tips for best results.",
+        date: "02 Feb 2025",
+        imageAsset: PngAssets.treatmentImage,
+        isCompleted: true,
+      ),
+      TreatmentStep(
+        title: "Botox Treatment",
+        description:
+            "Mild swelling or redness is normal. Follow aftercare tips for best results.",
         date: "02 Feb 2025",
         imageAsset: PngAssets.treatmentImage,
         isCompleted: true,
@@ -166,10 +176,8 @@ class TreatmentStep {
 class TreatmentJourneyStepper extends StatelessWidget {
   final List<TreatmentStep> steps;
 
-  const TreatmentJourneyStepper({
-    Key? key,
-    required this.steps,
-  }) : super(key: key);
+  const TreatmentJourneyStepper({Key? key, required this.steps})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -182,10 +190,7 @@ class TreatmentJourneyStepper extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Your Treatment Journey",
-            style: CustomFonts.black22w600,
-          ),
+          Text("Your Treatment Journey", style: CustomFonts.black22w600),
           SizedBox(height: 20.h),
           ListView.builder(
             shrinkWrap: true,
@@ -208,13 +213,11 @@ class TreatmentJourneyStepper extends StatelessWidget {
                               : Colors.grey.shade300,
                           shape: BoxShape.circle,
                         ),
-                        child: 
-                            Icon(
-                                Icons.check,
-                                size: 14.w,
-                                color: Colors.white,
-                              )
-                            
+                        child: Icon(
+                          Icons.check,
+                          size: 14.w,
+                          color: Colors.white,
+                        ),
                       ),
                       if (!isLast)
                         Container(
@@ -248,10 +251,7 @@ class TreatmentJourneyStepper extends StatelessWidget {
 class TreatmentCard extends StatelessWidget {
   final TreatmentStep step;
 
-  const TreatmentCard({
-    Key? key,
-    required this.step,
-  }) : super(key: key);
+  const TreatmentCard({Key? key, required this.step}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -272,10 +272,7 @@ class TreatmentCard extends StatelessWidget {
                   SizedBox(height: 14.h),
                   Text(step.title, style: CustomFonts.black18w600),
                   SizedBox(height: 11.h),
-                  Text(
-                    step.description,
-                    style: CustomFonts.black16w400,
-                  ),
+                  Text(step.description, style: CustomFonts.black16w400),
                   SizedBox(height: 34.h),
                   Text(step.date, style: CustomFonts.black16w500),
                   SizedBox(height: 14.h),

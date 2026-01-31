@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:skinsync_clinic_portal/screens/dashboard/payment_history_screen.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 
 import '../../utils/assets.dart';
@@ -47,14 +49,19 @@ class PaymentAndWalletScreen extends StatelessWidget {
                     color: AppTheme.textPrimary,
                   ),
                 ),
-                Text(
-                  "View All",
-                  style: TextStyle(
-                    decoration: TextDecoration.underline,
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w500,
-                    color: AppTheme.textPrimary,
-                    fontFamily: 'Degular',
+                GestureDetector(
+                  onTap: (){
+                    context.go(PaymentHistoryScreen.routeName);
+                  },
+                  child: Text(
+                    "View All",
+                    style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                      color: AppTheme.textPrimary,
+                      fontFamily: 'Degular',
+                    ),
                   ),
                 ),
               ],
