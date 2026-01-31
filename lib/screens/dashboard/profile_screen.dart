@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:skinsync_clinic_portal/screens/mange_staff_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   static const String routeName = '/profile';
@@ -55,7 +57,9 @@ class ProfileScreen extends StatelessWidget {
                     icon: Icons.people_outline,
                     title: "Manage Staff",
                     subtitle: "Manage clinic staff and services",
-                    onTap: () {},
+                    onTap: () {
+                      context.go(MangeStaffScreen.routeName);
+                    },
                   ),
                 ],
               ),

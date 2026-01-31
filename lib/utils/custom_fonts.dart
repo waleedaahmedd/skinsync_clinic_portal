@@ -218,6 +218,13 @@ class CustomFonts {
     color: CustomColors.textGreyColor,
     fontFamily: 'Degular',
   );
+  static TextStyle grey20w600 = TextStyle(
+    height: 0,
+    fontSize: 20.sp,
+    fontWeight: FontWeight.w600,
+    color: CustomColors.textGreyColor,
+    fontFamily: 'Degular',
+  );
   static TextStyle grey22w500 = TextStyle(
     height: 0,
     fontSize: 22.sp,
@@ -370,6 +377,7 @@ class CustomFonts {
     fontSize: 20.sp,
     fontWeight: FontWeight.w600,
     decoration: TextDecoration.underline,
+    decorationColor: CustomColors.purpleColor, 
     color: CustomColors.purpleColor,
     fontFamily: 'Degular',
   );

@@ -5,6 +5,7 @@ import 'package:skinsync_clinic_portal/screens/dashboard/patient_management_deta
 import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:skinsync_clinic_portal/widgets/patient_selection_tile.dart';
 import '../../utils/assets.dart';
 import '../../utils/theme.dart';
 
@@ -422,35 +423,8 @@ class PatientManagementScreen extends StatelessWidget {
             shrinkWrap: true,
             itemCount: 6,
             itemBuilder: (context, index) {
-              return Container(
-                padding: EdgeInsets.all(24.w),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.r),
-                  border: Border.all(color: AppTheme.titleBorderColor),
-                ),
-                child: Row(
-                  children: [
-                    ClipOval(
-                      child: Image.asset(
-                        PngAssets.person,
-                        height: 62.w,
-                        width: 62.w,
-                      ),
-                    ),
-                    SizedBox(width: 15.w),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Sarah Johnson", style: CustomFonts.black22w600),
-                        Text(
-                          "sarah.johnson@email.com",
-                          style: CustomFonts.black13w400,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              );
+              return PatientSelectionTile(title: "Sarah Johnson",
+              subTitle: "sarah.johnson@email.com",);
             },
           ),
         ],
