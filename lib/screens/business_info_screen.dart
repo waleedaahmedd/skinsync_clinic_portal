@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../utils/custom_fonts.dart';
+import '../widgets/build_textfield.dart';
+import '../widgets/header__with_back_btn.dart';
+
 class BusinessInformationScreen extends StatefulWidget {
   const BusinessInformationScreen({super.key});
 
@@ -191,7 +195,7 @@ class _BusinessInformationScreenState extends State<BusinessInformationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5),
+      backgroundColor: const Color(0xFFBDBDBD),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 250.w),
@@ -199,7 +203,7 @@ class _BusinessInformationScreenState extends State<BusinessInformationScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Header with back button
-              _buildHeader(),
+              BuildHeader(title: 'Business Information'),
               SizedBox(height: 24.h),
               // Main Form Container
               _buildFormContainer(),
@@ -207,26 +211,6 @@ class _BusinessInformationScreenState extends State<BusinessInformationScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildHeader() {
-    return Row(
-      children: [
-        GestureDetector(
-          onTap: () => Navigator.pop(context),
-          child: Icon(Icons.arrow_back, size: 24.sp, color: Colors.black),
-        ),
-        SizedBox(width: 12.w),
-        Text(
-          'Business Information',
-          style: TextStyle(
-            fontSize: 18.sp,
-            fontWeight: FontWeight.w600,
-            color: Colors.black,
-          ),
-        ),
-      ],
     );
   }
 
@@ -252,14 +236,14 @@ class _BusinessInformationScreenState extends State<BusinessInformationScreen> {
           _buildProfilePictureSection(),
           SizedBox(height: 24.h),
           // Clinic Name
-          _buildTextField(
+          BuildTextField(
             label: 'Clinic Name',
             controller: _clinicNameController,
             hintText: 'Skin Sync Aesthetics',
           ),
           SizedBox(height: 20.h),
           // Street Address
-          _buildTextField(
+          BuildTextField(
             label: 'Street Address',
             controller: _streetAddressController,
             hintText: '123 Medical Plaza, Suite 100',
@@ -270,7 +254,7 @@ class _BusinessInformationScreenState extends State<BusinessInformationScreen> {
             children: [
               Expanded(
                 flex: 3,
-                child: _buildTextField(
+                child: BuildTextField(
                   label: 'City',
                   controller: _cityController,
                   hintText: 'Los Angeles',
@@ -279,7 +263,7 @@ class _BusinessInformationScreenState extends State<BusinessInformationScreen> {
               SizedBox(width: 16.w),
               Expanded(
                 flex: 2,
-                child: _buildTextField(
+                child: BuildTextField(
                   label: 'State',
                   controller: _stateController,
                   hintText: 'CA',
@@ -288,7 +272,7 @@ class _BusinessInformationScreenState extends State<BusinessInformationScreen> {
               SizedBox(width: 16.w),
               Expanded(
                 flex: 2,
-                child: _buildTextField(
+                child: BuildTextField(
                   label: 'ZIP Code',
                   controller: _zipCodeController,
                   hintText: '90001',
@@ -301,7 +285,7 @@ class _BusinessInformationScreenState extends State<BusinessInformationScreen> {
           Row(
             children: [
               Expanded(
-                child: _buildTextField(
+                child: BuildTextField(
                   label: 'Phone Number',
                   controller: _phoneNumberController,
                   hintText: '+1 (555) 123-4567',
@@ -309,7 +293,7 @@ class _BusinessInformationScreenState extends State<BusinessInformationScreen> {
               ),
               SizedBox(width: 16.w),
               Expanded(
-                child: _buildTextField(
+                child: BuildTextField(
                   label: 'Email Address',
                   controller: _emailAddressController,
                   hintText: 'info@skinsyncclinic.com',
@@ -319,14 +303,14 @@ class _BusinessInformationScreenState extends State<BusinessInformationScreen> {
           ),
           SizedBox(height: 20.h),
           // Operating Hours
-          _buildTextField(
+          BuildTextField(
             label: 'Operating Hours',
             controller: _operatingHoursController,
             hintText: 'Mon-Fri: 9AM-6PM, Sat: 10AM-4PM',
           ),
           SizedBox(height: 20.h),
           // Clinic Description
-          _buildTextField(
+          BuildTextField(
             label: 'Clinic Description',
             controller: _clinicDescriptionController,
             hintText:
@@ -414,7 +398,7 @@ class _BusinessInformationScreenState extends State<BusinessInformationScreen> {
     );
   }
 
-  Widget _buildTextField({
+  Widget BuildTextField({
     required String label,
     required TextEditingController controller,
     required String hintText,
@@ -423,14 +407,7 @@ class _BusinessInformationScreenState extends State<BusinessInformationScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 13.sp,
-            fontWeight: FontWeight.w500,
-            color: Colors.black87,
-          ),
-        ),
+        Text(label, style: CustomFonts.black18w600),
         SizedBox(height: 8.h),
         TextFormField(
           controller: controller,
@@ -487,10 +464,7 @@ class _BusinessInformationScreenState extends State<BusinessInformationScreen> {
               ),
               elevation: 0,
             ),
-            child: Text(
-              'Save Changes',
-              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
-            ),
+            child: Text('Save Changes', style: CustomFonts.white18w500),
           ),
         ),
         SizedBox(width: 16.w),
@@ -509,10 +483,7 @@ class _BusinessInformationScreenState extends State<BusinessInformationScreen> {
               ),
               side: BorderSide(color: Colors.grey[300]!, width: 1),
             ),
-            child: Text(
-              'Cancel',
-              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
-            ),
+            child: Text('Cancel', style: CustomFonts.black18w500),
           ),
         ),
       ],

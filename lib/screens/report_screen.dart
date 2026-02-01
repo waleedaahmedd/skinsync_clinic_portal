@@ -1,6 +1,9 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:skinsync_clinic_portal/widgets/header__with_back_btn.dart';
+
+import '../utils/custom_fonts.dart';
 
 class ReportProblemScreen extends StatefulWidget {
   const ReportProblemScreen({super.key});
@@ -34,7 +37,7 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade50,
+      backgroundColor: const Color(0xFFBDBDBD),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 250.w, vertical: 20.h),
@@ -42,29 +45,10 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Header
-              Row(
-                children: [
-                  GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: Icon(
-                      Icons.arrow_back,
-                      size: 24.sp,
-                      color: Colors.black,
-                    ),
-                  ),
-                  SizedBox(width: 12.w),
-                  Text(
-                    'Report a Problem',
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-
-              SizedBox(height: 24.h),
+              BuildHeader(title: "Report a Problem"),
+              SizedBox(height: 16.h),
+              Divider(height: 1.h, thickness: 1, color: Colors.grey.shade200),
+              SizedBox(height: 16.h),
 
               // Main Content Card
               Container(
@@ -102,20 +86,12 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
                               children: [
                                 Text(
                                   'Report a Problem',
-                                  style: TextStyle(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black,
-                                  ),
+                                  style: CustomFonts.black16w600,
                                 ),
                                 SizedBox(height: 4.h),
                                 Text(
                                   'Report any issues or bugs you encounter',
-                                  style: TextStyle(
-                                    fontSize: 13.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.grey.shade600,
-                                  ),
+                                  style: CustomFonts.grey16w400,
                                 ),
                               ],
                             ),
@@ -190,10 +166,7 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
                               ),
                               child: Text(
                                 'Submit Report',
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                style: CustomFonts.white18w600,
                               ),
                             ),
                           ),
@@ -214,10 +187,7 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
                               ),
                               child: Text(
                                 'Cancel',
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                style: CustomFonts.black18w600,
                               ),
                             ),
                           ),
@@ -235,14 +205,7 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
   }
 
   Widget _buildLabel(String text) {
-    return Text(
-      text,
-      style: TextStyle(
-        fontSize: 14.sp,
-        fontWeight: FontWeight.w500,
-        color: Colors.black87,
-      ),
-    );
+    return Text(text, style: CustomFonts.black18w600);
   }
 
   Widget _buildDropdown() {

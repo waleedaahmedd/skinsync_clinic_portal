@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../utils/custom_fonts.dart';
+import '../widgets/header__with_back_btn.dart';
+
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
 
@@ -30,7 +33,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5),
+      backgroundColor: const Color(0xFFBDBDBD),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 250.w),
@@ -38,7 +41,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Header with back button
-              _buildHeader(),
+              BuildHeader(title: 'Password & Security'),
               SizedBox(height: 24.h),
               // Main Card Container
               _buildCardContainer(),
@@ -46,26 +49,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildHeader() {
-    return Row(
-      children: [
-        GestureDetector(
-          onTap: () => Navigator.pop(context),
-          child: Icon(Icons.arrow_back, size: 24.sp, color: Colors.black),
-        ),
-        SizedBox(width: 12.w),
-        Text(
-          'Password & Security',
-          style: TextStyle(
-            fontSize: 18.sp,
-            fontWeight: FontWeight.w600,
-            color: Colors.black,
-          ),
-        ),
-      ],
     );
   }
 
@@ -157,18 +140,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Change Password',
-              style: TextStyle(
-                fontSize: 15.sp,
-                fontWeight: FontWeight.w600,
-                color: Colors.black,
-              ),
-            ),
+            Text('Change Password', style: CustomFonts.black16w600),
             SizedBox(height: 4.h),
             Text(
               'Keep your account secure with a strong password',
-              style: TextStyle(fontSize: 12.sp, color: Colors.grey[500]),
+              style: CustomFonts.grey16w400,
             ),
           ],
         ),
@@ -185,14 +161,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 13.sp,
-            fontWeight: FontWeight.w500,
-            color: Colors.black87,
-          ),
-        ),
+        Text(label, style: CustomFonts.black18w600),
         SizedBox(height: 8.h),
         TextFormField(
           controller: controller,
@@ -269,10 +238,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               ),
               elevation: 0,
             ),
-            child: Text(
-              'Update Password',
-              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
-            ),
+            child: Text('Update Password', style: CustomFonts.white18w500),
           ),
         ),
         SizedBox(width: 16.w),
@@ -291,10 +257,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               ),
               side: BorderSide(color: Colors.grey[300]!, width: 1),
             ),
-            child: Text(
-              'Cancel',
-              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
-            ),
+            child: Text('Cancel', style: CustomFonts.black18w500),
           ),
         ),
       ],

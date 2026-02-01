@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
+import 'package:skinsync_clinic_portal/widgets/header__with_back_btn.dart';
 
 class UpdateTreatmentScreen extends StatefulWidget {
   const UpdateTreatmentScreen({super.key});
@@ -55,7 +57,8 @@ class _UpdateTreatmentScreenState extends State<UpdateTreatmentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade50,
+      backgroundColor: const Color(0xFFBDBDBD),
+
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 250.w, vertical: 20.h),
@@ -63,49 +66,7 @@ class _UpdateTreatmentScreenState extends State<UpdateTreatmentScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Header
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () => Navigator.pop(context),
-                        child: Icon(
-                          Icons.arrow_back,
-                          size: 24.sp,
-                          color: Colors.black,
-                        ),
-                      ),
-                      SizedBox(width: 12.w),
-                      Text(
-                        'Update Treatment',
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                  // Add Button
-                  GestureDetector(
-                    onTap: () {
-                      // TODO: Add new treatment
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(8.r),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Colors.grey.shade300,
-                          width: 1,
-                        ),
-                      ),
-                      child: Icon(Icons.add, size: 20.sp, color: Colors.black),
-                    ),
-                  ),
-                ],
-              ),
+              BuildHeader(title: "Update Treatment"),
 
               SizedBox(height: 24.h),
 
@@ -170,14 +131,7 @@ class _UpdateTreatmentScreenState extends State<UpdateTreatmentScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Title
-              Text(
-                treatment.name,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black,
-                ),
-              ),
+              Text(treatment.name, style: CustomFonts.black18w600),
 
               SizedBox(height: 4.h),
 
@@ -186,21 +140,12 @@ class _UpdateTreatmentScreenState extends State<UpdateTreatmentScreen> {
                 children: [
                   Text(
                     '\$${treatment.originalPrice}',
-                    style: TextStyle(
-                      fontSize: 13.sp,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.grey.shade500,
-                      decoration: TextDecoration.lineThrough,
-                    ),
+                    style: CustomFonts.grey14w400LineThrough,
                   ),
                   SizedBox(width: 6.w),
                   Text(
                     '\$ ${treatment.currentPrice}',
-                    style: TextStyle(
-                      fontSize: 13.sp,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black,
-                    ),
+                    style: CustomFonts.black14w500,
                   ),
                 ],
               ),
@@ -230,14 +175,7 @@ class _UpdateTreatmentScreenState extends State<UpdateTreatmentScreen> {
                         color: Colors.white,
                       ),
                       SizedBox(width: 4.w),
-                      Text(
-                        'Edit',
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                        ),
-                      ),
+                      Text('Edit', style: CustomFonts.black12w600),
                     ],
                   ),
                 ),

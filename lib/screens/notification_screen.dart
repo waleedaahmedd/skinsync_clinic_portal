@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
+
+import '../widgets/header__with_back_btn.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});
@@ -73,36 +76,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade50,
+      backgroundColor: const Color(0xFFBDBDBD),
+
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 250.w, vertical: 20.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header
-              Row(
-                children: [
-                  GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: Icon(
-                      Icons.arrow_back,
-                      size: 24.sp,
-                      color: Colors.black,
-                    ),
-                  ),
-                  SizedBox(width: 12.w),
-                  Text(
-                    'Notifications',
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-
+              // Header with back button
+              BuildHeader(title: 'Notifications'),
               SizedBox(height: 16.h),
 
               // Divider
@@ -134,15 +117,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             color: Colors.black87,
                           ),
                           SizedBox(width: 6.w),
-                          Text(
-                            'Mark all read',
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              height: 0,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black87,
-                            ),
-                          ),
+                          Text('Mark all read', style: CustomFonts.black18w600),
                         ],
                       ),
                     ),
@@ -213,35 +188,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  notification.title,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    height: 0,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black87,
-                  ),
-                ),
+                Text(notification.title, style: CustomFonts.black16w600),
                 SizedBox(height: 4.h),
-                Text(
-                  notification.description,
-                  style: TextStyle(
-                    fontSize: 13.sp,
-                    height: 0,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black87,
-                  ),
-                ),
+                Text(notification.description, style: CustomFonts.grey16w400),
                 SizedBox(height: 4.h),
-                Text(
-                  notification.dateTime,
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    height: 0,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black87,
-                  ),
-                ),
+                Text(notification.dateTime, style: CustomFonts.grey16w400),
               ],
             ),
           ),

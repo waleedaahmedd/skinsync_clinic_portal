@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
+import 'package:skinsync_clinic_portal/widgets/header__with_back_btn.dart';
 
 class AboutScreen extends StatefulWidget {
   const AboutScreen({super.key});
@@ -14,7 +16,8 @@ class _AboutScreenState extends State<AboutScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade50,
+      backgroundColor: const Color(0xFFBDBDBD),
+
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 250.w, vertical: 20.h),
@@ -22,32 +25,10 @@ class _AboutScreenState extends State<AboutScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Header with back button and title
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-                child: Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () => Navigator.pop(context),
-                      child: Icon(
-                        Icons.arrow_back,
-                        size: 24.sp,
-                        color: Colors.black,
-                      ),
-                    ),
-                    SizedBox(width: 12.w),
-                    Text(
-                      'About',
-                      style: TextStyle(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
+              BuildHeader(title: 'About'),
               // Divider
+              SizedBox(height: 16.h),
+
               Divider(height: 1.h, thickness: 1, color: Colors.grey.shade200),
 
               SizedBox(height: 16.h),
@@ -130,14 +111,7 @@ class _AboutScreenState extends State<AboutScreen> {
                 ]
               : null,
         ),
-        child: Text(
-          title,
-          style: TextStyle(
-            fontSize: 13.sp,
-            fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-            color: isSelected ? Colors.black : Colors.grey.shade600,
-          ),
-        ),
+        child: Text(title, style: CustomFonts.black18w600),
       ),
     );
   }
@@ -146,14 +120,7 @@ class _AboutScreenState extends State<AboutScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Terms & Conditions',
-          style: TextStyle(
-            fontSize: 18.sp,
-            fontWeight: FontWeight.w700,
-            color: Colors.black,
-          ),
-        ),
+        Text('Terms & Conditions', style: CustomFonts.black22w600),
         SizedBox(height: 20.h),
         _buildSection(
           number: '1',
@@ -200,14 +167,7 @@ class _AboutScreenState extends State<AboutScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Privacy Policy',
-          style: TextStyle(
-            fontSize: 18.sp,
-            fontWeight: FontWeight.w700,
-            color: Colors.black,
-          ),
-        ),
+        Text('Privacy Policy', style: CustomFonts.black22w600),
         SizedBox(height: 20.h),
         _buildSection(
           number: '1',
@@ -260,24 +220,9 @@ class _AboutScreenState extends State<AboutScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            '$number. $title',
-            style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w600,
-              color: Colors.black,
-            ),
-          ),
+          Text('$number. $title', style: CustomFonts.black16w600),
           SizedBox(height: 8.h),
-          Text(
-            content,
-            style: TextStyle(
-              fontSize: 13.sp,
-              fontWeight: FontWeight.w400,
-              color: Colors.grey.shade700,
-              height: 1.5,
-            ),
-          ),
+          Text(content, style: CustomFonts.grey16w400),
         ],
       ),
     );

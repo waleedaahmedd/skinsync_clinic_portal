@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:skinsync_clinic_portal/screens/notification_setting_screen.dart';
 
 import 'route_generator.dart';
 import 'utils/color_constant.dart';
@@ -39,10 +40,11 @@ class AppInit extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (_, child) {
-        return MaterialApp.router(
+        return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'SkinSync Clinic',
-          routerConfig: RouteGenerator.router,
+          // routerConfig: RouteGenerator.router,
+          home: NotificationSettingsScreen(),
           themeMode: themeMode,
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,

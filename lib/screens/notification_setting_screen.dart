@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../utils/custom_fonts.dart';
+import '../widgets/header__with_back_btn.dart';
+
 class NotificationSettingsScreen extends StatefulWidget {
   const NotificationSettingsScreen({super.key});
 
@@ -19,7 +22,7 @@ class _NotificationSettingsScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5),
+      backgroundColor: const Color(0xFFBDBDBD),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 250.w),
@@ -27,7 +30,7 @@ class _NotificationSettingsScreenState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Header with back button
-              _buildHeader(),
+              BuildHeader(title: 'Notification Settings'),
               SizedBox(height: 24.h),
               // Main Card Container
               _buildCardContainer(),
@@ -37,26 +40,6 @@ class _NotificationSettingsScreenState
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildHeader() {
-    return Row(
-      children: [
-        GestureDetector(
-          onTap: () => Navigator.pop(context),
-          child: Icon(Icons.arrow_back, size: 24.sp, color: Colors.black),
-        ),
-        SizedBox(width: 12.w),
-        Text(
-          'Notification Settings',
-          style: TextStyle(
-            fontSize: 18.sp,
-            fontWeight: FontWeight.w600,
-            color: Colors.black,
-          ),
-        ),
-      ],
     );
   }
 
@@ -83,14 +66,7 @@ class _NotificationSettingsScreenState
           // Manage Notifications Title
           Padding(
             padding: EdgeInsets.symmetric(vertical: 16.w),
-            child: Text(
-              'Manage Notifications',
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w600,
-                color: Colors.black,
-              ),
-            ),
+            child: Text('Manage Notifications', style: CustomFonts.black22w600),
           ),
           // Notification Options
           _buildNotificationOption(
@@ -166,19 +142,9 @@ class _NotificationSettingsScreenState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black,
-                  ),
-                ),
+                Text(title, style: CustomFonts.black16w600),
                 SizedBox(height: 4.h),
-                Text(
-                  subtitle,
-                  style: TextStyle(fontSize: 12.sp, color: Colors.grey[500]),
-                ),
+                Text(subtitle, style: CustomFonts.grey16w400),
               ],
             ),
           ),
@@ -212,18 +178,11 @@ class _NotificationSettingsScreenState
         text: TextSpan(
           style: TextStyle(fontSize: 12.sp, color: Colors.black87, height: 1.4),
           children: [
-            TextSpan(
-              text: 'Important: ',
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12.sp),
-            ),
+            TextSpan(text: 'Important: ', style: CustomFonts.black16w600),
             TextSpan(
               text:
                   'You will need to enter a verification code sent to your phone every time you sign in.',
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 12.sp,
-                color: Colors.grey[600],
-              ),
+              style: CustomFonts.grey16w400,
             ),
           ],
         ),
