@@ -90,7 +90,7 @@ class Dashboard extends StatelessWidget {
                 context: context,
                 title: 'Patient AI Management',
                 icon: SvgAssets.ai,
-                routeName: PatientAiManagement.routeName,
+                routeName: PatientAiManagementScreen.routeName,
               ),
               _buildRailItem(
                 context: context,
