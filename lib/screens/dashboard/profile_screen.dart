@@ -64,7 +64,7 @@ class ProfileScreen extends StatelessWidget {
                     title: "Manage Staff",
                     subtitle: "Manage clinic staff and services",
                     onTap: () {
-                      context.go(MangeStaffScreen.routeName);
+                      context.push(MangeStaffScreen.routeName);
                     },
                   ),
                 ],
