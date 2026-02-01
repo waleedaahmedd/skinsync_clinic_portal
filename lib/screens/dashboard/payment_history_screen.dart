@@ -17,29 +17,31 @@ class PaymentHistoryScreen extends StatelessWidget {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.all(20.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                GestureDetector(
-                  onTap: (){
-                    context.pop();
-                  },
-                  child: Icon(Icons.arrow_back, size: 24.sp)),
-                SizedBox(width: 10.w),
-                Text("Transaction History", style: CustomFonts.black22w600),
-              ],
-            ),
-            SizedBox(height: 18.h),
-            Divider(color: Colors.grey.shade300),
-            SizedBox(height: 17.h),
-            searchAndFilter(),
-            SizedBox(height: 20.h),
-            Text("Transactions", style: CustomFonts.black22w600),
-            SizedBox(height: 20.h),
-            Expanded(
-              child: ListView.builder(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: (){
+                      context.pop();
+                    },
+                    child: Icon(Icons.arrow_back, size: 24.sp)),
+                  SizedBox(width: 10.w),
+                  Text("Transaction History", style: CustomFonts.black22w600),
+                ],
+              ),
+              SizedBox(height: 18.h),
+              Divider(color: Colors.grey.shade300),
+              SizedBox(height: 17.h),
+              searchAndFilter(),
+              SizedBox(height: 20.h),
+              Text("Transactions", style: CustomFonts.black22w600),
+              SizedBox(height: 20.h),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
                 itemCount: 10,
                 itemBuilder: (context, index) {
                   return Padding(
@@ -47,8 +49,8 @@ class PaymentHistoryScreen extends StatelessWidget {
                     child: TranscationTileWidget(),
                   ); },
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

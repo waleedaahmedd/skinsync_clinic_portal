@@ -5,6 +5,7 @@ import 'package:skinsync_clinic_portal/screens/dashboard/patient_management_deta
 import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:skinsync_clinic_portal/widgets/dailog%20box/simulations_detail_dailog_box.dart';
 import 'package:skinsync_clinic_portal/widgets/patient_selection_tile.dart';
 import '../../utils/assets.dart';
 import '../../utils/theme.dart';
@@ -164,47 +165,56 @@ class _PatientManagementScreenState extends State<PatientManagementScreen> {
                                           0.75, // Height/width ratio
                                     ),
                                 itemBuilder: (context, index) {
-                                  return Container(
-                                    padding: EdgeInsets.all(5.w),
-                                    // decoration: BoxDecoration(
-                                    //   color: Colors.white,
-                                    //   borderRadius: BorderRadius.circular(10.r),
-                                    //   boxShadow: [
-                                    //     BoxShadow(
-                                    //       color: Colors.black12,
-                                    //       blurRadius: 4,
-                                    //       offset: Offset(0, 2),
-                                    //     ),
-                                    //   ],
-                                    // ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Expanded(
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(
-                                              10.r,
-                                            ),
-                                            child: Image.asset(
-                                              PngAssets.simulation,
-                                              width: double.infinity,
-                                              fit: BoxFit.cover,
+                                  return GestureDetector(
+                                    onTap: () {
+                                      showDialog<bool>(
+                                        context: context,
+                                        builder: (context) =>
+                                            SimulationDetailDaillogBox(),
+                                      );
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.all(5.w),
+                                      // decoration: BoxDecoration(
+                                      //   color: Colors.white,
+                                      //   borderRadius: BorderRadius.circular(10.r),
+                                      //   boxShadow: [
+                                      //     BoxShadow(
+                                      //       color: Colors.black12,
+                                      //       blurRadius: 4,
+                                      //       offset: Offset(0, 2),
+                                      //     ),
+                                      //   ],
+                                      // ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Expanded(
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.circular(
+                                                10.r,
+                                              ),
+                                              child: Image.asset(
+                                                PngAssets.simulation,
+                                                width: double.infinity,
+                                                fit: BoxFit.cover,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        SizedBox(height: 5.h),
-                                        Text(
-                                          "Simulation Name",
-                                          style: CustomFonts.black18w600,
-                                          textAlign: TextAlign.left,
-                                        ),
-                                        Text(
-                                          "Treatment Name",
-                                          style: CustomFonts.grey16w400,
-                                          textAlign: TextAlign.left,
-                                        ),
-                                      ],
+                                          SizedBox(height: 5.h),
+                                          Text(
+                                            "Simulation Name",
+                                            style: CustomFonts.black18w600,
+                                            textAlign: TextAlign.left,
+                                          ),
+                                          Text(
+                                            "Treatment Name",
+                                            style: CustomFonts.grey16w400,
+                                            textAlign: TextAlign.left,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   );
                                 },

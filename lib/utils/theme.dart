@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 
 class AppTheme {
   static const Color primaryColor = Color(0xFF74D8F2);
@@ -93,11 +94,12 @@ class AppTheme {
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           elevation: 0,
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          padding:  EdgeInsets.symmetric(horizontal: 24, vertical: 22.h),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50.r)),
           backgroundColor: elevatedButtonColor,
           foregroundColor: Colors.white,
-          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          textStyle:CustomFonts.white22w600,
+          
         ),
       ),
       textButtonTheme: TextButtonThemeData(

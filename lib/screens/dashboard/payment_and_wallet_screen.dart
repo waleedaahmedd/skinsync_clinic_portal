@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/payment_history_screen.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
+import 'package:skinsync_clinic_portal/widgets/dailog%20box/payment_withdrawal_dailog_box.dart';
 
 import '../../utils/assets.dart';
 import '../../utils/theme.dart';
@@ -27,7 +28,7 @@ class PaymentAndWalletScreen extends StatelessWidget {
             SizedBox(height: 14.h),
             Divider(color:Colors.grey.shade300),
             SizedBox(height: 20.h),
-            walletInfo(),
+            walletInfo(context),
             SizedBox(height: 10.h),
             Text(
               "Payments are processed securely through Stripe. All transactions are encrypted and compliant with PCI DSS and HIPAA standards.",
@@ -83,7 +84,7 @@ class PaymentAndWalletScreen extends StatelessWidget {
     );
   }
 
-  Widget walletInfo() {
+  Widget walletInfo(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 50.h),
       decoration: BoxDecoration(
@@ -112,23 +113,31 @@ class PaymentAndWalletScreen extends StatelessWidget {
           Text("\$ 20,600 ", style: CustomFonts.green16w600),
           Text("Last Week ", style: CustomFonts.white16w600),
           SizedBox(width: 20.w),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 13.5.w, vertical: 8.h),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8.r),
-              color: Colors.white,
-            ),
-            child: Row(
-              children: [
-                SvgPicture.asset(
-                  SvgAssets.withdraw,
-                  color: AppTheme.purpleColor,
-                  height: 14.h,
-                  width: 16.47.w,
-                ),
-                SizedBox(width: 8.w),
-                Text("Withdraw Balance", style: CustomFonts.purple14w500),
-              ],
+          GestureDetector(
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (context) => PaymentWithDrawalDailogBox(),
+              );
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 13.5.w, vertical: 8.h),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.r),
+                color: Colors.white,
+              ),
+              child: Row(
+                children: [
+                  SvgPicture.asset(
+                    SvgAssets.withdraw,
+                    color: AppTheme.purpleColor,
+                    height: 14.h,
+                    width: 16.47.w,
+                  ),
+                  SizedBox(width: 8.w),
+                  Text("Withdraw Balance", style: CustomFonts.purple14w500),
+                ],
+              ),
             ),
           ),
         ],

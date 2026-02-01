@@ -239,6 +239,13 @@ class CustomFonts {
     color: CustomColors.textGreyColor,
     fontFamily: 'Degular',
   );
+  static TextStyle grey50w600 = TextStyle(
+    height: 0,
+    fontSize: 50.sp,
+    fontWeight: FontWeight.w600,
+    color: CustomColors.textGreyColor,
+    fontFamily: 'Degular',
+  );
   static TextStyle black18w400 = TextStyle(
     height: 0,
     fontSize: 18.sp,
@@ -302,6 +309,13 @@ class CustomFonts {
     color: CustomColors.blackColor,
     fontFamily: 'Degular',
   );
+  static TextStyle black25w600 = TextStyle(
+    height: 0,
+    fontSize: 25.sp,
+    fontWeight: FontWeight.w600,
+    color: CustomColors.blackColor,
+    fontFamily: 'Degular',
+  );
   static TextStyle black26w600 = TextStyle(
     height: 0,
     fontSize: 26.sp,
@@ -341,6 +355,13 @@ class CustomFonts {
     height: 0,
     fontSize: 16.sp,
     fontWeight: FontWeight.w500,
+    color: CustomColors.blackColor,
+    fontFamily: 'Degular',
+  );
+   static TextStyle black16w600 = TextStyle(
+    height: 0,
+    fontSize: 16.sp,
+    fontWeight: FontWeight.w600,
     color: CustomColors.blackColor,
     fontFamily: 'Degular',
   );

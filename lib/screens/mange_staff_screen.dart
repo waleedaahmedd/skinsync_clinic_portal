@@ -79,7 +79,10 @@ class _MangeStaffScreenState extends State<MangeStaffScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(vertical: 20.w, horizontal: 145.w),
+   padding: EdgeInsets.symmetric(
+  vertical: 20.h,
+  horizontal: MediaQuery.of(context).size.width * 0.05, // 5% side padding
+),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -107,7 +110,18 @@ class _MangeStaffScreenState extends State<MangeStaffScreen> {
                 patientSelection(),
                 SizedBox(width: 28.9.w),
                 Expanded(
-                  child: Column(
+                  child:  rightSideContent(),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget rightSideContent(){
+    return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -118,14 +132,7 @@ class _MangeStaffScreenState extends State<MangeStaffScreen> {
                       calendarAndTimeOffTap(),
                       SizedBox(height: 20.h),
                     ],
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
+                  );
   }
 
   Widget calendarAndTimeOffTap() {
