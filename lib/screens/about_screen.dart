@@ -5,6 +5,7 @@ import 'package:skinsync_clinic_portal/widgets/header__with_back_btn.dart';
 
 class AboutScreen extends StatefulWidget {
   const AboutScreen({super.key});
+  static const String routeName = '/About';
 
   @override
   State<AboutScreen> createState() => _AboutScreenState();
@@ -16,8 +17,6 @@ class _AboutScreenState extends State<AboutScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFBDBDBD),
-
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 250.w, vertical: 20.h),

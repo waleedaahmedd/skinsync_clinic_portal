@@ -50,7 +50,7 @@ class AppointmentScreen extends StatelessWidget {
             Divider(),
 
             SizedBox(height: 14.h),
-            SizedBox(height: 700.h, child: AppointmentsCalendar()),
+            SizedBox(height: 800.h, child: AppointmentsCalendar()),
             SizedBox(height: 15.h),
             BorderdContainerWidget(
               child: Column(

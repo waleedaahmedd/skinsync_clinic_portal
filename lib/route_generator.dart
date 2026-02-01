@@ -1,8 +1,12 @@
 import 'package:go_router/go_router.dart';
+import 'package:skinsync_clinic_portal/screens/about_screen.dart';
+import 'package:skinsync_clinic_portal/screens/change_password_screen.dart';
+import 'package:skinsync_clinic_portal/screens/create_treatment_screen.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/patient_management_detail.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/payment_history_screen.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/profile_screen.dart';
 import 'package:skinsync_clinic_portal/screens/mange_staff_screen.dart';
+import 'package:skinsync_clinic_portal/screens/notification_screen.dart';
 import 'package:skinsync_clinic_portal/screens/sign_in_screen.dart';
 import 'package:skinsync_clinic_portal/screens/signup_screen.dart';
 
@@ -14,6 +18,7 @@ import 'screens/dashboard/patient_ai_management.dart';
 import 'screens/dashboard/patient_management.dart';
 import 'screens/dashboard/payment_and_wallet_screen.dart';
 import 'screens/splash_screen.dart';
+import 'screens/update_treatment_screen.dart';
 
 class RouteGenerator {
   static final GoRouter router = GoRouter(
@@ -35,7 +40,7 @@ class RouteGenerator {
         path: SignUpScreen.routeName,
         builder: (_, _) => SignUpScreen(),
       ),
-       GoRoute(
+      GoRoute(
         name: MangeStaffScreen.routeName,
         path: MangeStaffScreen.routeName,
         builder: (_, _) => MangeStaffScreen(),
@@ -88,6 +93,31 @@ class RouteGenerator {
             builder: (_, _) => ProfileScreen(),
           ),
         ],
+      ),
+      GoRoute(
+        name: CreateTreatmentScreen.routeName,
+        path: CreateTreatmentScreen.routeName,
+        builder: (_, _) => CreateTreatmentScreen(),
+      ),
+      GoRoute(
+        name: UpdateTreatmentScreen.routeName,
+        path: UpdateTreatmentScreen.routeName,
+        builder: (_, _) => UpdateTreatmentScreen(),
+      ),
+      GoRoute(
+        name: ChangePasswordScreen.routeName,
+        path: ChangePasswordScreen.routeName,
+        builder: (_, _) => ChangePasswordScreen(),
+      ),
+      GoRoute(
+        name: AboutScreen.routeName,
+        path: AboutScreen.routeName,
+        builder: (_, _) => AboutScreen(),
+      ),
+      GoRoute(
+        name: NotificationScreen.routeName,
+        path: NotificationScreen.routeName,
+        builder: (_, _) => NotificationScreen(),
       ),
     ],
   );

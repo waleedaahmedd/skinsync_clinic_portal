@@ -6,6 +6,7 @@ import '../widgets/header__with_back_btn.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
+  static const String routeName = '/change-password';
 
   @override
   State<ChangePasswordScreen> createState() => _ChangePasswordScreenState();
@@ -33,7 +34,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFBDBDBD),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 250.w),

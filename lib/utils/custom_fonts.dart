@@ -372,13 +372,13 @@ class CustomFonts {
     color: CustomColors.blackColor,
     fontFamily: 'Degular',
   );
-   static TextStyle black16w600 = TextStyle(
-    height: 0,
-    fontSize: 16.sp,
-    fontWeight: FontWeight.w600,
-    color: CustomColors.blackColor,
-    fontFamily: 'Degular',
-  );
+  //  static TextStyle black16w600 = TextStyle(
+  //   height: 0,
+  //   fontSize: 16.sp,
+  //   fontWeight: FontWeight.w600,
+  //   color: CustomColors.blackColor,
+  //   fontFamily: 'Degular',
+  // );
   static TextStyle black16w700 = TextStyle(
     height: 0,
     fontSize: 16.sp,
@@ -419,7 +419,7 @@ class CustomFonts {
     fontSize: 20.sp,
     fontWeight: FontWeight.w600,
     decoration: TextDecoration.underline,
-    decorationColor: CustomColors.purpleColor, 
+    decorationColor: CustomColors.purpleColor,
     color: CustomColors.purpleColor,
     fontFamily: 'Degular',
   );

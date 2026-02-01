@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 import '../utils/custom_fonts.dart';
 
@@ -12,7 +13,7 @@ class BuildHeader extends StatelessWidget {
     return Row(
       children: [
         GestureDetector(
-          onTap: () => Navigator.pop(context),
+          onTap: () => context.pop(),
           child: Icon(Icons.arrow_back, size: 24.sp, color: Colors.black),
         ),
         SizedBox(width: 12.w),

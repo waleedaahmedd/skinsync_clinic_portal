@@ -166,7 +166,7 @@ class _AppointmentsCalendarState extends State<AppointmentsCalendar> {
 
   Widget _calendar() {
     return TableCalendar(
-      // rowHeight: 150.h,
+      // rowHeight: 190.h,
       shouldFillViewport: true,
       firstDay: DateTime.utc(2020, 1, 1),
       lastDay: DateTime.utc(2030, 12, 31),
@@ -178,7 +178,7 @@ class _AppointmentsCalendarState extends State<AppointmentsCalendar> {
       eventLoader: _getEvents,
 
       calendarStyle: const CalendarStyle(
-        cellMargin: EdgeInsets.all(4),
+        cellMargin: EdgeInsets.symmetric(horizontal: 4),
         markerSize: 0.0,
 
         cellPadding: EdgeInsets.zero,
@@ -214,7 +214,7 @@ class _AppointmentsCalendarState extends State<AppointmentsCalendar> {
   }) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       decoration: BoxDecoration(
         color: isToday ? const Color(0xFFE8FBF4) : Colors.white,
         borderRadius: BorderRadius.circular(12),
@@ -230,7 +230,7 @@ class _AppointmentsCalendarState extends State<AppointmentsCalendar> {
               color: isOutside ? Colors.grey : Colors.black,
             ),
           ),
-          const SizedBox(height: 6),
+          SizedBox(height: 6.h),
           ...events.map(_appointmentCard),
         ],
       ),
@@ -254,12 +254,12 @@ class _AppointmentsCalendarState extends State<AppointmentsCalendar> {
             a.clinic,
             style: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.w600),
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: 4.h),
           Text(
             a.service,
             style: TextStyle(fontSize: 9.sp, color: Colors.black54),
           ),
-          const SizedBox(height: 4),
+          // SizedBox(height: 4.h),
           Text(
             a.time,
             style: TextStyle(fontSize: 9.sp, color: Colors.black45),

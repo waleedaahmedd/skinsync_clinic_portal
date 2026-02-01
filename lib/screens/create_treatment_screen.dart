@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
@@ -11,6 +12,7 @@ import 'business_info_screen.dart';
 
 class CreateTreatmentScreen extends StatefulWidget {
   const CreateTreatmentScreen({super.key});
+  static const String routeName = '/create-treatment';
 
   @override
   State<CreateTreatmentScreen> createState() => _CreateTreatmentScreenState();
@@ -201,7 +203,7 @@ class _CreateTreatmentScreenState extends State<CreateTreatmentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFBDBDBD),
+      // backgroundColor: const Color(0xFFBDBDBD),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 250.w),
@@ -431,7 +433,7 @@ class _CreateTreatmentScreenState extends State<CreateTreatmentScreen> {
           child: OutlinedButton(
             onPressed: () {
               // Handle cancel
-              Navigator.pop(context);
+              // context.pop();
             },
             style: OutlinedButton.styleFrom(
               foregroundColor: Colors.black,

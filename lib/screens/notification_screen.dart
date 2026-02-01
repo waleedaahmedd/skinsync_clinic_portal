@@ -6,6 +6,7 @@ import '../widgets/header__with_back_btn.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});
+  static const String routeName = '/Notification';
 
   @override
   State<NotificationScreen> createState() => _NotificationScreenState();
@@ -76,8 +77,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFBDBDBD),
-
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 250.w, vertical: 20.h),

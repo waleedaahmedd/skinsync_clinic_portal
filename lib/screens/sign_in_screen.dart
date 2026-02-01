@@ -236,6 +236,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               child: InkWell(
                                 onTap: () {
                                   // handle forget password
+                                  // context.go()
                                 },
                                 child: Text(
                                   "Forget Password",

@@ -2,7 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:skinsync_clinic_portal/screens/about_screen.dart';
 import 'package:skinsync_clinic_portal/screens/mange_staff_screen.dart';
+import 'package:skinsync_clinic_portal/screens/notification_screen.dart';
+import 'package:skinsync_clinic_portal/screens/update_treatment_screen.dart';
+
+import '../change_password_screen.dart';
+import '../create_treatment_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   static const String routeName = '/profile';
@@ -77,13 +83,74 @@ class ProfileScreen extends StatelessWidget {
                     icon: Icons.add_circle_outline,
                     title: "Create Treatment",
                     subtitle: "Add new treatments and services",
-                    onTap: () {},
+                    onTap: () {
+                      context.push(CreateTreatmentScreen.routeName);
+                    },
                   ),
                   _SettingItemData(
                     icon: Icons.edit_outlined,
                     title: "Update Treatment",
                     subtitle: "Edit existing treatment details",
-                    onTap: () {},
+                    onTap: () {
+                      context.push(UpdateTreatmentScreen.routeName);
+                    },
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 20.h),
+
+            // password security
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: _buildSettingsSection(
+                title: "Security",
+                items: [
+                  _SettingItemData(
+                    icon: Icons.lock_open,
+                    title: "Password & Security",
+                    subtitle: "Update password and security settings",
+                    onTap: () {
+                      context.push(ChangePasswordScreen.routeName);
+                    },
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 20.h),
+
+            // preference
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: _buildSettingsSection(
+                title: "Preferences",
+                items: [
+                  _SettingItemData(
+                    icon: Icons.notifications_outlined,
+                    title: "Notifications",
+                    subtitle: "Manage notification settings",
+                    onTap: () {
+                      context.push(NotificationScreen.routeName);
+                    },
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 20.h),
+
+            // preference
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: _buildSettingsSection(
+                title: "Help & Support",
+                items: [
+                  _SettingItemData(
+                    icon: Icons.privacy_tip_outlined,
+                    title: "About",
+                    subtitle: "Terms, conditions, and privacy policy",
+                    onTap: () {
+                      context.push(AboutScreen.routeName);
+                    },
                   ),
                 ],
               ),

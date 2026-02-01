@@ -5,6 +5,7 @@ import 'package:skinsync_clinic_portal/widgets/header__with_back_btn.dart';
 
 class UpdateTreatmentScreen extends StatefulWidget {
   const UpdateTreatmentScreen({super.key});
+  static const String routeName = '/update-treatment';
 
   @override
   State<UpdateTreatmentScreen> createState() => _UpdateTreatmentScreenState();
@@ -57,8 +58,7 @@ class _UpdateTreatmentScreenState extends State<UpdateTreatmentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFBDBDBD),
-
+      // backgroundColor: const Color(0xFFBDBDBD),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 250.w, vertical: 20.h),
