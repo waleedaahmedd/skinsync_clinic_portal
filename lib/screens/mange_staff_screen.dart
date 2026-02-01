@@ -29,10 +29,10 @@ class _MangeStaffScreenState extends State<MangeStaffScreen> {
   DateTime? timeOffEndDateTime;
 
   DateTime selectedDate = DateTime.now();
-  
+
   String getSelectedDayName() {
-  return DateFormat('EEEE').format(selectedDate);
-} // from calendar
+    return DateFormat('EEEE').format(selectedDate);
+  } // from calendar
 
   String formatDateTime(DateTime? dt) {
     if (dt == null) return "";
@@ -79,10 +79,11 @@ class _MangeStaffScreenState extends State<MangeStaffScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-   padding: EdgeInsets.symmetric(
-  vertical: 20.h,
-  horizontal: MediaQuery.of(context).size.width * 0.05, // 5% side padding
-),
+        padding: EdgeInsets.symmetric(
+          vertical: 20.h,
+          horizontal:
+              MediaQuery.of(context).size.width * 0.05, // 5% side padding
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -109,9 +110,7 @@ class _MangeStaffScreenState extends State<MangeStaffScreen> {
               children: [
                 patientSelection(),
                 SizedBox(width: 28.9.w),
-                Expanded(
-                  child:  rightSideContent(),
-                ),
+                Expanded(child: rightSideContent()),
               ],
             ),
           ],
@@ -120,19 +119,19 @@ class _MangeStaffScreenState extends State<MangeStaffScreen> {
     );
   }
 
-  Widget rightSideContent(){
+  Widget rightSideContent() {
     return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      patientInfo(context: context),
-                      SizedBox(height: 19.h),
-                      medicalInfo(context: context),
-                      SizedBox(height: 19.h),
-                      calendarAndTimeOffTap(),
-                      SizedBox(height: 20.h),
-                    ],
-                  );
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        patientInfo(context: context),
+        SizedBox(height: 19.h),
+        medicalInfo(context: context),
+        SizedBox(height: 19.h),
+        calendarAndTimeOffTap(),
+        SizedBox(height: 20.h),
+      ],
+    );
   }
 
   Widget calendarAndTimeOffTap() {

@@ -10,11 +10,9 @@ class SuccessfullyWithdrawalDailogBox extends StatelessWidget {
     return Dialog(
       backgroundColor: Colors.transparent,
       insetPadding: EdgeInsets.symmetric(horizontal: 16.w),
-      child: Center( 
+      child: Center(
         child: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxWidth: 360.w, 
-          ),
+          constraints: BoxConstraints(maxWidth: 360.w),
           child: Container(
             width: double.infinity,
             padding: EdgeInsets.symmetric(vertical: 24.h, horizontal: 24.w),
@@ -26,7 +24,6 @@ class SuccessfullyWithdrawalDailogBox extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-             
                 Align(
                   alignment: Alignment.topRight,
                   child: GestureDetector(
@@ -42,8 +39,6 @@ class SuccessfullyWithdrawalDailogBox extends StatelessWidget {
                     ),
                   ),
                 ),
-
-                
                 ClipOval(
                   child: Container(
                     height: 125.w,
@@ -51,24 +46,18 @@ class SuccessfullyWithdrawalDailogBox extends StatelessWidget {
                     color: Colors.grey.shade300,
                   ),
                 ),
-
                 SizedBox(height: 20.h),
-
-              
                 Text(
                   "Successfully Withdrawal!",
                   style: CustomFonts.black30w600,
                   textAlign: TextAlign.center,
                 ),
-
                 SizedBox(height: 10.h),
-
                 Text(
                   "Lorem ipsum dolor sit amet consectetur. Ut consectetur mauris tellus ultricies.",
                   style: CustomFonts.black18w400,
-                  textAlign: TextAlign.center, // 🔥 important
+                  textAlign: TextAlign.center,
                 ),
-
                 SizedBox(height: 20.h),
               ],
             ),
