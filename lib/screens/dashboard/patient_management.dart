@@ -1,15 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:skinsync_clinic_portal/screens/dashboard/patient_management_detail.dart';
 import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:skinsync_clinic_portal/widgets/dailog%20box/simulations_detail_dailog_box.dart';
+import 'package:skinsync_clinic_portal/widgets/patient_selection_tile.dart';
 import '../../utils/assets.dart';
 import '../../utils/theme.dart';
 
-class PatientManagementScreen extends StatelessWidget {
+class PatientManagementScreen extends StatefulWidget {
   static const String routeName = '/patient-management';
   const PatientManagementScreen({super.key});
 
+  @override
+  State<PatientManagementScreen> createState() =>
+      _PatientManagementScreenState();
+}
+
+class _PatientManagementScreenState extends State<PatientManagementScreen> {
+  bool isTreatmentSelected = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +53,7 @@ class PatientManagementScreen extends StatelessWidget {
                         padding: EdgeInsets.all(15.w),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15.r),
-                          border: Border.all(color:Colors.grey.shade300),
+                          border: Border.all(color: Colors.grey.shade300),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,32 +81,55 @@ class PatientManagementScreen extends StatelessWidget {
                       Row(
                         children: [
                           Expanded(
-                            child: Container(
-                              padding: EdgeInsets.symmetric(vertical: 16.5.h),
-                              decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "Treatments",
-                                  style: CustomFonts.white18w500,
+                            child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  isTreatmentSelected = true;
+                                });
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(vertical: 16.5.h),
+                                decoration: BoxDecoration(
+                                  color: isTreatmentSelected
+                                      ? Colors.black
+                                      : AppTheme.lightgrey,
+                                  borderRadius: BorderRadius.circular(10.r),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "Treatments",
+                                    style: isTreatmentSelected
+                                        ? CustomFonts.white18w500
+                                        : CustomFonts.black18w500,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                           SizedBox(width: 11.w),
                           Expanded(
-                            child: Container(
-                              padding: EdgeInsets.symmetric(vertical: 16.5.h),
-                              decoration: BoxDecoration(
-                                color: AppTheme.lightgrey,
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "AI Simulations",
-                                  style: CustomFonts.black18w500,
+                            child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  print("AI Simulations tapped");
+                                  isTreatmentSelected = false;
+                                });
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(vertical: 16.5.h),
+                                decoration: BoxDecoration(
+                                  color: !isTreatmentSelected
+                                      ? Colors.black
+                                      : AppTheme.lightgrey,
+                                  borderRadius: BorderRadius.circular(10.r),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "AI Simulations",
+                                    style: !isTreatmentSelected
+                                        ? CustomFonts.white18w500
+                                        : CustomFonts.black18w500,
+                                  ),
                                 ),
                               ),
                             ),
@@ -103,74 +137,91 @@ class PatientManagementScreen extends StatelessWidget {
                         ],
                       ),
                       SizedBox(height: 19.h),
-                      Container(
-                        padding: EdgeInsets.all(15.w),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15.r),
-                          border: Border.all(color:Colors.grey.shade300),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Treatment History",
-                              style: CustomFonts.black22w600,
-                            ),
-                            SizedBox(height: 20.h),
-                            CupertinoSearchTextField(
-                              backgroundColor: Color(0xFFF3F3F5),
-                            ),
-                            SizedBox(height: 19.h),
-                            ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: 3,
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  padding: EdgeInsets.all(15.w),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15.r),
-                                    border: Border.all(
-                                     color:Colors.grey.shade300
+                      if (isTreatmentSelected) treatmentContent(),
+                      if (!isTreatmentSelected)
+                        Container(
+                          padding: EdgeInsets.all(15.w),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15.r),
+                            border: Border.all(color: Colors.grey.shade300),
+                          ),
+                          child: LayoutBuilder(
+                            builder: (context, constraints) {
+                              // Calculate max width per item for responsive design
+                              double maxWidthPerItem =
+                                  300.w; // Adjust this as needed
+
+                              return GridView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: 8,
+                                gridDelegate:
+                                    SliverGridDelegateWithMaxCrossAxisExtent(
+                                      maxCrossAxisExtent:
+                                          maxWidthPerItem, // Max width of each item
+                                      crossAxisSpacing: 10.w,
+                                      mainAxisSpacing: 10.h,
+                                      childAspectRatio:
+                                          0.75, // Height/width ratio
                                     ),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(
-                                          15.r,
-                                        ),
-                                        child: Image.asset(
-                                          PngAssets.treatmentImage,
-                                          height: 248.h,
-                                          width: double.infinity,
-                                          fit: BoxFit.cover,
-                                        ),
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      showDialog<bool>(
+                                        context: context,
+                                        builder: (context) =>
+                                            SimulationDetailDaillogBox(),
+                                      );
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.all(5.w),
+                                      // decoration: BoxDecoration(
+                                      //   color: Colors.white,
+                                      //   borderRadius: BorderRadius.circular(10.r),
+                                      //   boxShadow: [
+                                      //     BoxShadow(
+                                      //       color: Colors.black12,
+                                      //       blurRadius: 4,
+                                      //       offset: Offset(0, 2),
+                                      //     ),
+                                      //   ],
+                                      // ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Expanded(
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.circular(
+                                                10.r,
+                                              ),
+                                              child: Image.asset(
+                                                PngAssets.simulation,
+                                                width: double.infinity,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(height: 5.h),
+                                          Text(
+                                            "Simulation Name",
+                                            style: CustomFonts.black18w600,
+                                            textAlign: TextAlign.left,
+                                          ),
+                                          Text(
+                                            "Treatment Name",
+                                            style: CustomFonts.grey16w400,
+                                            textAlign: TextAlign.left,
+                                          ),
+                                        ],
                                       ),
-                                      SizedBox(height: 19.h),
-                                      Text(
-                                        "Botox - Forehead",
-                                        style: CustomFonts.grey18w700,
-                                      ),
-                                      SizedBox(height: 19.h),
-                                      Text(
-                                        "Provider: Dr. Smith",
-                                        style: CustomFonts.grey18w500,
-                                      ),
-                                      SizedBox(height: 9.h),
-                                      Text(
-                                        "Oct 29, 2025",
-                                        style: CustomFonts.grey18w500,
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          ),
                         ),
-                      ),
                     ],
                   ),
                 ),
@@ -181,6 +232,68 @@ class PatientManagementScreen extends StatelessWidget {
       ),
     );
   }
+ Widget treatmentContent() {
+    return Container(
+      padding: EdgeInsets.all(15.w),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15.r),
+        border: Border.all(color: Colors.grey.shade300),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("Treatment History", style: CustomFonts.black22w600),
+          SizedBox(height: 20.h),
+          CupertinoSearchTextField(backgroundColor: Color(0xFFF3F3F5)),
+          SizedBox(height: 19.h),
+          ListView.separated(
+            separatorBuilder: (context, index) => SizedBox(height: 15.h),
+            shrinkWrap: true,
+            itemCount: 3,
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: () {
+                  context.go(PatientManagementDetailScreen.routeName);
+                },
+                child: Container(
+                  padding: EdgeInsets.all(15.w),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15.r),
+                    // border: Border.all(
+                    //  color:Colors.grey.shade300
+                    // ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(15.r),
+                        child: Image.asset(
+                          PngAssets.treatmentImage,
+                          height: 248.h,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      SizedBox(height: 19.h),
+                      Text("Botox - Forehead", style: CustomFonts.grey18w700),
+                      SizedBox(height: 19.h),
+                      Text(
+                        "Provider: Dr. Smith",
+                        style: CustomFonts.grey18w500,
+                      ),
+                      SizedBox(height: 9.h),
+                      Text("Oct 29, 2025", style: CustomFonts.grey18w500),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget medicalInfo({required BuildContext context}) {
     return Container(
@@ -188,11 +301,11 @@ class PatientManagementScreen extends StatelessWidget {
       padding: EdgeInsets.all(15.w),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15.r),
-        border: Border.all(color:Colors.grey.shade300),
+        border: Border.all(color: Colors.grey.shade300),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        
+
         children: [
           Text("Medical Information", style: CustomFonts.black22w600),
           SizedBox(height: 20.h),
@@ -224,7 +337,7 @@ class PatientManagementScreen extends StatelessWidget {
       padding: EdgeInsets.all(15.w),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15.r),
-        border: Border.all(color:Colors.grey.shade300 ),
+        border: Border.all(color: Colors.grey.shade300),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -412,34 +525,9 @@ class PatientManagementScreen extends StatelessWidget {
             shrinkWrap: true,
             itemCount: 6,
             itemBuilder: (context, index) {
-              return Container(
-                padding: EdgeInsets.all(24.w),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.r),
-                  border: Border.all(color: AppTheme.titleBorderColor),
-                ),
-                child: Row(
-                  children: [
-                    ClipOval(
-                      child: Image.asset(
-                        PngAssets.person,
-                        height: 62.w,
-                        width: 62.w,
-                      ),
-                    ),
-                    SizedBox(width: 15.w),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Sarah Johnson", style: CustomFonts.black22w600),
-                        Text(
-                          "sarah.johnson@email.com",
-                          style: CustomFonts.black13w400,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+              return PatientSelectionTile(
+                title: "Sarah Johnson",
+                subTitle: "sarah.johnson@email.com",
               );
             },
           ),

@@ -1,5 +1,8 @@
 import 'package:go_router/go_router.dart';
+import 'package:skinsync_clinic_portal/screens/dashboard/patient_management_detail.dart';
+import 'package:skinsync_clinic_portal/screens/dashboard/payment_history_screen.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/profile_screen.dart';
+import 'package:skinsync_clinic_portal/screens/mange_staff_screen.dart';
 import 'package:skinsync_clinic_portal/screens/sign_in_screen.dart';
 import 'package:skinsync_clinic_portal/screens/signup_screen.dart';
 
@@ -32,6 +35,11 @@ class RouteGenerator {
         path: SignUpScreen.routeName,
         builder: (_, _) => SignUpScreen(),
       ),
+       GoRoute(
+        name: MangeStaffScreen.routeName,
+        path: MangeStaffScreen.routeName,
+        builder: (_, _) => MangeStaffScreen(),
+      ),
 
       ShellRoute(
         builder: (_, _, child) {
@@ -44,14 +52,20 @@ class RouteGenerator {
             builder: (_, _) => HomeScreen(),
           ),
           GoRoute(
+            name: PatientAiManagementScreen.routeName,
+            path: PatientAiManagementScreen.routeName,
+            builder: (_, _) => PatientAiManagementScreen(),
+          ),
+          GoRoute(
             name: PatientManagementScreen.routeName,
             path: PatientManagementScreen.routeName,
             builder: (_, _) => PatientManagementScreen(),
           ),
+
           GoRoute(
-            name: PatientAiManagement.routeName,
-            path: PatientAiManagement.routeName,
-            builder: (_, _) => PatientAiManagement(),
+            name: PatientManagementDetailScreen.routeName,
+            path: PatientManagementDetailScreen.routeName, // Top-level route
+            builder: (_, _) => PatientManagementDetailScreen(),
           ),
           GoRoute(
             name: AppointmentScreen.routeName,
@@ -62,6 +76,11 @@ class RouteGenerator {
             name: PaymentAndWalletScreen.routeName,
             path: PaymentAndWalletScreen.routeName,
             builder: (_, _) => PaymentAndWalletScreen(),
+          ),
+          GoRoute(
+            name: PaymentHistoryScreen.routeName,
+            path: PaymentHistoryScreen.routeName,
+            builder: (_, _) => PaymentHistoryScreen(),
           ),
           GoRoute(
             name: ProfileScreen.routeName,
