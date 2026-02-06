@@ -47,12 +47,11 @@ class Dashboard extends StatelessWidget {
       builder: (context) {
         return Container(
           width: 270.w,
-          padding: EdgeInsets.symmetric(vertical: 38.h),
+          height: double.infinity,
+          padding: EdgeInsets.only(top: 38.h,bottom: 20.h),
           margin: EdgeInsets.all(10.w),
           decoration: BoxDecoration(
-            color: context.isLandscape
-                ? CustomColors.navigationRailBackground
-                : CustomColors.navigationRailBackground.withValues(alpha: 1),
+            color: CustomColors.navigationRailBackground,
             borderRadius: BorderRadiusGeometry.circular(10.r),
           ),
           child: Column(
@@ -62,47 +61,51 @@ class Dashboard extends StatelessWidget {
               Image.asset(PngAssets.splashLogo, width: 48.r, height: 48.r),
               SizedBox(width: 5.w),
               Image.asset(PngAssets.logo, height: 20.r,),
-              SizedBox(width: 40.w),
-              SingleChildScrollView(
-                child: Column(
-                  children: [
-                    _buildRailItem(
-                      context: context,
-                      title: 'Home',
-                      icon: SvgAssets.home,
-                      routeName: HomeScreen.routeName,
-                    ),
-                    _buildRailItem(
-                      context: context,
-                      title: 'Patient Management',
-                      icon: SvgAssets.user,
-                      routeName: PatientManagementScreen.routeName,
-                    ),
-                    _buildRailItem(
-                      context: context,
-                      title: 'Patient AI Management',
-                      icon: SvgAssets.ai,
-                      routeName: PatientAiManagementScreen.routeName,
-                    ),
-                    _buildRailItem(
-                      context: context,
-                      title: 'Appointments',
-                      icon: SvgAssets.appointments,
-                      routeName: AppointmentScreen.routeName,
-                    ),
-                    _buildRailItem(
-                      context: context,
-                      title: 'Payments & Wallets',
-                      icon: SvgAssets.payments,
-                      routeName: PaymentAndWalletScreen.routeName,
-                    ),
-                    _buildRailItem(
-                      context: context,
-                      title: 'Profile',
-                      icon: SvgAssets.profile,
-                      routeName: ProfileScreen.routeName,
-                    ),
-                  ],
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+
+                      SizedBox(width: 40.w),
+
+                      _buildRailItem(
+                        context: context,
+                        title: 'Home',
+                        icon: SvgAssets.home,
+                        routeName: HomeScreen.routeName,
+                      ),
+                      _buildRailItem(
+                        context: context,
+                        title: 'Patient Management',
+                        icon: SvgAssets.user,
+                        routeName: PatientManagementScreen.routeName,
+                      ),
+                      _buildRailItem(
+                        context: context,
+                        title: 'Patient AI Management',
+                        icon: SvgAssets.ai,
+                        routeName: PatientAiManagementScreen.routeName,
+                      ),
+                      _buildRailItem(
+                        context: context,
+                        title: 'Appointments',
+                        icon: SvgAssets.appointments,
+                        routeName: AppointmentScreen.routeName,
+                      ),
+                      _buildRailItem(
+                        context: context,
+                        title: 'Payments & Wallets',
+                        icon: SvgAssets.payments,
+                        routeName: PaymentAndWalletScreen.routeName,
+                      ),
+                      _buildRailItem(
+                        context: context,
+                        title: 'Profile',
+                        icon: SvgAssets.profile,
+                        routeName: ProfileScreen.routeName,
+                      ),
+                    ],
+                  ),
                 ),
               ),
 
