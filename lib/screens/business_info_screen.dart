@@ -6,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../utils/custom_fonts.dart';
-import '../widgets/build_textfield.dart';
 import '../widgets/header__with_back_btn.dart';
 
 class BusinessInformationScreen extends StatefulWidget {

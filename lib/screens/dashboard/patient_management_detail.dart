@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -176,8 +175,7 @@ class TreatmentStep {
 class TreatmentJourneyStepper extends StatelessWidget {
   final List<TreatmentStep> steps;
 
-  const TreatmentJourneyStepper({Key? key, required this.steps})
-    : super(key: key);
+  const TreatmentJourneyStepper({super.key, required this.steps});
 
   @override
   Widget build(BuildContext context) {
@@ -251,7 +249,7 @@ class TreatmentJourneyStepper extends StatelessWidget {
 class TreatmentCard extends StatelessWidget {
   final TreatmentStep step;
 
-  const TreatmentCard({Key? key, required this.step}) : super(key: key);
+  const TreatmentCard({super.key, required this.step});
 
   @override
   Widget build(BuildContext context) {

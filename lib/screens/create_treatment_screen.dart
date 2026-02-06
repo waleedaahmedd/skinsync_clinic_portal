@@ -1,14 +1,11 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 
 import '../widgets/build_textfield.dart';
 import '../widgets/header__with_back_btn.dart';
-import 'business_info_screen.dart';
 
 class CreateTreatmentScreen extends StatefulWidget {
   const CreateTreatmentScreen({super.key});

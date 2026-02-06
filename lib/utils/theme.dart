@@ -68,6 +68,7 @@ class AppTheme {
       ),
       dividerColor: unSelectedColor,
       inputDecorationTheme: InputDecorationTheme(
+        hintStyle: TextStyle(fontSize: 14.sp, color: Colors.grey.shade400),
         filled: true,
         fillColor: surfaceColor,
         border: OutlineInputBorder(

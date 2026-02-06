@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skinsync_clinic_portal/utils/assets.dart';
-import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 
 class SimulationDetailDaillogBox extends StatelessWidget {

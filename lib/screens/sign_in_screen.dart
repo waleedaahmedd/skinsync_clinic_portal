@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:skinsync_clinic_portal/screens/dashboard/dashboard.dart';
+import 'package:skinsync_clinic_portal/utils/responsive.dart';
 
 import '../utils/assets.dart';
 import 'dashboard/home_screen.dart';
@@ -41,10 +41,9 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.red,
       body: Row(
         children: [
-          // Left Side - Branding
+          context.isLandscape?
           Expanded(
             child: Container(
               color: Colors.white,
@@ -83,18 +82,12 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
               ),
             ),
-          ),
-
-          // Vertical Divider
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 100.h),
-            child: Container(width: 1.w, color: Colors.grey.shade300),
-          ),
-
-          // Right Side - Sign Up Form
+          ):
+          SizedBox.shrink(),
+          Container(width: 1.w, color: Colors.grey.shade300),
           Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(left: 140.w, right: 50, top: 50),
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 50.h),
               child: Column(
                 children: [
                   Container(
@@ -172,9 +165,9 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                       ],
                     ),
-                    child: SingleChildScrollView(
+                    child: Container(
                       padding: EdgeInsets.symmetric(
-                        horizontal: 60.w,
+                        horizontal: 40.w,
                         vertical: 40.h,
                       ),
                       child: Form(
@@ -189,11 +182,10 @@ class _SignInScreenState extends State<SignInScreen> {
                               width: 60.w,
                             ),
                             SizedBox(height: 8.h),
-
                             Text(
                               "Doctor (Clinic Owner)",
                               style: TextStyle(
-                                fontSize: 30.sp,
+                                fontSize: 20.sp,
                                 fontWeight: FontWeight.w700,
                                 color: Colors.black,
                               ),
@@ -208,7 +200,6 @@ class _SignInScreenState extends State<SignInScreen> {
                               ),
                             ),
                             SizedBox(height: 40.h),
-
                             // Full Name Field
                             _buildTextField(
                               label: "Email Address",
@@ -218,7 +209,6 @@ class _SignInScreenState extends State<SignInScreen> {
                               keyboardType: TextInputType.emailAddress,
                             ),
                             SizedBox(height: 20.h),
-
                             // Password Field
                             _buildPasswordField(
                               label: "Password",
@@ -230,7 +220,6 @@ class _SignInScreenState extends State<SignInScreen> {
                               ),
                             ),
                             SizedBox(height: 8.h),
-
                             Align(
                               alignment: Alignment.centerRight,
                               child: InkWell(
@@ -249,7 +238,6 @@ class _SignInScreenState extends State<SignInScreen> {
                               ),
                             ),
                             SizedBox(height: 30.h),
-
                             // Create Account Button
                             GestureDetector(
                               onTap: () {
@@ -289,7 +277,6 @@ class _SignInScreenState extends State<SignInScreen> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 20.h),
                           ],
                         ),
                       ),
@@ -338,7 +325,7 @@ class _SignInScreenState extends State<SignInScreen> {
           keyboardType: keyboardType,
           decoration: InputDecoration(
             hintText: hintText,
-            // hintStyle: TextStyle(fontSize: 14.sp, color: Colors.grey.shade400),
+             //hintStyle: TextStyle(fontSize: 14.sp, color: Colors.grey.shade400),
             // filled: true,
             // fillColor: Colors.white,
             // border: OutlineInputBorder(
@@ -396,12 +383,12 @@ class _SignInScreenState extends State<SignInScreen> {
           obscureText: obscureText,
           decoration: InputDecoration(
             hintText: hintText,
-            hintStyle: TextStyle(
-              height: 0,
-
-              fontSize: 14.sp,
-              color: Colors.grey.shade400,
-            ),
+            // hintStyle: TextStyle(
+            //   height: 0,
+            //
+            //   fontSize: 14.sp,
+            //   color: Colors.grey.shade400,
+            // ),
             // filled: true,
             // fillColor: Colors.white,
             // border: OutlineInputBorder(

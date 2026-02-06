@@ -5,7 +5,6 @@ import 'package:skinsync_clinic_portal/screens/sign_in_screen.dart';
 
 import '../utils/assets.dart';
 import '../utils/color_constant.dart';
-import 'dashboard/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

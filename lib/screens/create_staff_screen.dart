@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -299,7 +298,7 @@ class _CreateStaffScreenState extends State<CreateStaffScreen> {
           onTap: _pickImage,
           child: CustomPaint(
             painter: DottedCircleBorderPainter(
-              color: Colors.black87!,
+              color: Colors.black87,
               strokeWidth: 1.5,
               dashLength: 6,
               gapLength: 4,

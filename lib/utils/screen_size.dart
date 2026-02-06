@@ -1,31 +1,42 @@
-import 'dart:developer';
+import 'dart:ui';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
-Size getDesignSize({required BuildContext context}) {
-  const sizesMap = {
-    'LARGE': Size(1200, 1600),
-    'MEDIUM': Size(768, 1024),
-    'SMALL': Size(600, 900),
-    'DEFAULT': Size(375, 812),
-  };
-  final window = View.of(context);
-  final size1 = MediaQuery.sizeOf(context);
-  log('SIZE: $size1');
-  final size = window.physicalSize / window.devicePixelRatio;
-  late String name;
-  if (size.width >= 1200) {
-    name = 'LARGE';
-  } else if (size.width >= 800) {
-    name = 'MEDIUM';
-  } else if (size.width >= 600) {
-    name = 'SMALL';
+import 'package:flutter/rendering.dart';
+
+enum DeviceType { foldOuter, mobile, tablet, desktop }
+
+Size getDesignSize(BoxConstraints constraints, Orientation orientation) {
+  final double width = constraints.maxWidth;
+  final bool isLandscape = orientation == Orientation.landscape;
+
+  // Determine device type based on screen width
+  DeviceType deviceType;
+  if (width < 500) {
+    deviceType = DeviceType.foldOuter;
+  } else if (width < 600) {
+    deviceType = DeviceType.mobile;
+  } else if (width < 1024) {
+    deviceType = DeviceType.tablet;
   } else {
-    name = 'DEFAULT';
+    deviceType = DeviceType.desktop;
   }
-  log('NAME: $name');
-  final appSize = sizesMap[name]!;
-  return size.width > size.height
-      ? Size(appSize.height, appSize.width)
-      : appSize;
+
+  // Use switch-like structure to return appropriate design size
+  switch (deviceType) {
+    case DeviceType.foldOuter:
+      // Samsung Fold Outer Screen: Size(344, 882)
+      return isLandscape ? const Size(882, 360) : const Size(360, 882);
+    case DeviceType.mobile:
+      // Mobile: Size(360, 690)
+      return isLandscape ? const Size(690, 360) : const Size(360, 690);
+
+    case DeviceType.tablet:
+      // Tablet/Foldable (Unfolded): Size(768, 1024)
+      return isLandscape ? const Size(1024, 768) : const Size(768, 1024);
+
+    case DeviceType.desktop:
+      // Desktop: Size(1440, 800)
+      return isLandscape ? const Size(1440, 800) : const Size(800, 1440);
+  }
 }

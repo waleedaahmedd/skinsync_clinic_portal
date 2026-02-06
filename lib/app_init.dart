@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:responsive_framework/responsive_framework.dart';
-import 'package:skinsync_clinic_portal/screens/notification_setting_screen.dart';
 
 import 'route_generator.dart';
 import 'utils/color_constant.dart';
@@ -13,50 +11,51 @@ final navigatorKey = GlobalKey<NavigatorState>();
 
 class AppInit extends StatelessWidget {
   const AppInit({super.key});
+
   void configLoading() {
     EasyLoading.instance
       ..displayDuration = const Duration(milliseconds: 2000)
       ..loadingStyle = EasyLoadingStyle.custom
       ..indicatorType = EasyLoadingIndicatorType.fadingCircle
-      // ..loadingStyle = EasyLoadingStyle.dark
       ..indicatorSize = 45.0
       ..radius = 10.0
       ..progressColor = Colors.white
       ..backgroundColor = CustomColors.blackColor
       ..indicatorColor = Colors.white
       ..textColor = Colors.white
-      // ..maskColor = Colors.black.withOpacity(0.5)
       ..userInteractions = true
       ..dismissOnTap = false;
   }
 
+
   @override
   Widget build(BuildContext context) {
     configLoading();
-    final ThemeMode themeMode = ThemeMode.light;
-    return ScreenUtilInit(
-      designSize: getDesignSize(context: context),
-      ensureScreenSize: true,
-      minTextAdapt: true,
-      splitScreenMode: true,
-      builder: (_, child) {
-        return MaterialApp.router(
-          debugShowCheckedModeBanner: false,
-          title: 'SkinSync Clinic',
-          routerConfig: RouteGenerator.router,
-          // home: NotificationSettingsScreen(),
-          themeMode: themeMode,
-          theme: AppTheme.lightTheme,
-          darkTheme: AppTheme.darkTheme,
-          builder: (context, child) => ResponsiveBreakpoints.builder(
-            child: child!,
-            breakpoints: [
-              const Breakpoint(start: 0, end: 480, name: MOBILE),
-              const Breakpoint(start: 481, end: 1024, name: TABLET),
-              const Breakpoint(start: 1025, end: 1920, name: DESKTOP),
-              const Breakpoint(start: 1921, end: double.infinity, name: '4K'),
-            ],
-          ),
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return OrientationBuilder(
+          builder: (context, orientation) {
+            final designSize = getDesignSize(constraints, orientation);
+            
+            return ScreenUtilInit(
+              designSize: designSize,
+              minTextAdapt: true,
+              splitScreenMode: true,
+              useInheritedMediaQuery: true,
+              builder: (context, child) {
+                return MaterialApp.router(
+                  debugShowCheckedModeBanner: false,
+                  title: 'SkinSync Clinic',
+                  routerConfig: RouteGenerator.router,
+                  themeMode: ThemeMode.light,
+                  theme: AppTheme.lightTheme,
+                  darkTheme: AppTheme.darkTheme,
+                  builder: EasyLoading.init(),
+                );
+              },
+            );
+          },
         );
       },
     );

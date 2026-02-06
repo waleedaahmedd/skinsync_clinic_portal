@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/appointment_screen.dart';
-import 'package:skinsync_clinic_portal/screens/dashboard/patient_management_detail.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/payment_and_wallet_screen.dart';
 import 'package:skinsync_clinic_portal/utils/responsive.dart';
 
@@ -18,6 +17,7 @@ import 'profile_screen.dart';
 class Dashboard extends StatelessWidget {
   static const String routeName = '/dashboard';
   final Widget child;
+
   const Dashboard({super.key, required this.child});
 
   @override
@@ -25,17 +25,10 @@ class Dashboard extends StatelessWidget {
     return Scaffold(
       backgroundColor: CustomColors.dashboardBackgroundColor,
       // appBar: CustomAppBar(),
-      drawer: Responsive.when(
-        defaultValue: SizedBox.shrink(),
-        mobile: () => _buildDrawer(),
-        tablet: () => _buildDrawer(),
-      ),
+      drawer: context.isLandscape ? SizedBox.shrink() : _buildDrawer(),
       body: Row(
         children: [
-          Responsive.when(
-            defaultValue: SizedBox.shrink(),
-            desktop: () => _buildDrawer(),
-          ),
+          context.isLandscape ? _buildDrawer() : SizedBox.shrink(),
           Expanded(
             child: Column(
               children: [
@@ -57,59 +50,62 @@ class Dashboard extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: 38.h),
           margin: EdgeInsets.all(10.w),
           decoration: BoxDecoration(
-            color: Responsive.when(
-              defaultValue: CustomColors.navigationRailBackground,
-              mobile: () =>
-                  CustomColors.navigationRailBackground.withValues(alpha: 1),
-              tablet: () =>
-                  CustomColors.navigationRailBackground.withValues(alpha: 1),
-            ),
+            color: context.isLandscape
+                ? CustomColors.navigationRailBackground
+                : CustomColors.navigationRailBackground.withValues(alpha: 1),
             borderRadius: BorderRadiusGeometry.circular(10.r),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             spacing: 10.h,
             children: [
-              Image.asset(PngAssets.splashLogo, width: 48.w, height: 48.w),
+              Image.asset(PngAssets.splashLogo, width: 48.r, height: 48.r),
               SizedBox(width: 5.w),
-              Image.asset(PngAssets.logo, height: 20.h),
+              Image.asset(PngAssets.logo, height: 20.r,),
               SizedBox(width: 40.w),
-              _buildRailItem(
-                context: context,
-                title: 'Home',
-                icon: SvgAssets.home,
-                routeName: HomeScreen.routeName,
+              SingleChildScrollView(
+                child: Column(
+                  children: [
+                    _buildRailItem(
+                      context: context,
+                      title: 'Home',
+                      icon: SvgAssets.home,
+                      routeName: HomeScreen.routeName,
+                    ),
+                    _buildRailItem(
+                      context: context,
+                      title: 'Patient Management',
+                      icon: SvgAssets.user,
+                      routeName: PatientManagementScreen.routeName,
+                    ),
+                    _buildRailItem(
+                      context: context,
+                      title: 'Patient AI Management',
+                      icon: SvgAssets.ai,
+                      routeName: PatientAiManagementScreen.routeName,
+                    ),
+                    _buildRailItem(
+                      context: context,
+                      title: 'Appointments',
+                      icon: SvgAssets.appointments,
+                      routeName: AppointmentScreen.routeName,
+                    ),
+                    _buildRailItem(
+                      context: context,
+                      title: 'Payments & Wallets',
+                      icon: SvgAssets.payments,
+                      routeName: PaymentAndWalletScreen.routeName,
+                    ),
+                    _buildRailItem(
+                      context: context,
+                      title: 'Profile',
+                      icon: SvgAssets.profile,
+                      routeName: ProfileScreen.routeName,
+                    ),
+                  ],
+                ),
               ),
-              _buildRailItem(
-                context: context,
-                title: 'Patient Management',
-                icon: SvgAssets.user,
-                routeName: PatientManagementScreen.routeName,
-              ),
-              _buildRailItem(
-                context: context,
-                title: 'Patient AI Management',
-                icon: SvgAssets.ai,
-                routeName: PatientAiManagementScreen.routeName,
-              ),
-              _buildRailItem(
-                context: context,
-                title: 'Appointments',
-                icon: SvgAssets.appointments,
-                routeName: AppointmentScreen.routeName,
-              ),
-              _buildRailItem(
-                context: context,
-                title: 'Payments & Wallets',
-                icon: SvgAssets.payments,
-                routeName: PaymentAndWalletScreen.routeName,
-              ),
-              _buildRailItem(
-                context: context,
-                title: 'Profile',
-                icon: SvgAssets.profile,
-                routeName: ProfileScreen.routeName,
-              ),
+
             ],
           ),
         );
@@ -147,11 +143,9 @@ class Dashboard extends StatelessWidget {
         width: 20.w,
         height: 20.w,
         color: isSelected
-            ? Responsive.when(
-                defaultValue: CustomColors.blueColor,
-                mobile: () => Colors.black,
-                tablet: () => Colors.black,
-              )
+            ? context.isLandscape
+                  ? CustomColors.blueColor
+                  : Colors.black
             : CustomColors.textGreyColor,
       ),
       style: ElevatedButton.styleFrom(

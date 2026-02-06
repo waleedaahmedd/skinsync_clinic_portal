@@ -194,7 +194,7 @@ class _UpdateTreatmentScreenState extends State<UpdateTreatmentScreen> {
                 treatments[index].isActive = value;
               });
             },
-            activeColor: Colors.white,
+            activeThumbColor: Colors.white,
             activeTrackColor: const Color(0xFF4DD0E1),
             inactiveThumbColor: Colors.white,
             inactiveTrackColor: Colors.grey.shade300,

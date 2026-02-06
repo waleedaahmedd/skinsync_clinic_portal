@@ -1,24 +1,87 @@
 import 'package:flutter/cupertino.dart';
-import 'package:responsive_framework/responsive_framework.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../app_init.dart';
+extension ResponsiveExtension on BuildContext {
+  bool get isMobile => MediaQuery.of(this).size.width < 600;
 
-abstract class Responsive {
-  static T when<T>({
-    required T defaultValue,
-    ValueGetter<T>? mobile,
-    ValueGetter<T>? tablet,
-    ValueGetter<T>? desktop,
-  }) {
-    final breakpoint = ResponsiveBreakpoints.of(
-      navigatorKey.currentContext!,
-    ).breakpoint;
-    if (breakpoint.name == MOBILE) {
-      return mobile?.call() ?? defaultValue;
-    } else if (breakpoint.name == TABLET) {
-      return tablet?.call() ?? defaultValue;
-    } else {
-      return desktop?.call() ?? defaultValue;
-    }
+  bool get isTablet =>
+      MediaQuery.of(this).size.width >= 600 &&
+      MediaQuery.of(this).size.width < 1024;
+
+  bool get isDesktop => MediaQuery.of(this).size.width >= 1024;
+
+  bool get isLandscape =>
+      MediaQuery.of(this).orientation == Orientation.landscape;
+
+  bool get isPortrait =>
+      MediaQuery.of(this).orientation == Orientation.portrait;
+}
+
+class AdaptiveLayoutRowColumn extends StatelessWidget {
+  final List<Widget> children;
+  final MainAxisAlignment? alignment;
+
+  final MainAxisSize? size;
+
+  const AdaptiveLayoutRowColumn({
+    super.key,
+    required this.children,
+    this.alignment,
+    this.size,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return context.isLandscape
+        ? Row(
+            mainAxisAlignment: alignment ?? MainAxisAlignment.start,
+            mainAxisSize: size ?? MainAxisSize.max,
+            children: children,
+          )
+        : Column(
+            mainAxisAlignment: alignment ?? MainAxisAlignment.start,
+            mainAxisSize: size ?? MainAxisSize.max,
+            children: children,
+          );
+  }
+}
+
+class AdaptiveLayoutList extends StatelessWidget {
+  final List<Widget> children;
+  final double? horizontalHeight;
+
+  final double? spaceHeight;
+  final double? spaceWidth;
+
+  final bool isScrollVertical;
+
+  const AdaptiveLayoutList({
+    super.key,
+    required this.children,
+    this.horizontalHeight,
+    this.spaceHeight,
+    this.spaceWidth,
+    required this.isScrollVertical,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: context.isLandscape ? horizontalHeight : null,
+      child: ListView.separated(
+        shrinkWrap: true,
+        itemCount: children.length,
+        physics: context.isLandscape ? null : isScrollVertical? NeverScrollableScrollPhysics(): null,
+        scrollDirection: context.isLandscape ? Axis.horizontal : Axis.vertical,
+        itemBuilder: (context, index) {
+          return children[index];
+        },
+        separatorBuilder: (BuildContext context, int index) {
+          return context.isLandscape
+              ? SizedBox(width: spaceWidth ?? 20.w)
+              : SizedBox(height: spaceHeight ?? 20.h);
+        },
+      ),
+    );
   }
 }
