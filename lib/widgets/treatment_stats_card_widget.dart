@@ -41,7 +41,7 @@ class TreatmentStatsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-       width: navigatorKey.currentContext!.isLandscape ? 0.238.sw : 1.sw,
+       width: navigatorKey.currentContext!.isLandscape ? 350.r : 1.sw,
       // margin: EdgeInsets.only(right: 16.w),
       padding: EdgeInsets.symmetric(vertical: 25.h, horizontal: 28.w),
       decoration: BoxDecoration(

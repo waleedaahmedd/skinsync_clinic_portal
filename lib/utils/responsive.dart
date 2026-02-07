@@ -20,29 +20,44 @@ extension ResponsiveExtension on BuildContext {
 class AdaptiveLayoutRowColumn extends StatelessWidget {
   final List<Widget> children;
   final MainAxisAlignment? alignment;
-
+  final double? widthBetween;
+  final double? heightBetween;
   final MainAxisSize? size;
+  final bool? expandedWidget;
 
   const AdaptiveLayoutRowColumn({
     super.key,
     required this.children,
     this.alignment,
     this.size,
+    this.widthBetween,
+    this.heightBetween, this.expandedWidget,
   });
 
   @override
   Widget build(BuildContext context) {
-    return context.isLandscape
-        ? Row(
-            mainAxisAlignment: alignment ?? MainAxisAlignment.start,
-            mainAxisSize: size ?? MainAxisSize.max,
-            children: children,
-          )
-        : Column(
-            mainAxisAlignment: alignment ?? MainAxisAlignment.start,
-            mainAxisSize: size ?? MainAxisSize.max,
-            children: children,
-          );
+    if (context.isLandscape) {
+      final rowChildren = <Widget>[];
+      for (var i = 0; i < children.length; i++) {
+        if (i > 0) rowChildren.add(SizedBox(width: widthBetween ?? 20.w));
+        if(expandedWidget == true) rowChildren.add(Expanded(child: children[i]));
+      }
+      return Row(
+        mainAxisAlignment: alignment ?? MainAxisAlignment.start,
+        mainAxisSize: size ?? MainAxisSize.max,
+        children: rowChildren,
+      );
+    }
+    final columnChildren = <Widget>[];
+    for (var i = 0; i < children.length; i++) {
+      if (i > 0) columnChildren.add(SizedBox(height: heightBetween ?? 20.h));
+      columnChildren.add(children[i]);
+    }
+    return Column(
+      mainAxisAlignment: alignment ?? MainAxisAlignment.start,
+      mainAxisSize: size ?? MainAxisSize.max,
+      children: columnChildren,
+    );
   }
 }
 
@@ -71,7 +86,11 @@ class AdaptiveLayoutList extends StatelessWidget {
       child: ListView.separated(
         shrinkWrap: true,
         itemCount: children.length,
-        physics: context.isLandscape ? null : isScrollVertical? NeverScrollableScrollPhysics(): null,
+        physics: context.isLandscape
+            ? null
+            : isScrollVertical
+            ? NeverScrollableScrollPhysics()
+            : null,
         scrollDirection: context.isLandscape ? Axis.horizontal : Axis.vertical,
         itemBuilder: (context, index) {
           return children[index];

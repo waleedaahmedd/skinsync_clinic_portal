@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3620f7d8-3f35-4b2e-83b7-eb383f1a2dc5" name="Changes" comment="refactor: enhance responsiveness and adaptive layouts&#10;&#10;This commit introduces significant improvements to the app's responsiveness and adaptive UI capabilities.&#10;&#10;Key changes include:&#10;- Replaced the `responsive_framework` package with a custom `ResponsiveExtension` and adaptive layout widgets (`AdaptiveLayoutRowColumn`, `AdaptiveLayoutList`) for more granular control over different screen sizes and orientations.&#10;- Refactored `Dashboard`, `HomeScreen`, and `SignInScreen` to utilize the new responsive helpers, ensuring better layout adaptation on mobile, tablet, and desktop, in both portrait and landscape modes.&#10;- Updated the theme to globally define the `hintStyle` for `InputDecorationTheme`.&#10;- Adjusted various UI components and removed redundant code to align with the new responsive strategy.">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+    <list default="true" id="3620f7d8-3f35-4b2e-83b7-eb383f1a2dc5" name="Changes" comment="refactor: update project configuration and dependencies&#10;&#10;This commit updates the IDE project configuration files (`.idea/*.xml`) to reflect changes in dependency paths and package versions.&#10;&#10;Specifically, it adjusts the paths for the Dart SDK and cached packages, transitioning from `AppData/Local/Pub/Cache` to the standard `.pub-cache` directory. It also removes references to the `google_mlkit_commons` and `google_mlkit_face_detection` packages, which have been deprecated, and updates other dependency versions like `go_router` and `flutter_riverpod`.&#10;&#10;Additionally, minor layout adjustments were made in the dashboard's navigation rail for better consistency.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/dashboard/dashboard.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/dashboard/dashboard.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/screens/dashboard/home_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/dashboard/home_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/utils/responsive.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utils/responsive.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/widgets/treatment_stats_card_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/treatment_stats_card_widget.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -172,7 +172,15 @@
       <option name="project" value="LOCAL" />
       <updated>1770415622711</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="refactor: update project configuration and dependencies&#10;&#10;This commit updates the IDE project configuration files (`.idea/*.xml`) to reflect changes in dependency paths and package versions.&#10;&#10;Specifically, it adjusts the paths for the Dart SDK and cached packages, transitioning from `AppData/Local/Pub/Cache` to the standard `.pub-cache` directory. It also removes references to the `google_mlkit_commons` and `google_mlkit_face_detection` packages, which have been deprecated, and updates other dependency versions like `go_router` and `flutter_riverpod`.&#10;&#10;Additionally, minor layout adjustments were made in the dashboard's navigation rail for better consistency.">
+      <option name="closed" value="true" />
+      <created>1770420708250</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1770420708250</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -195,7 +203,8 @@
     <MESSAGE value="update - merged with remote" />
     <MESSAGE value="update - responsiveness fixed." />
     <MESSAGE value="refactor: enhance responsiveness and adaptive layouts&#10;&#10;This commit introduces significant improvements to the app's responsiveness and adaptive UI capabilities.&#10;&#10;Key changes include:&#10;- Replaced the `responsive_framework` package with a custom `ResponsiveExtension` and adaptive layout widgets (`AdaptiveLayoutRowColumn`, `AdaptiveLayoutList`) for more granular control over different screen sizes and orientations.&#10;- Refactored `Dashboard`, `HomeScreen`, and `SignInScreen` to utilize the new responsive helpers, ensuring better layout adaptation on mobile, tablet, and desktop, in both portrait and landscape modes.&#10;- Updated the theme to globally define the `hintStyle` for `InputDecorationTheme`.&#10;- Adjusted various UI components and removed redundant code to align with the new responsive strategy." />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor: enhance responsiveness and adaptive layouts&#10;&#10;This commit introduces significant improvements to the app's responsiveness and adaptive UI capabilities.&#10;&#10;Key changes include:&#10;- Replaced the `responsive_framework` package with a custom `ResponsiveExtension` and adaptive layout widgets (`AdaptiveLayoutRowColumn`, `AdaptiveLayoutList`) for more granular control over different screen sizes and orientations.&#10;- Refactored `Dashboard`, `HomeScreen`, and `SignInScreen` to utilize the new responsive helpers, ensuring better layout adaptation on mobile, tablet, and desktop, in both portrait and landscape modes.&#10;- Updated the theme to globally define the `hintStyle` for `InputDecorationTheme`.&#10;- Adjusted various UI components and removed redundant code to align with the new responsive strategy." />
+    <MESSAGE value="refactor: update project configuration and dependencies&#10;&#10;This commit updates the IDE project configuration files (`.idea/*.xml`) to reflect changes in dependency paths and package versions.&#10;&#10;Specifically, it adjusts the paths for the Dart SDK and cached packages, transitioning from `AppData/Local/Pub/Cache` to the standard `.pub-cache` directory. It also removes references to the `google_mlkit_commons` and `google_mlkit_face_detection` packages, which have been deprecated, and updates other dependency versions like `go_router` and `flutter_riverpod`.&#10;&#10;Additionally, minor layout adjustments were made in the dashboard's navigation rail for better consistency." />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor: update project configuration and dependencies&#10;&#10;This commit updates the IDE project configuration files (`.idea/*.xml`) to reflect changes in dependency paths and package versions.&#10;&#10;Specifically, it adjusts the paths for the Dart SDK and cached packages, transitioning from `AppData/Local/Pub/Cache` to the standard `.pub-cache` directory. It also removes references to the `google_mlkit_commons` and `google_mlkit_face_detection` packages, which have been deprecated, and updates other dependency versions like `go_router` and `flutter_riverpod`.&#10;&#10;Additionally, minor layout adjustments were made in the dashboard's navigation rail for better consistency." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
