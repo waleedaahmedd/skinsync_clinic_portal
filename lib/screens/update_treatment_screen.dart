@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 import 'package:skinsync_clinic_portal/widgets/header__with_back_btn.dart';
 
+import '../utils/responsive.dart';
+
 class UpdateTreatmentScreen extends StatefulWidget {
   const UpdateTreatmentScreen({super.key});
   static const String routeName = '/update-treatment';
@@ -61,7 +63,10 @@ class _UpdateTreatmentScreenState extends State<UpdateTreatmentScreen> {
       // backgroundColor: const Color(0xFFBDBDBD),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 250.w, vertical: 20.h),
+          padding: EdgeInsets.symmetric(
+            vertical: 20.h,
+            horizontal: context.isLandscape ? 250.w : 20.w,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

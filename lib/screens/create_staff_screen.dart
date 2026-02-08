@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 
 import '../utils/custom_fonts.dart';
+import '../utils/responsive.dart';
 import '../widgets/build_textfield.dart';
 import '../widgets/header__with_back_btn.dart';
 import 'business_info_screen.dart';
@@ -202,10 +203,13 @@ class _CreateStaffScreenState extends State<CreateStaffScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFBDBDBD),
+      // backgroundColor: const Color(0xFFBDBDBD),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 250.w),
+          padding: EdgeInsets.symmetric(
+            vertical: 20.h,
+            horizontal: context.isLandscape ? 250.w : 20.w,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

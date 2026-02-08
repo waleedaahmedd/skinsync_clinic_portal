@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 
+import '../utils/responsive.dart';
 import '../widgets/build_textfield.dart';
 import '../widgets/header__with_back_btn.dart';
 
@@ -53,157 +54,16 @@ class _CreateTreatmentScreenState extends State<CreateTreatmentScreen> {
     super.dispose();
   }
 
-  Future<void> _pickImage() async {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
-      ),
-      builder: (context) => SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(16.w),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'Select Image',
-                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
-              ),
-              SizedBox(height: 20.h),
-              ListTile(
-                leading: Container(
-                  padding: EdgeInsets.all(10.w),
-                  decoration: BoxDecoration(
-                    color: Colors.blue.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  child: Icon(
-                    Icons.photo_library_outlined,
-                    color: Colors.blue,
-                    size: 24.sp,
-                  ),
-                ),
-                title: Text(
-                  'Choose from Gallery',
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                  _pickFromGallery();
-                },
-              ),
-              SizedBox(height: 8.h),
-              ListTile(
-                leading: Container(
-                  padding: EdgeInsets.all(10.w),
-                  decoration: BoxDecoration(
-                    color: Colors.green.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  child: Icon(
-                    Icons.camera_alt_outlined,
-                    color: Colors.green,
-                    size: 24.sp,
-                  ),
-                ),
-                title: Text(
-                  'Take a Photo',
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                  _pickFromCamera();
-                },
-              ),
-              if (_selectedImage != null) ...[
-                SizedBox(height: 8.h),
-                ListTile(
-                  leading: Container(
-                    padding: EdgeInsets.all(10.w),
-                    decoration: BoxDecoration(
-                      color: Colors.red.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    child: Icon(
-                      Icons.delete_outline,
-                      color: Colors.red,
-                      size: 24.sp,
-                    ),
-                  ),
-                  title: Text(
-                    'Remove Photo',
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.red,
-                    ),
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                    setState(() {
-                      _selectedImage = null;
-                    });
-                  },
-                ),
-              ],
-              SizedBox(height: 16.h),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Future<void> _pickFromGallery() async {
-    try {
-      final XFile? image = await _imagePicker.pickImage(
-        source: ImageSource.gallery,
-        maxWidth: 800,
-        maxHeight: 800,
-        imageQuality: 85,
-      );
-      if (image != null) {
-        setState(() {
-          _selectedImage = image;
-        });
-      }
-    } catch (e) {
-      debugPrint('Error picking image from gallery: $e');
-    }
-  }
-
-  Future<void> _pickFromCamera() async {
-    try {
-      final XFile? image = await _imagePicker.pickImage(
-        source: ImageSource.camera,
-        maxWidth: 800,
-        maxHeight: 800,
-        imageQuality: 85,
-      );
-      if (image != null) {
-        setState(() {
-          _selectedImage = image;
-        });
-      }
-    } catch (e) {
-      debugPrint('Error picking image from camera: $e');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       // backgroundColor: const Color(0xFFBDBDBD),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 250.w),
+          padding: EdgeInsets.symmetric(
+            vertical: 20.h,
+            horizontal: context.isLandscape ? 250.w : 20.w,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

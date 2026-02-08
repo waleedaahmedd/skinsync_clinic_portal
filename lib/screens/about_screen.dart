@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 import 'package:skinsync_clinic_portal/widgets/header__with_back_btn.dart';
 
+import '../utils/responsive.dart';
+
 class AboutScreen extends StatefulWidget {
   const AboutScreen({super.key});
   static const String routeName = '/About';
@@ -19,7 +21,10 @@ class _AboutScreenState extends State<AboutScreen> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 250.w, vertical: 20.h),
+          padding: EdgeInsets.symmetric(
+            vertical: 20.h,
+            horizontal: context.isLandscape ? 250.w : 20.w,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -41,20 +46,22 @@ class _AboutScreenState extends State<AboutScreen> {
                     color: Colors.grey.shade200,
                     borderRadius: BorderRadius.circular(8.r),
                   ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      _buildTab(
-                        title: 'Terms & Conditions',
-                        isSelected: selectedTab == 0,
-                        onTap: () => setState(() => selectedTab = 0),
-                      ),
-                      _buildTab(
-                        title: 'Privacy Policy',
-                        isSelected: selectedTab == 1,
-                        onTap: () => setState(() => selectedTab = 1),
-                      ),
-                    ],
+                  child: Expanded(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _buildTab(
+                          title: 'Terms & Conditions',
+                          isSelected: selectedTab == 0,
+                          onTap: () => setState(() => selectedTab = 0),
+                        ),
+                        _buildTab(
+                          title: 'Privacy Policy',
+                          isSelected: selectedTab == 1,
+                          onTap: () => setState(() => selectedTab = 1),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -92,7 +99,10 @@ class _AboutScreenState extends State<AboutScreen> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+        padding: EdgeInsets.symmetric(
+          horizontal: context.isLandscape ? 16.w : 6.w,
+          vertical: 10.h,
+        ),
         decoration: BoxDecoration(
           border: Border.all(
             color: isSelected ? Colors.black87 : Colors.grey.shade200,

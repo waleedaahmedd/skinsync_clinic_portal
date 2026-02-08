@@ -7,6 +7,7 @@ import 'package:skinsync_clinic_portal/screens/mange_staff_screen.dart';
 import 'package:skinsync_clinic_portal/screens/notification_screen.dart';
 import 'package:skinsync_clinic_portal/screens/update_treatment_screen.dart';
 
+import '../business_info_screen.dart';
 import '../change_password_screen.dart';
 import '../create_treatment_screen.dart';
 
@@ -57,7 +58,9 @@ class ProfileScreen extends StatelessWidget {
                     icon: Icons.business_outlined,
                     title: "Business Information",
                     subtitle: "Update clinic details and contact info",
-                    onTap: () {},
+                    onTap: () {
+                      context.push(BusinessInformationScreen.routeName);
+                    },
                   ),
                   _SettingItemData(
                     icon: Icons.people_outline,

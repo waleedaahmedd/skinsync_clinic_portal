@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:skinsync_clinic_portal/screens/about_screen.dart';
+import 'package:skinsync_clinic_portal/screens/business_info_screen.dart';
 import 'package:skinsync_clinic_portal/screens/change_password_screen.dart';
 import 'package:skinsync_clinic_portal/screens/create_treatment_screen.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/patient_management_detail.dart';
@@ -98,6 +99,11 @@ class RouteGenerator {
         name: CreateTreatmentScreen.routeName,
         path: CreateTreatmentScreen.routeName,
         builder: (_, _) => CreateTreatmentScreen(),
+      ),
+      GoRoute(
+        name: BusinessInformationScreen.routeName,
+        path: BusinessInformationScreen.routeName,
+        builder: (_, _) => BusinessInformationScreen(),
       ),
       GoRoute(
         name: UpdateTreatmentScreen.routeName,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../utils/custom_fonts.dart';
+import '../utils/responsive.dart';
 import '../widgets/header__with_back_btn.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
@@ -36,7 +37,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 250.w),
+          padding: EdgeInsets.symmetric(
+            vertical: 20.h,
+            horizontal: context.isLandscape ? 250.w : 20.w,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -137,16 +141,18 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         ),
         SizedBox(width: 14.w),
         // Text Column
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Change Password', style: CustomFonts.black16w600),
-            SizedBox(height: 4.h),
-            Text(
-              'Keep your account secure with a strong password',
-              style: CustomFonts.grey16w400,
-            ),
-          ],
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Change Password', style: CustomFonts.black16w600),
+              SizedBox(height: 4.h),
+              Text(
+                'Keep your account secure with a strong password',
+                style: CustomFonts.grey16w400,
+              ),
+            ],
+          ),
         ),
       ],
     );
