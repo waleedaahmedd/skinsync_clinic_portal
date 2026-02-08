@@ -108,3 +108,45 @@ class AdaptiveLayoutList extends StatelessWidget {
     );
   }
 }
+
+class AdaptiveLayoutListInverse extends StatelessWidget {
+  final List<Widget> children;
+  final double? horizontalHeight;
+
+  final double? spaceHeight;
+  final double? spaceWidth;
+
+  final bool isScrollVertical;
+
+  const AdaptiveLayoutListInverse({
+    super.key,
+    required this.children,
+    this.horizontalHeight,
+    this.spaceHeight,
+    this.spaceWidth,
+    required this.isScrollVertical,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: context.isLandscape ? null : horizontalHeight,
+      child: ListView.separated(
+        shrinkWrap: true,
+        itemCount: children.length,
+        physics: context.isLandscape
+            ? (isScrollVertical ? NeverScrollableScrollPhysics() : null)
+            : null,
+        scrollDirection: context.isLandscape ? Axis.vertical : Axis.horizontal,
+        itemBuilder: (context, index) {
+          return children[index];
+        },
+        separatorBuilder: (BuildContext context, int index) {
+          return context.isLandscape
+              ? SizedBox(height: spaceHeight ?? 20.h)
+              : SizedBox(width: spaceWidth ?? 20.w);
+        },
+      ),
+    );
+  }
+}

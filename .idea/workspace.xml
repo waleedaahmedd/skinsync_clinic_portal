@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3620f7d8-3f35-4b2e-83b7-eb383f1a2dc5" name="Changes" comment="refactor: update project configuration and dependencies&#10;&#10;This commit updates the IDE project configuration files (`.idea/*.xml`) to reflect changes in dependency paths and package versions.&#10;&#10;Specifically, it adjusts the paths for the Dart SDK and cached packages, transitioning from `AppData/Local/Pub/Cache` to the standard `.pub-cache` directory. It also removes references to the `google_mlkit_commons` and `google_mlkit_face_detection` packages, which have been deprecated, and updates other dependency versions like `go_router` and `flutter_riverpod`.&#10;&#10;Additionally, minor layout adjustments were made in the dashboard's navigation rail for better consistency.">
+    <list default="true" id="3620f7d8-3f35-4b2e-83b7-eb383f1a2dc5" name="Changes" comment="feat: enhance home screen analytics layout for responsiveness&#10;&#10;This commit refactors the home screen's analytics grid to improve its layout on different screen sizes.&#10;&#10;Key changes include:&#10;- Replaced the `Wrap` widget with a `Column` of `AdaptiveLayoutRowColumn` widgets to better control the arrangement of analytics cards.&#10;- Updated the `AdaptiveLayoutRowColumn` to support `expandedWidget`, `widthBetween`, and `heightBetween` properties, allowing for more flexible and spaced-out responsive layouts.&#10;- Adjusted the width of the `TreatmentStatsCardWidget` to use a fixed responsive value in landscape mode.&#10;- Updated the `navigationRailBackground` color for better UI consistency.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/dashboard/home_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/dashboard/home_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/screens/dashboard/payment_and_wallet_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/dashboard/payment_and_wallet_screen.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/utils/responsive.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utils/responsive.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/widgets/treatment_stats_card_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/treatment_stats_card_widget.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,12 +38,12 @@
     &quot;assignee&quot;: &quot;tauqeerkhattak&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "git@github.com:/waleedaahmedd/skinsync_clinic_portal.git",
-    "accountId": "415224c1-2304-42f5-97c3-e152c6f5eb2b"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;git@github.com:/waleedaahmedd/skinsync_clinic_portal.git&quot;,
+    &quot;accountId&quot;: &quot;415224c1-2304-42f5-97c3-e152c6f5eb2b&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
 }</component>
@@ -53,27 +52,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Flutter.main.dart.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "main",
-    "io.flutter.project.isFirstOpen": "true",
-    "io.flutter.reload.alreadyRun": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/PMLS/StudioProjects/skinsync_clinic_portal/lib/screens",
-    "settings.editor.selected.configurable": "dart.settings",
-    "show.migrate.to.gradle.popup": "false"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Flutter.main.dart.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;io.flutter.project.isFirstOpen&quot;: &quot;true&quot;,
+    &quot;io.flutter.reload.alreadyRun&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/PMLS/StudioProjects/skinsync_clinic_portal/lib/screens&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;dart.settings&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\PMLS\StudioProjects\skinsync_clinic_portal\lib\screens" />
@@ -180,7 +179,15 @@
       <option name="project" value="LOCAL" />
       <updated>1770420708250</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="feat: enhance home screen analytics layout for responsiveness&#10;&#10;This commit refactors the home screen's analytics grid to improve its layout on different screen sizes.&#10;&#10;Key changes include:&#10;- Replaced the `Wrap` widget with a `Column` of `AdaptiveLayoutRowColumn` widgets to better control the arrangement of analytics cards.&#10;- Updated the `AdaptiveLayoutRowColumn` to support `expandedWidget`, `widthBetween`, and `heightBetween` properties, allowing for more flexible and spaced-out responsive layouts.&#10;- Adjusted the width of the `TreatmentStatsCardWidget` to use a fixed responsive value in landscape mode.&#10;- Updated the `navigationRailBackground` color for better UI consistency.">
+      <option name="closed" value="true" />
+      <created>1770423924241</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1770423924241</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -204,7 +211,8 @@
     <MESSAGE value="update - responsiveness fixed." />
     <MESSAGE value="refactor: enhance responsiveness and adaptive layouts&#10;&#10;This commit introduces significant improvements to the app's responsiveness and adaptive UI capabilities.&#10;&#10;Key changes include:&#10;- Replaced the `responsive_framework` package with a custom `ResponsiveExtension` and adaptive layout widgets (`AdaptiveLayoutRowColumn`, `AdaptiveLayoutList`) for more granular control over different screen sizes and orientations.&#10;- Refactored `Dashboard`, `HomeScreen`, and `SignInScreen` to utilize the new responsive helpers, ensuring better layout adaptation on mobile, tablet, and desktop, in both portrait and landscape modes.&#10;- Updated the theme to globally define the `hintStyle` for `InputDecorationTheme`.&#10;- Adjusted various UI components and removed redundant code to align with the new responsive strategy." />
     <MESSAGE value="refactor: update project configuration and dependencies&#10;&#10;This commit updates the IDE project configuration files (`.idea/*.xml`) to reflect changes in dependency paths and package versions.&#10;&#10;Specifically, it adjusts the paths for the Dart SDK and cached packages, transitioning from `AppData/Local/Pub/Cache` to the standard `.pub-cache` directory. It also removes references to the `google_mlkit_commons` and `google_mlkit_face_detection` packages, which have been deprecated, and updates other dependency versions like `go_router` and `flutter_riverpod`.&#10;&#10;Additionally, minor layout adjustments were made in the dashboard's navigation rail for better consistency." />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor: update project configuration and dependencies&#10;&#10;This commit updates the IDE project configuration files (`.idea/*.xml`) to reflect changes in dependency paths and package versions.&#10;&#10;Specifically, it adjusts the paths for the Dart SDK and cached packages, transitioning from `AppData/Local/Pub/Cache` to the standard `.pub-cache` directory. It also removes references to the `google_mlkit_commons` and `google_mlkit_face_detection` packages, which have been deprecated, and updates other dependency versions like `go_router` and `flutter_riverpod`.&#10;&#10;Additionally, minor layout adjustments were made in the dashboard's navigation rail for better consistency." />
+    <MESSAGE value="feat: enhance home screen analytics layout for responsiveness&#10;&#10;This commit refactors the home screen's analytics grid to improve its layout on different screen sizes.&#10;&#10;Key changes include:&#10;- Replaced the `Wrap` widget with a `Column` of `AdaptiveLayoutRowColumn` widgets to better control the arrangement of analytics cards.&#10;- Updated the `AdaptiveLayoutRowColumn` to support `expandedWidget`, `widthBetween`, and `heightBetween` properties, allowing for more flexible and spaced-out responsive layouts.&#10;- Adjusted the width of the `TreatmentStatsCardWidget` to use a fixed responsive value in landscape mode.&#10;- Updated the `navigationRailBackground` color for better UI consistency." />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: enhance home screen analytics layout for responsiveness&#10;&#10;This commit refactors the home screen's analytics grid to improve its layout on different screen sizes.&#10;&#10;Key changes include:&#10;- Replaced the `Wrap` widget with a `Column` of `AdaptiveLayoutRowColumn` widgets to better control the arrangement of analytics cards.&#10;- Updated the `AdaptiveLayoutRowColumn` to support `expandedWidget`, `widthBetween`, and `heightBetween` properties, allowing for more flexible and spaced-out responsive layouts.&#10;- Adjusted the width of the `TreatmentStatsCardWidget` to use a fixed responsive value in landscape mode.&#10;- Updated the `navigationRailBackground` color for better UI consistency." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
