@@ -34,196 +34,194 @@ class _PatientManagementScreenState extends State<PatientManagementScreen> {
             SizedBox(height: 14.h),
             Divider(color: AppTheme.fillCOlor),
             SizedBox(height: 50.h),
-            Row(
+            Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 patientSelection(),
                 SizedBox(width: 28.9.w),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      patientInfo(context: context),
-                      SizedBox(height: 19.h),
-                      medicalInfo(context: context),
-                      SizedBox(height: 19.h),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    patientInfo(context: context),
+                    SizedBox(height: 19.h),
+                    medicalInfo(context: context),
+                    SizedBox(height: 19.h),
+                    Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(15.w),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15.r),
+                        border: Border.all(color: Colors.grey.shade300),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Allergies", style: CustomFonts.black22w600),
+                          SizedBox(height: 20.h),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 9.65.w,
+                              vertical: 5.39.h,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
+                            child: Text(
+                              "New",
+                              style: CustomFonts.white18w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 19.h),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                isTreatmentSelected = true;
+                              });
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 16.5.h),
+                              decoration: BoxDecoration(
+                                color: isTreatmentSelected
+                                    ? Colors.black
+                                    : AppTheme.lightgrey,
+                                borderRadius: BorderRadius.circular(10.r),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "Treatments",
+                                  style: isTreatmentSelected
+                                      ? CustomFonts.white18w500
+                                      : CustomFonts.black18w500,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 11.w),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                print("AI Simulations tapped");
+                                isTreatmentSelected = false;
+                              });
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 16.5.h),
+                              decoration: BoxDecoration(
+                                color: !isTreatmentSelected
+                                    ? Colors.black
+                                    : AppTheme.lightgrey,
+                                borderRadius: BorderRadius.circular(10.r),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "AI Simulations",
+                                  style: !isTreatmentSelected
+                                      ? CustomFonts.white18w500
+                                      : CustomFonts.black18w500,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 19.h),
+                    if (isTreatmentSelected) treatmentContent(),
+                    if (!isTreatmentSelected)
                       Container(
-                        width: double.infinity,
                         padding: EdgeInsets.all(15.w),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15.r),
                           border: Border.all(color: Colors.grey.shade300),
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Allergies", style: CustomFonts.black22w600),
-                            SizedBox(height: 20.h),
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 9.65.w,
-                                vertical: 5.39.h,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                              child: Text(
-                                "New",
-                                style: CustomFonts.white18w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 19.h),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  isTreatmentSelected = true;
-                                });
-                              },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(vertical: 16.5.h),
-                                decoration: BoxDecoration(
-                                  color: isTreatmentSelected
-                                      ? Colors.black
-                                      : AppTheme.lightgrey,
-                                  borderRadius: BorderRadius.circular(10.r),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "Treatments",
-                                    style: isTreatmentSelected
-                                        ? CustomFonts.white18w500
-                                        : CustomFonts.black18w500,
+                        child: LayoutBuilder(
+                          builder: (context, constraints) {
+                            // Calculate max width per item for responsive design
+                            double maxWidthPerItem =
+                                300.w; // Adjust this as needed
+                
+                            return GridView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: 8,
+                              gridDelegate:
+                                  SliverGridDelegateWithMaxCrossAxisExtent(
+                                    maxCrossAxisExtent:
+                                        maxWidthPerItem, // Max width of each item
+                                    crossAxisSpacing: 10.w,
+                                    mainAxisSpacing: 10.h,
+                                    childAspectRatio:
+                                        0.75, // Height/width ratio
                                   ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 11.w),
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  print("AI Simulations tapped");
-                                  isTreatmentSelected = false;
-                                });
-                              },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(vertical: 16.5.h),
-                                decoration: BoxDecoration(
-                                  color: !isTreatmentSelected
-                                      ? Colors.black
-                                      : AppTheme.lightgrey,
-                                  borderRadius: BorderRadius.circular(10.r),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "AI Simulations",
-                                    style: !isTreatmentSelected
-                                        ? CustomFonts.white18w500
-                                        : CustomFonts.black18w500,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 19.h),
-                      if (isTreatmentSelected) treatmentContent(),
-                      if (!isTreatmentSelected)
-                        Container(
-                          padding: EdgeInsets.all(15.w),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15.r),
-                            border: Border.all(color: Colors.grey.shade300),
-                          ),
-                          child: LayoutBuilder(
-                            builder: (context, constraints) {
-                              // Calculate max width per item for responsive design
-                              double maxWidthPerItem =
-                                  300.w; // Adjust this as needed
-
-                              return GridView.builder(
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemCount: 8,
-                                gridDelegate:
-                                    SliverGridDelegateWithMaxCrossAxisExtent(
-                                      maxCrossAxisExtent:
-                                          maxWidthPerItem, // Max width of each item
-                                      crossAxisSpacing: 10.w,
-                                      mainAxisSpacing: 10.h,
-                                      childAspectRatio:
-                                          0.75, // Height/width ratio
-                                    ),
-                                itemBuilder: (context, index) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      showDialog<bool>(
-                                        context: context,
-                                        builder: (context) =>
-                                            SimulationDetailDaillogBox(),
-                                      );
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.all(5.w),
-                                      // decoration: BoxDecoration(
-                                      //   color: Colors.white,
-                                      //   borderRadius: BorderRadius.circular(10.r),
-                                      //   boxShadow: [
-                                      //     BoxShadow(
-                                      //       color: Colors.black12,
-                                      //       blurRadius: 4,
-                                      //       offset: Offset(0, 2),
-                                      //     ),
-                                      //   ],
-                                      // ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Expanded(
-                                            child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(
-                                                10.r,
-                                              ),
-                                              child: Image.asset(
-                                                PngAssets.simulation,
-                                                width: double.infinity,
-                                                fit: BoxFit.cover,
-                                              ),
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    showDialog<bool>(
+                                      context: context,
+                                      builder: (context) =>
+                                          SimulationDetailDaillogBox(),
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(5.w),
+                                    // decoration: BoxDecoration(
+                                    //   color: Colors.white,
+                                    //   borderRadius: BorderRadius.circular(10.r),
+                                    //   boxShadow: [
+                                    //     BoxShadow(
+                                    //       color: Colors.black12,
+                                    //       blurRadius: 4,
+                                    //       offset: Offset(0, 2),
+                                    //     ),
+                                    //   ],
+                                    // ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Expanded(
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                              10.r,
+                                            ),
+                                            child: Image.asset(
+                                              PngAssets.simulation,
+                                              width: double.infinity,
+                                              fit: BoxFit.cover,
                                             ),
                                           ),
-                                          SizedBox(height: 5.h),
-                                          Text(
-                                            "Simulation Name",
-                                            style: CustomFonts.black18w600,
-                                            textAlign: TextAlign.left,
-                                          ),
-                                          Text(
-                                            "Treatment Name",
-                                            style: CustomFonts.grey16w400,
-                                            textAlign: TextAlign.left,
-                                          ),
-                                        ],
-                                      ),
+                                        ),
+                                        SizedBox(height: 5.h),
+                                        Text(
+                                          "Simulation Name",
+                                          style: CustomFonts.black18w600,
+                                          textAlign: TextAlign.left,
+                                        ),
+                                        Text(
+                                          "Treatment Name",
+                                          style: CustomFonts.grey16w400,
+                                          textAlign: TextAlign.left,
+                                        ),
+                                      ],
                                     ),
-                                  );
-                                },
-                              );
-                            },
-                          ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
                         ),
-                    ],
-                  ),
+                      ),
+                  ],
                 ),
               ],
             ),

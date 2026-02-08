@@ -31,7 +31,8 @@ class AdaptiveLayoutRowColumn extends StatelessWidget {
     this.alignment,
     this.size,
     this.widthBetween,
-    this.heightBetween, this.expandedWidget,
+    this.heightBetween,
+    this.expandedWidget,
   });
 
   @override
@@ -40,7 +41,11 @@ class AdaptiveLayoutRowColumn extends StatelessWidget {
       final rowChildren = <Widget>[];
       for (var i = 0; i < children.length; i++) {
         if (i > 0) rowChildren.add(SizedBox(width: widthBetween ?? 20.w));
-        if(expandedWidget == true) rowChildren.add(Expanded(child: children[i]));
+        if (expandedWidget == true) {
+          rowChildren.add(Expanded(child: children[i]));
+        } else {
+          rowChildren.add(children[i]);
+        }
       }
       return Row(
         mainAxisAlignment: alignment ?? MainAxisAlignment.start,
@@ -64,7 +69,6 @@ class AdaptiveLayoutRowColumn extends StatelessWidget {
 class AdaptiveLayoutList extends StatelessWidget {
   final List<Widget> children;
   final double? horizontalHeight;
-
   final double? spaceHeight;
   final double? spaceWidth;
 
