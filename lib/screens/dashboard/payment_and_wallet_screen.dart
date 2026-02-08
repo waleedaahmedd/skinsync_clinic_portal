@@ -98,11 +98,13 @@ class PaymentAndWalletScreen extends StatelessWidget {
       ),
       child: AdaptiveLayoutRowColumn(
         alignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: .center,
         expandedWidget: false,
         widthBetween: 0,
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: .center,
             children: [
               Text("Available Balance", style: CustomFonts.white22w600),
               Text("\$ 228,565", style: CustomFonts.white40w700),
@@ -111,7 +113,8 @@ class PaymentAndWalletScreen extends StatelessWidget {
           context.isLandscape? Spacer() : SizedBox.shrink(),
           Row(
             mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: .center,
             children: [
               Icon(
                 CupertinoIcons.arrowtriangle_up_fill,
@@ -119,7 +122,7 @@ class PaymentAndWalletScreen extends StatelessWidget {
                 color: AppTheme.greenColor,
                 
               ),
-              SizedBox(width: 10.w),
+              SizedBox(width: 10.r),
               Text.rich(
                 TextSpan(
                   children: [
@@ -145,6 +148,8 @@ class PaymentAndWalletScreen extends StatelessWidget {
                 color: Colors.white,
               ),
               child: Row(
+                mainAxisAlignment: .center,
+                crossAxisAlignment: .center,
                 children: [
                   SvgPicture.asset(
                     SvgAssets.withdraw,
@@ -153,7 +158,7 @@ class PaymentAndWalletScreen extends StatelessWidget {
                     width: 16.47.w,
                   ),
                   SizedBox(width: 8.w),
-                  Text("Withdraw Balance", style: CustomFonts.purple14w500),
+                  Center(child: Text("Withdraw Balance", style: CustomFonts.purple14w500)),
                 ],
               ),
             ),

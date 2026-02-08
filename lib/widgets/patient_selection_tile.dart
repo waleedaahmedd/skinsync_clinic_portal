@@ -18,6 +18,7 @@ class PatientSelectionTile extends StatelessWidget {
         border: Border.all(color: AppTheme.titleBorderColor),
       ),
       child: Row(
+      
         children: [
           ClipOval(
             child: Image.asset(PngAssets.person, height: 63.w, width: 63.w),
@@ -25,6 +26,7 @@ class PatientSelectionTile extends StatelessWidget {
           SizedBox(width: 15.w),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(title, style: CustomFonts.black22w600),
               if(subTitle != null)
