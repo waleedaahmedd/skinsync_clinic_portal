@@ -21,7 +21,7 @@ class BuildTextField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: CustomFonts.black18w600),
+        Text(label, style: CustomFonts.black14w400),
         SizedBox(height: 8.h),
         TextFormField(
           controller: controller,

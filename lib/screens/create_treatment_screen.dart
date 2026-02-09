@@ -28,32 +28,32 @@ class _CreateTreatmentScreenState extends State<CreateTreatmentScreen> {
   String? _selectedSubcategory;
 
   // Dropdown lists
-  final List<String> _categories = [
-    'Facial Treatments',
-    'Body Treatments',
-    'Skin Care',
-    'Hair Treatments',
-    'Massage Therapy',
-    'Wellness',
-  ];
+  final List<String> _categories = ['Botox', 'Dermal Filler'];
 
-  final List<String> _subcategories = [
-    'Anti-Aging',
-    'Hydration',
-    'Acne Treatment',
-    'Brightening',
-    'Relaxation',
-    'Deep Tissue',
-  ];
+  // final List<String> _subcategories = [
+  //   'Anti-Aging',
+  //   'Hydration',
+  //   'Acne Treatment',
+  //   'Brightening',
+  //   'Relaxation',
+  //   'Deep Tissue',
+  // ];
 
   // Areas per category
   final Map<String, List<String>> _categoryAreas = {
-    'Facial Treatments': ['Eye', 'Lip', 'Forehead', 'Cheeks'],
-    'Body Treatments': ['Arms', 'Legs', 'Back', 'Stomach'],
-    'Skin Care': ['Face', 'Neck', 'Hands'],
-    'Hair Treatments': ['Scalp', 'Beard', 'Eyebrows'],
-    'Massage Therapy': ['Full Body', 'Upper Body', 'Lower Body'],
-    'Wellness': ['Relaxation', 'Detox', 'Rejuvenation'],
+    // 'Facial Treatments': ['Eye', 'Lip', 'Forehead', 'Cheeks'],
+    'Dermal Filler': ['Temples', 'TearTough', 'Cheeks / Middle face volume'],
+    'Botox': [
+      'Forehead',
+      'Glabella Line',
+      'Eyebrow Lift',
+      'Crows Feet',
+      "Bunny Line",
+    ],
+    // 'Skin Care': ['Face', 'Neck', 'Hands'],
+    // 'Hair Treatments': ['Scalp', 'Beard', 'Eyebrows'],
+    // 'Massage Therapy': ['Full Body', 'Upper Body', 'Lower Body'],
+    // 'Wellness': ['Relaxation', 'Detox', 'Rejuvenation'],
   };
 
   // Selected areas + prices
@@ -79,7 +79,7 @@ class _CreateTreatmentScreenState extends State<CreateTreatmentScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              BuildHeader(title: 'Create Treatment'),
+              BuildHeader(title: 'Add Treatment'),
               SizedBox(height: 24.h),
               _buildFormContainer(),
             ],
@@ -110,17 +110,16 @@ class _CreateTreatmentScreenState extends State<CreateTreatmentScreen> {
           Text('Treatment Details', style: CustomFonts.black22w600),
           SizedBox(height: 24.h),
 
-          BuildTextField(
-            label: 'Treatment Name',
-            controller: _treatmentNameController,
-            hintText: 'e.g., Botox, Dermal Fillers',
-          ),
-
+          // BuildTextField(
+          //   label: 'Treatment Name',
+          //   controller: _treatmentNameController,
+          //   hintText: 'e.g., Botox, Dermal Fillers',
+          // ),
           SizedBox(height: 20.h),
 
           _buildDropdownField(
-            label: 'Category',
-            hintText: 'Select category',
+            label: 'Select Treatment',
+            hintText: 'Select Treatment',
             value: _selectedCategory,
             items: _categories,
             onChanged: (value) {
@@ -153,15 +152,7 @@ class _CreateTreatmentScreenState extends State<CreateTreatmentScreen> {
           //     });
           //   },
           // ),
-          SizedBox(height: 20.h),
-
-          BuildTextField(
-            label: 'Description',
-            controller: _descriptionController,
-            hintText: 'Describe the treatment and its benefits',
-            maxLines: 5,
-          ),
-
+          // SizedBox(height: 20.h),
           SizedBox(height: 32.h),
 
           _buildButtonsRow(),
@@ -215,7 +206,7 @@ class _CreateTreatmentScreenState extends State<CreateTreatmentScreen> {
         return Padding(
           padding: EdgeInsets.only(bottom: 12.h),
           child: BuildTextField(
-            label: '$area Price',
+            label: '$area Per Syringe Price',
             controller: _areaPriceControllers[area]!,
             hintText: '\$200',
           ),
