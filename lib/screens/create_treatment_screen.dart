@@ -46,171 +46,41 @@ class _CreateTreatmentScreenState extends State<CreateTreatmentScreen> {
     'Deep Tissue',
   ];
 
+  // Areas per category
+  final Map<String, List<String>> _categoryAreas = {
+    'Facial Treatments': ['Eye', 'Lip', 'Forehead', 'Cheeks'],
+    'Body Treatments': ['Arms', 'Legs', 'Back', 'Stomach'],
+    'Skin Care': ['Face', 'Neck', 'Hands'],
+    'Hair Treatments': ['Scalp', 'Beard', 'Eyebrows'],
+    'Massage Therapy': ['Full Body', 'Upper Body', 'Lower Body'],
+    'Wellness': ['Relaxation', 'Detox', 'Rejuvenation'],
+  };
+
+  // Selected areas + prices
+  final Set<String> _selectedAreas = {};
+  final Map<String, TextEditingController> _areaPriceControllers = {};
+
   @override
   void dispose() {
     _treatmentNameController.dispose();
     _descriptionController.dispose();
+    for (final c in _areaPriceControllers.values) {
+      c.dispose();
+    }
     super.dispose();
-  }
-
-  Future<void> _pickImage() async {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
-      ),
-      builder: (context) => SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(16.w),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'Select Image',
-                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
-              ),
-              SizedBox(height: 20.h),
-              ListTile(
-                leading: Container(
-                  padding: EdgeInsets.all(10.w),
-                  decoration: BoxDecoration(
-                    color: Colors.blue.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  child: Icon(
-                    Icons.photo_library_outlined,
-                    color: Colors.blue,
-                    size: 24.sp,
-                  ),
-                ),
-                title: Text(
-                  'Choose from Gallery',
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                  _pickFromGallery();
-                },
-              ),
-              SizedBox(height: 8.h),
-              ListTile(
-                leading: Container(
-                  padding: EdgeInsets.all(10.w),
-                  decoration: BoxDecoration(
-                    color: Colors.green.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  child: Icon(
-                    Icons.camera_alt_outlined,
-                    color: Colors.green,
-                    size: 24.sp,
-                  ),
-                ),
-                title: Text(
-                  'Take a Photo',
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                  _pickFromCamera();
-                },
-              ),
-              if (_selectedImage != null) ...[
-                SizedBox(height: 8.h),
-                ListTile(
-                  leading: Container(
-                    padding: EdgeInsets.all(10.w),
-                    decoration: BoxDecoration(
-                      color: Colors.red.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    child: Icon(
-                      Icons.delete_outline,
-                      color: Colors.red,
-                      size: 24.sp,
-                    ),
-                  ),
-                  title: Text(
-                    'Remove Photo',
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.red,
-                    ),
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                    setState(() {
-                      _selectedImage = null;
-                    });
-                  },
-                ),
-              ],
-              SizedBox(height: 16.h),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Future<void> _pickFromGallery() async {
-    try {
-      final XFile? image = await _imagePicker.pickImage(
-        source: ImageSource.gallery,
-        maxWidth: 800,
-        maxHeight: 800,
-        imageQuality: 85,
-      );
-      if (image != null) {
-        setState(() {
-          _selectedImage = image;
-        });
-      }
-    } catch (e) {
-      debugPrint('Error picking image from gallery: $e');
-    }
-  }
-
-  Future<void> _pickFromCamera() async {
-    try {
-      final XFile? image = await _imagePicker.pickImage(
-        source: ImageSource.camera,
-        maxWidth: 800,
-        maxHeight: 800,
-        imageQuality: 85,
-      );
-      if (image != null) {
-        setState(() {
-          _selectedImage = image;
-        });
-      }
-    } catch (e) {
-      debugPrint('Error picking image from camera: $e');
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: const Color(0xFFBDBDBD),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 250.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header with back button
               BuildHeader(title: 'Create Treatment'),
               SizedBox(height: 24.h),
-              // Main Form Container
               _buildFormContainer(),
             ],
           ),
@@ -237,17 +107,17 @@ class _CreateTreatmentScreenState extends State<CreateTreatmentScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Profile Picture Section
           Text('Treatment Details', style: CustomFonts.black22w600),
           SizedBox(height: 24.h),
-          // Treatment Name
+
           BuildTextField(
             label: 'Treatment Name',
             controller: _treatmentNameController,
             hintText: 'e.g., Botox, Dermal Fillers',
           ),
+
           SizedBox(height: 20.h),
-          // Category Dropdown
+
           _buildDropdownField(
             label: 'Category',
             hintText: 'Select category',
@@ -256,59 +126,101 @@ class _CreateTreatmentScreenState extends State<CreateTreatmentScreen> {
             onChanged: (value) {
               setState(() {
                 _selectedCategory = value;
+                _selectedAreas.clear();
+                _areaPriceControllers.clear();
               });
             },
           ),
+
+          // ===== AREA CHIPS =====
+          if (_selectedCategory != null) ...[
+            SizedBox(height: 16.h),
+            _buildAreaChips(),
+            SizedBox(height: 16.h),
+            _buildAreaPriceFields(),
+          ],
+
+          // SizedBox(height: 20.h),
+
+          // _buildDropdownField(
+          //   label: 'Subcategory',
+          //   hintText: 'Select subcategory',
+          //   value: _selectedSubcategory,
+          //   items: _subcategories,
+          //   onChanged: (value) {
+          //     setState(() {
+          //       _selectedSubcategory = value;
+          //     });
+          //   },
+          // ),
           SizedBox(height: 20.h),
-          // Subcategory Dropdown
-          _buildDropdownField(
-            label: 'Subcategory',
-            hintText: 'Select category',
-            value: _selectedSubcategory,
-            items: _subcategories,
-            onChanged: (value) {
-              setState(() {
-                _selectedSubcategory = value;
-              });
-            },
-          ),
-          SizedBox(height: 20.h),
-          // Description
+
           BuildTextField(
             label: 'Description',
             controller: _descriptionController,
             hintText: 'Describe the treatment and its benefits',
             maxLines: 5,
           ),
-          SizedBox(height: 20.h),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: BuildTextField(
-                  label: 'Price',
-                  controller: _treatmentNameController,
-                  hintText: '\$500',
-                ),
-              ),
-              SizedBox(width: 16.w),
-              Expanded(
-                child: BuildTextField(
-                  label: 'Discount',
-                  controller: _treatmentNameController,
-                  hintText: '%30 Off',
-                ),
-              ),
-            ],
-          ),
 
           SizedBox(height: 32.h),
 
-          // Buttons Row
           _buildButtonsRow(),
         ],
       ),
+    );
+  }
+
+  // ================== AREA CHIPS ==================
+  Widget _buildAreaChips() {
+    final areas = _categoryAreas[_selectedCategory] ?? [];
+
+    return Wrap(
+      spacing: 8.w,
+      runSpacing: 8.h,
+      children: areas.map((area) {
+        final isSelected = _selectedAreas.contains(area);
+
+        return ChoiceChip(
+          label: Text(area),
+          selected: isSelected,
+          selectedColor: Colors.black,
+          // showCheckmark: false,
+          checkmarkColor: Colors.white,
+          labelStyle: TextStyle(
+            color: isSelected ? Colors.white : Colors.black,
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w500,
+          ),
+          onSelected: (selected) {
+            setState(() {
+              if (selected) {
+                _selectedAreas.add(area);
+                _areaPriceControllers[area] = TextEditingController();
+              } else {
+                _selectedAreas.remove(area);
+                _areaPriceControllers[area]?.dispose();
+                _areaPriceControllers.remove(area);
+              }
+            });
+          },
+        );
+      }).toList(),
+    );
+  }
+
+  // ================== PRICE FIELDS ==================
+  Widget _buildAreaPriceFields() {
+    return Column(
+      children: _selectedAreas.map((area) {
+        return Padding(
+          padding: EdgeInsets.only(bottom: 12.h),
+          child: BuildTextField(
+            label: '$area Price',
+            controller: _areaPriceControllers[area]!,
+            hintText: '\$200',
+          ),
+        );
+      }).toList(),
     );
   }
 
@@ -322,32 +234,17 @@ class _CreateTreatmentScreenState extends State<CreateTreatmentScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 13.sp,
-            fontWeight: FontWeight.w500,
-            color: Colors.black87,
-          ),
-        ),
+        Text(label, style: CustomFonts.black14w500),
         SizedBox(height: 8.h),
         DropdownButtonHideUnderline(
           child: DropdownButton2<String>(
             isExpanded: true,
-            hint: Text(
-              hintText,
-              style: TextStyle(fontSize: 14.sp, color: Colors.grey[400]),
-            ),
+            hint: Text(hintText, style: TextStyle(color: Colors.grey[400])),
             value: value,
             items: items
                 .map(
-                  (item) => DropdownMenuItem<String>(
-                    value: item,
-                    child: Text(
-                      item,
-                      style: TextStyle(fontSize: 14.sp, color: Colors.black87),
-                    ),
-                  ),
+                  (item) =>
+                      DropdownMenuItem<String>(value: item, child: Text(item)),
                 )
                 .toList(),
             onChanged: onChanged,
@@ -355,41 +252,9 @@ class _CreateTreatmentScreenState extends State<CreateTreatmentScreen> {
               height: 48.h,
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               decoration: BoxDecoration(
-                color: Colors.white,
                 borderRadius: BorderRadius.circular(8.r),
-                border: Border.all(color: Colors.grey[300]!, width: 1),
+                border: Border.all(color: Colors.grey[300]!),
               ),
-            ),
-            iconStyleData: IconStyleData(
-              icon: Icon(
-                Icons.keyboard_arrow_down_rounded,
-                color: Colors.grey[500],
-                size: 24.sp,
-              ),
-            ),
-            dropdownStyleData: DropdownStyleData(
-              maxHeight: 200.h,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8.r),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              offset: Offset(0, -4.h),
-              scrollbarTheme: ScrollbarThemeData(
-                radius: Radius.circular(40.r),
-                thickness: WidgetStateProperty.all(6),
-                thumbVisibility: WidgetStateProperty.all(true),
-              ),
-            ),
-            menuItemStyleData: MenuItemStyleData(
-              height: 44.h,
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
             ),
           ),
         ),
@@ -400,46 +265,34 @@ class _CreateTreatmentScreenState extends State<CreateTreatmentScreen> {
   Widget _buildButtonsRow() {
     return Row(
       children: [
-        // Create Staff Button
         Expanded(
           child: ElevatedButton(
             onPressed: () {
-              // Handle create staff
+              final Map<String, String> areaPrices = {
+                for (var area in _selectedAreas)
+                  area: _areaPriceControllers[area]!.text,
+              };
+
+              debugPrint(areaPrices.toString());
+
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                  content: Text('Staff created successfully!'),
+                  content: Text('Treatment created successfully!'),
                   backgroundColor: Colors.green,
                 ),
               );
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.black,
-              foregroundColor: Colors.white,
               padding: EdgeInsets.symmetric(vertical: 20.h),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.r),
-              ),
-              elevation: 0,
             ),
-            child: Text('Create Treatment', style: CustomFonts.white18w500),
+            child: Text('Create', style: CustomFonts.white18w500),
           ),
         ),
         SizedBox(width: 16.w),
-        // Cancel Button
         Expanded(
           child: OutlinedButton(
-            onPressed: () {
-              // Handle cancel
-              // context.pop();
-            },
-            style: OutlinedButton.styleFrom(
-              foregroundColor: Colors.black,
-              padding: EdgeInsets.symmetric(vertical: 20.h),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.r),
-              ),
-              side: BorderSide(color: Colors.grey[300]!, width: 1),
-            ),
+            onPressed: () {},
             child: Text('Cancel', style: CustomFonts.black18w500),
           ),
         ),
@@ -447,5 +300,3 @@ class _CreateTreatmentScreenState extends State<CreateTreatmentScreen> {
     );
   }
 }
-
-// Custom Painter for Dotted Circle Border

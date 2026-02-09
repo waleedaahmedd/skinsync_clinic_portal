@@ -95,12 +95,24 @@ class AppTheme {
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           elevation: 0,
-          padding:  EdgeInsets.symmetric(horizontal: 24, vertical: 22.h),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50.r)),
+          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 10.h),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(50.r),
+          ),
           backgroundColor: elevatedButtonColor,
           foregroundColor: Colors.white,
-          textStyle:CustomFonts.white22w600,
-          
+          textStyle: CustomFonts.white22w600,
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 10.h),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(50.r),
+          ),
+          side: BorderSide(color: elevatedButtonColor),
+          foregroundColor: elevatedButtonColor,
+          textStyle: CustomFonts.black22w600,
         ),
       ),
       textButtonTheme: TextButtonThemeData(

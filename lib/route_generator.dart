@@ -5,6 +5,7 @@ import 'package:skinsync_clinic_portal/screens/create_treatment_screen.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/patient_management_detail.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/payment_history_screen.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/profile_screen.dart';
+import 'package:skinsync_clinic_portal/screens/dashboard/treatment_screen.dart';
 import 'package:skinsync_clinic_portal/screens/mange_staff_screen.dart';
 import 'package:skinsync_clinic_portal/screens/notification_screen.dart';
 import 'package:skinsync_clinic_portal/screens/sign_in_screen.dart';
@@ -91,6 +92,11 @@ class RouteGenerator {
             name: ProfileScreen.routeName,
             path: ProfileScreen.routeName,
             builder: (_, _) => ProfileScreen(),
+          ),
+          GoRoute(
+            name: TreatmentScreen.routeName,
+            path: TreatmentScreen.routeName,
+            builder: (_, _) => TreatmentScreen(),
           ),
         ],
       ),

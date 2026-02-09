@@ -74,31 +74,31 @@ class ProfileScreen extends StatelessWidget {
             SizedBox(height: 20.h),
 
             // Treatment Management
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: _buildSettingsSection(
-                title: "Treatment Management",
-                items: [
-                  _SettingItemData(
-                    icon: Icons.add_circle_outline,
-                    title: "Create Treatment",
-                    subtitle: "Add new treatments and services",
-                    onTap: () {
-                      context.push(CreateTreatmentScreen.routeName);
-                    },
-                  ),
-                  _SettingItemData(
-                    icon: Icons.edit_outlined,
-                    title: "Update Treatment",
-                    subtitle: "Edit existing treatment details",
-                    onTap: () {
-                      context.push(UpdateTreatmentScreen.routeName);
-                    },
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 20.h),
+            // Padding(
+            //   padding: EdgeInsets.symmetric(horizontal: 16.w),
+            //   child: _buildSettingsSection(
+            //     title: "Treatment Management",
+            //     items: [
+            //       _SettingItemData(
+            //         icon: Icons.add_circle_outline,
+            //         title: "Create Treatment",
+            //         subtitle: "Add new treatments and services",
+            //         onTap: () {
+            //           context.push(CreateTreatmentScreen.routeName);
+            //         },
+            //       ),
+            //       _SettingItemData(
+            //         icon: Icons.edit_outlined,
+            //         title: "Update Treatment",
+            //         subtitle: "Edit existing treatment details",
+            //         onTap: () {
+            //           context.push(UpdateTreatmentScreen.routeName);
+            //         },
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            // SizedBox(height: 20.h),
 
             // password security
             Padding(

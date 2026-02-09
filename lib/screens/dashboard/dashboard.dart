@@ -13,6 +13,7 @@ import 'home_screen.dart';
 import 'patient_ai_management.dart';
 import 'patient_management.dart';
 import 'profile_screen.dart';
+import 'treatment_screen.dart';
 
 class Dashboard extends StatelessWidget {
   static const String routeName = '/dashboard';
@@ -48,7 +49,7 @@ class Dashboard extends StatelessWidget {
         return Container(
           width: 270.w,
           height: double.infinity,
-          padding: EdgeInsets.only(top: 38.h,bottom: 20.h),
+          padding: EdgeInsets.only(top: 38.h, bottom: 20.h),
           margin: EdgeInsets.all(10.w),
           decoration: BoxDecoration(
             color: CustomColors.navigationRailBackground,
@@ -60,12 +61,11 @@ class Dashboard extends StatelessWidget {
             children: [
               Image.asset(PngAssets.splashLogo, width: 48.r, height: 48.r),
               SizedBox(width: 5.w),
-              Image.asset(PngAssets.logo, height: 20.r,),
+              Image.asset(PngAssets.logo, height: 20.r),
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-
                       SizedBox(width: 40.w),
 
                       _buildRailItem(
@@ -100,6 +100,12 @@ class Dashboard extends StatelessWidget {
                       ),
                       _buildRailItem(
                         context: context,
+                        title: 'Treatment',
+                        icon: SvgAssets.treatment,
+                        routeName: TreatmentScreen.routeName,
+                      ),
+                      _buildRailItem(
+                        context: context,
                         title: 'Profile',
                         icon: SvgAssets.profile,
                         routeName: ProfileScreen.routeName,
@@ -108,7 +114,6 @@ class Dashboard extends StatelessWidget {
                   ),
                 ),
               ),
-
             ],
           ),
         );
