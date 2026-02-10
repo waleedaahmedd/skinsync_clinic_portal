@@ -1,12 +1,13 @@
 import 'package:go_router/go_router.dart';
 import 'package:skinsync_clinic_portal/screens/about_screen.dart';
 import 'package:skinsync_clinic_portal/screens/change_password_screen.dart';
-import 'package:skinsync_clinic_portal/screens/create_treatment_screen.dart';
+import 'package:skinsync_clinic_portal/screens/add_treatment_screen.dart';
+import 'package:skinsync_clinic_portal/screens/dashboard/manage_doc_injector_screen.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/patient_management_detail.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/payment_history_screen.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/profile_screen.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/treatment_screen.dart';
-import 'package:skinsync_clinic_portal/screens/mange_staff_screen.dart';
+import 'package:skinsync_clinic_portal/screens/dashboard/mange_staff_screen.dart';
 import 'package:skinsync_clinic_portal/screens/notification_screen.dart';
 import 'package:skinsync_clinic_portal/screens/sign_in_screen.dart';
 import 'package:skinsync_clinic_portal/screens/signup_screen.dart';
@@ -41,11 +42,11 @@ class RouteGenerator {
         path: SignUpScreen.routeName,
         builder: (_, _) => SignUpScreen(),
       ),
-      GoRoute(
-        name: MangeStaffScreen.routeName,
-        path: MangeStaffScreen.routeName,
-        builder: (_, _) => MangeStaffScreen(),
-      ),
+      // GoRoute(
+      //   name: MangeStaffScreen.routeName,
+      //   path: MangeStaffScreen.routeName,
+      //   builder: (_, _) => MangeStaffScreen(),
+      // ),
 
       ShellRoute(
         builder: (_, _, child) {
@@ -79,6 +80,17 @@ class RouteGenerator {
             builder: (_, _) => AppointmentScreen(),
           ),
           GoRoute(
+            name: ManageStaffScreen.routeName,
+            path: ManageStaffScreen.routeName,
+            builder: (_, _) => ManageStaffScreen(),
+          ),
+          GoRoute(
+            name: MangeDoctorsInjectorsScreen.routeName,
+            path: MangeDoctorsInjectorsScreen.routeName,
+            builder: (_, _) => MangeDoctorsInjectorsScreen(),
+          ),
+
+          GoRoute(
             name: PaymentAndWalletScreen.routeName,
             path: PaymentAndWalletScreen.routeName,
             builder: (_, _) => PaymentAndWalletScreen(),
@@ -101,9 +113,9 @@ class RouteGenerator {
         ],
       ),
       GoRoute(
-        name: CreateTreatmentScreen.routeName,
-        path: CreateTreatmentScreen.routeName,
-        builder: (_, _) => CreateTreatmentScreen(),
+        name: AddTreatmentScreen.routeName,
+        path: AddTreatmentScreen.routeName,
+        builder: (_, _) => AddTreatmentScreen(),
       ),
       GoRoute(
         name: UpdateTreatmentScreen.routeName,

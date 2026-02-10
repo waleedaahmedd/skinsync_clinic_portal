@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skinsync_clinic_portal/screens/about_screen.dart';
-import 'package:skinsync_clinic_portal/screens/mange_staff_screen.dart';
+import 'package:skinsync_clinic_portal/screens/dashboard/mange_staff_screen.dart';
 import 'package:skinsync_clinic_portal/screens/notification_screen.dart';
 import 'package:skinsync_clinic_portal/screens/update_treatment_screen.dart';
 
 import '../change_password_screen.dart';
-import '../create_treatment_screen.dart';
+import '../add_treatment_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   static const String routeName = '/profile';
@@ -64,7 +64,7 @@ class ProfileScreen extends StatelessWidget {
                     title: "Manage Staff",
                     subtitle: "Manage clinic staff and services",
                     onTap: () {
-                      context.push(MangeStaffScreen.routeName);
+                      context.push(ManageStaffScreen.routeName);
                     },
                   ),
                 ],

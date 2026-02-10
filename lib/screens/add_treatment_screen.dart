@@ -7,15 +7,15 @@ import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 import '../widgets/build_textfield.dart';
 import '../widgets/header__with_back_btn.dart';
 
-class CreateTreatmentScreen extends StatefulWidget {
-  const CreateTreatmentScreen({super.key});
-  static const String routeName = '/create-treatment';
+class AddTreatmentScreen extends StatefulWidget {
+  const AddTreatmentScreen({super.key});
+  static const String routeName = '/add-treatment';
 
   @override
-  State<CreateTreatmentScreen> createState() => _CreateTreatmentScreenState();
+  State<AddTreatmentScreen> createState() => _AddTreatmentScreenState();
 }
 
-class _CreateTreatmentScreenState extends State<CreateTreatmentScreen> {
+class _AddTreatmentScreenState extends State<AddTreatmentScreen> {
   final TextEditingController _treatmentNameController =
       TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
@@ -277,7 +277,7 @@ class _CreateTreatmentScreenState extends State<CreateTreatmentScreen> {
               backgroundColor: Colors.black,
               padding: EdgeInsets.symmetric(vertical: 20.h),
             ),
-            child: Text('Create', style: CustomFonts.white18w500),
+            child: Text('Create', style: CustomFonts.white14w500),
           ),
         ),
         SizedBox(width: 16.w),

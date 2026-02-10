@@ -12,117 +12,117 @@ import '../../widgets/custom_dropdown_widget.dart';
 
 class AppointmentScreen extends StatelessWidget {
   static const String routeName = '/appointment';
+
   const AppointmentScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(20.w),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Text(
-                  "Appointments",
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-                SizedBox(width: 36.w),
-                Expanded(
-                  child: SizedBox(
-                    height: 45.h,
-                    child: ListView.builder(
-                      itemCount: 6,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        return AppointmentHorizontalTileWidget(
-                          index: index,
-                          selected: index == 0,
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 14.h),
-            Divider(),
-
-            SizedBox(height: 14.h),
-            SizedBox(height: 800.h, child: AppointmentsCalendar()),
-            SizedBox(height: 15.h),
-            BorderdContainerWidget(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+    return Scaffold(
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 20.h),
+              Row(
                 children: [
-                  Text("Today's Schedule", style: CustomFonts.black17w600),
-                  SizedBox(height: 17.h),
-                  Center(
-                    child: Text(
-                      "No appointments scheduled for today",
-                      style: CustomFonts.black17w500,
-                    ),
-                  ),
-                  SizedBox(height: 20.h),
-                ],
-              ),
-            ),
-            SizedBox(height: 15.h),
-            BorderdContainerWidget(
-              child: Row(
-                children: [
+                  Text('Appointments', style: CustomFonts.black22w600),
+                  SizedBox(width: 36.w),
                   Expanded(
-                    flex: 3,
-                    child: CupertinoSearchTextField(
-                      style: CustomFonts.black17w500,
-                      backgroundColor: Color(0xFFF3F3F5),
-                    ),
-                  ),
-                  SizedBox(width: 20.w),
-                  Expanded(
-                    child: CustomDropdown(
-                      hint: "All Regions",
-                      value: "All Regions",
-                      items: [
-                        "All Regions",
-                        "Region 1",
-                        "Region 2",
-                        "Region 3",
-                      ],
-                      onChanged: (_) {},
+                    child: SizedBox(
+                      height: 45.h,
+                      child: ListView.builder(
+                        itemCount: 6,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          return AppointmentHorizontalTileWidget(
+                            index: index,
+                            selected: index == 0,
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ],
               ),
-            ),
-            SizedBox(height: 15.h),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: CustomColors.blackColor,
-                ),
-                padding: EdgeInsets.all(9.w),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
+              SizedBox(height: 14.h),
+              Divider(color: Colors.grey.shade300),
+              SizedBox(height: 14.h),
+              SizedBox(height: 800.h, child: AppointmentsCalendar()),
+              SizedBox(height: 15.h),
+              BorderdContainerWidget(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(
-                      Icons.add,
-                      color: CustomColors.whiteColor,
-                      size: 16.sp,
+                    Text("Today's Schedule", style: CustomFonts.black17w600),
+                    SizedBox(height: 17.h),
+                    Center(
+                      child: Text(
+                        "No appointments scheduled for today",
+                        style: CustomFonts.black17w500,
+                      ),
                     ),
-                    SizedBox(width: 5.w),
-                    Text("New Appointment", style: CustomFonts.white13w400),
+                    SizedBox(height: 20.h),
                   ],
                 ),
               ),
-            ),
-            SizedBox(height: 15.h),
+              SizedBox(height: 15.h),
+              BorderdContainerWidget(
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: CupertinoSearchTextField(
+                        style: CustomFonts.black17w500,
+                        backgroundColor: Color(0xFFF3F3F5),
+                      ),
+                    ),
+                    SizedBox(width: 20.w),
+                    Expanded(
+                      child: CustomDropdown(
+                        hint: "All Regions",
+                        value: "All Regions",
+                        items: [
+                          "All Regions",
+                          "Region 1",
+                          "Region 2",
+                          "Region 3",
+                        ],
+                        onChanged: (_) {},
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 15.h),
+              Align(
+                alignment: Alignment.centerRight,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: CustomColors.blackColor,
+                  ),
+                  padding: EdgeInsets.all(9.w),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.add,
+                        color: CustomColors.whiteColor,
+                        size: 16.sp,
+                      ),
+                      SizedBox(width: 5.w),
+                      Text("New Appointment", style: CustomFonts.white13w400),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 15.h),
 
-            ...List.generate(5, (index) => AppointmentTileWidget()),
-          ],
+              ...List.generate(5, (index) => AppointmentTileWidget()),
+            ],
+          ),
         ),
       ),
     );

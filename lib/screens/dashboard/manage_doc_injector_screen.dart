@@ -6,18 +6,21 @@ import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:skinsync_clinic_portal/widgets/patient_selection_tile.dart';
-import '../../utils/assets.dart';
+import '../../../utils/assets.dart';
 import 'package:intl/intl.dart';
 
-class MangeStaffScreen extends StatefulWidget {
-  static const String routeName = '/manage-staff';
-  const MangeStaffScreen({super.key});
+class MangeDoctorsInjectorsScreen extends StatefulWidget {
+  static const String routeName = '/manage-doctors-injectors';
+
+  const MangeDoctorsInjectorsScreen({super.key});
 
   @override
-  State<MangeStaffScreen> createState() => _MangeStaffScreenState();
+  State<MangeDoctorsInjectorsScreen> createState() =>
+      _MangeDoctorsInjectorsScreenState();
 }
 
-class _MangeStaffScreenState extends State<MangeStaffScreen> {
+class _MangeDoctorsInjectorsScreenState
+    extends State<MangeDoctorsInjectorsScreen> {
   bool isSchedule = true;
 
   DateTime? scheduleStartDateTime;
@@ -77,28 +80,12 @@ class _MangeStaffScreenState extends State<MangeStaffScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(
-          vertical: 20.h,
-          horizontal:
-              MediaQuery.of(context).size.width * 0.05, // 5% side padding
-        ),
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    context.pop();
-                  },
-                  child: Icon(Icons.arrow_back, size: 24.sp),
-                ),
-                SizedBox(width: 10.w),
-                Text("Manage Staff", style: CustomFonts.black22w600),
-              ],
-            ),
+            SizedBox(height: 20.h),
+            Text("Manage Doctors / Injectors", style: CustomFonts.black22w600),
             SizedBox(height: 14.h),
             Divider(color: Colors.grey.shade300),
             SizedBox(height: 50.h),
