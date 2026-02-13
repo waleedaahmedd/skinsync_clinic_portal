@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:skinsync_clinic_portal/utils/assets.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 import 'package:skinsync_clinic_portal/utils/extentions.dart';
+import 'package:skinsync_clinic_portal/widgets/empty_widget.dart';
 import 'package:skinsync_clinic_portal/widgets/treatment_list_tile.dart';
 import '../../utils/responsive.dart';
 import '../../view_models/treatment_view_model.dart';
@@ -92,17 +93,7 @@ class TreatmentScreen extends ConsumerWidget {
                       },
                     );
                   } else if (state.treatments.isEmpty) {
-                    return Column(
-                      children: [
-                        Image.asset(PngAssets.empty, height: 500.h),
-                        Center(
-                          child: Text(
-                            "Nothing Here",
-                            style: CustomFonts.black21w600,
-                          ),
-                        ),
-                      ],
-                    );
+                    return EmptyWidget();
                   }
 
                   return ListView.separated(
