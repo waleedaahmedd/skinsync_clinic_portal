@@ -1,7 +1,6 @@
-
-import '../models/requests/sign_in_request.dart';
-import '../models/responses/auth_response.dart';
+import 'package:skinsync_clinic_portal/models/requests/login_request_model.dart';
+import 'package:skinsync_clinic_portal/models/responses/login_response_model.dart';
 
 abstract class AuthRepository {
-  Future<AuthResponse> signInApi({required SignInRequest signInRequest});
+  Future<LoginResponseModel> login({required LoginRequestModel req});
 }

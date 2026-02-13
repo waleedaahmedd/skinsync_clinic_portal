@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:skinsync_clinic_portal/screens/about_screen.dart';
 import 'package:skinsync_clinic_portal/screens/change_password_screen.dart';
-import 'package:skinsync_clinic_portal/screens/add_treatment_screen.dart';
+import 'package:skinsync_clinic_portal/widgets/dailog%20box/add_treatment_dailogbox.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/manage_doc_injector_screen.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/patient_management_detail.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/payment_history_screen.dart';
@@ -42,12 +42,12 @@ class RouteGenerator {
         path: SignUpScreen.routeName,
         builder: (_, _) => SignUpScreen(),
       ),
+
       // GoRoute(
       //   name: MangeStaffScreen.routeName,
       //   path: MangeStaffScreen.routeName,
       //   builder: (_, _) => MangeStaffScreen(),
       // ),
-
       ShellRoute(
         builder: (_, _, child) {
           return Dashboard(child: child);
@@ -112,11 +112,11 @@ class RouteGenerator {
           ),
         ],
       ),
-      GoRoute(
-        name: AddTreatmentScreen.routeName,
-        path: AddTreatmentScreen.routeName,
-        builder: (_, _) => AddTreatmentScreen(),
-      ),
+      // GoRoute(
+      //   name: AddTreatmentScreen.routeName,
+      //   path: AddTreatmentScreen.routeName,
+      //   builder: (_, _) => AddTreatmentScreen(),
+      // ),
       GoRoute(
         name: UpdateTreatmentScreen.routeName,
         path: UpdateTreatmentScreen.routeName,

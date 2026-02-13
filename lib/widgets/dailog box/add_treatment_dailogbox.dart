@@ -1,62 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
+import '../build_textfield.dart';
+import '../header__with_back_btn.dart';
 
-import '../widgets/build_textfield.dart';
-import '../widgets/header__with_back_btn.dart';
-
-class AddTreatmentScreen extends StatefulWidget {
-  const AddTreatmentScreen({super.key});
-  static const String routeName = '/add-treatment';
+class AddTreatmentDialog extends StatefulWidget {
+  const AddTreatmentDialog({super.key});
 
   @override
-  State<AddTreatmentScreen> createState() => _AddTreatmentScreenState();
+  State<AddTreatmentDialog> createState() => _AddTreatmentDialogState();
 }
 
-class _AddTreatmentScreenState extends State<AddTreatmentScreen> {
+class _AddTreatmentDialogState extends State<AddTreatmentDialog> {
   final TextEditingController _treatmentNameController =
       TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
 
-  final ImagePicker _imagePicker = ImagePicker();
-  XFile? _selectedImage;
-
-  // Dropdown values
   String? _selectedCategory;
-  String? _selectedSubcategory;
-
-  // Dropdown lists
   final List<String> _categories = ['Botox', 'Dermal Filler'];
-
-  // final List<String> _subcategories = [
-  //   'Anti-Aging',
-  //   'Hydration',
-  //   'Acne Treatment',
-  //   'Brightening',
-  //   'Relaxation',
-  //   'Deep Tissue',
-  // ];
-
-  // Areas per category
   final Map<String, List<String>> _categoryAreas = {
-    // 'Facial Treatments': ['Eye', 'Lip', 'Forehead', 'Cheeks'],
     'Dermal Filler': ['Temples', 'TearTough', 'Cheeks / Middle face volume'],
     'Botox': [
       'Forehead',
       'Glabella Line',
       'Eyebrow Lift',
       'Crows Feet',
-      "Bunny Line",
+      'Bunny Line',
     ],
-    // 'Skin Care': ['Face', 'Neck', 'Hands'],
-    // 'Hair Treatments': ['Scalp', 'Beard', 'Eyebrows'],
-    // 'Massage Therapy': ['Full Body', 'Upper Body', 'Lower Body'],
-    // 'Wellness': ['Relaxation', 'Detox', 'Rejuvenation'],
   };
-
-  // Selected areas + prices
   final Set<String> _selectedAreas = {};
   final Map<String, TextEditingController> _areaPriceControllers = {};
 
@@ -72,110 +45,78 @@ class _AddTreatmentScreenState extends State<AddTreatmentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 250.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              BuildHeader(title: 'Add Treatment'),
-              SizedBox(height: 24.h),
-              _buildFormContainer(),
-            ],
-          ),
+    return Dialog(
+      insetPadding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 50.h),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+      child: SingleChildScrollView(
+        padding: EdgeInsets.all(24.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: .spaceBetween,
+              children: [
+                Text('Add Treatment', style: CustomFonts.black22w600),
+                IconButton(
+                  onPressed: () {
+                    context.pop();
+                  },
+                  icon: Icon(Icons.close, color: Colors.black),
+                ),
+              ],
+            ),
+            SizedBox(height: 24.h),
+            _buildFormContainer(),
+          ],
         ),
       ),
     );
   }
 
   Widget _buildFormContainer() {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(24.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Treatment Details', style: CustomFonts.black22w600),
+        SizedBox(height: 24.h),
+        _buildDropdownField(
+          label: 'Select Treatment',
+          hintText: 'Select Treatment',
+          value: _selectedCategory,
+          items: _categories,
+          onChanged: (value) {
+            setState(() {
+              _selectedCategory = value;
+              _selectedAreas.clear();
+              _areaPriceControllers.clear();
+            });
+          },
+        ),
+
+        if (_selectedCategory != null) ...[
+          SizedBox(height: 16.h),
+          _buildAreaChips(),
+          SizedBox(height: 16.h),
+          _buildAreaPriceFields(),
         ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('Treatment Details', style: CustomFonts.black22w600),
-          SizedBox(height: 24.h),
-
-          // BuildTextField(
-          //   label: 'Treatment Name',
-          //   controller: _treatmentNameController,
-          //   hintText: 'e.g., Botox, Dermal Fillers',
-          // ),
-          SizedBox(height: 20.h),
-
-          _buildDropdownField(
-            label: 'Select Treatment',
-            hintText: 'Select Treatment',
-            value: _selectedCategory,
-            items: _categories,
-            onChanged: (value) {
-              setState(() {
-                _selectedCategory = value;
-                _selectedAreas.clear();
-                _areaPriceControllers.clear();
-              });
-            },
-          ),
-
-          // ===== AREA CHIPS =====
-          if (_selectedCategory != null) ...[
-            SizedBox(height: 16.h),
-            _buildAreaChips(),
-            SizedBox(height: 16.h),
-            _buildAreaPriceFields(),
-          ],
-
-          // SizedBox(height: 20.h),
-
-          // _buildDropdownField(
-          //   label: 'Subcategory',
-          //   hintText: 'Select subcategory',
-          //   value: _selectedSubcategory,
-          //   items: _subcategories,
-          //   onChanged: (value) {
-          //     setState(() {
-          //       _selectedSubcategory = value;
-          //     });
-          //   },
-          // ),
-          // SizedBox(height: 20.h),
-          SizedBox(height: 32.h),
-
-          _buildButtonsRow(),
-        ],
-      ),
+        SizedBox(height: 32.h),
+        _buildButtonsRow(),
+      ],
     );
   }
 
-  // ================== AREA CHIPS ==================
+  // ===== Area Chips =====
   Widget _buildAreaChips() {
     final areas = _categoryAreas[_selectedCategory] ?? [];
-
     return Wrap(
       spacing: 8.w,
       runSpacing: 8.h,
       children: areas.map((area) {
         final isSelected = _selectedAreas.contains(area);
-
         return ChoiceChip(
           label: Text(area),
           selected: isSelected,
           selectedColor: Colors.black,
-          // showCheckmark: false,
           checkmarkColor: Colors.white,
           labelStyle: TextStyle(
             color: isSelected ? Colors.white : Colors.black,
@@ -199,7 +140,7 @@ class _AddTreatmentScreenState extends State<AddTreatmentScreen> {
     );
   }
 
-  // ================== PRICE FIELDS ==================
+  // ===== Price Fields =====
   Widget _buildAreaPriceFields() {
     return Column(
       children: _selectedAreas.map((area) {
@@ -233,10 +174,7 @@ class _AddTreatmentScreenState extends State<AddTreatmentScreen> {
             hint: Text(hintText, style: TextStyle(color: Colors.grey[400])),
             value: value,
             items: items
-                .map(
-                  (item) =>
-                      DropdownMenuItem<String>(value: item, child: Text(item)),
-                )
+                .map((item) => DropdownMenuItem(value: item, child: Text(item)))
                 .toList(),
             onChanged: onChanged,
             buttonStyleData: ButtonStyleData(
@@ -263,9 +201,8 @@ class _AddTreatmentScreenState extends State<AddTreatmentScreen> {
                 for (var area in _selectedAreas)
                   area: _areaPriceControllers[area]!.text,
               };
-
               debugPrint(areaPrices.toString());
-
+              Navigator.of(context).pop(); // close dialog
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text('Treatment created successfully!'),
@@ -283,7 +220,7 @@ class _AddTreatmentScreenState extends State<AddTreatmentScreen> {
         SizedBox(width: 16.w),
         Expanded(
           child: OutlinedButton(
-            onPressed: () {},
+            onPressed: () => Navigator.of(context).pop(), // close dialog
             child: Text('Cancel', style: CustomFonts.black18w500),
           ),
         ),

@@ -3,6 +3,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'route_generator.dart';
+import 'services/storage_service.dart';
 import 'utils/color_constant.dart';
 import 'utils/screen_size.dart';
 import 'utils/theme.dart';
@@ -27,17 +28,17 @@ class AppInit extends StatelessWidget {
       ..dismissOnTap = false;
   }
 
-
   @override
   Widget build(BuildContext context) {
     configLoading();
+    // SecureStorageService();
 
     return LayoutBuilder(
       builder: (context, constraints) {
         return OrientationBuilder(
           builder: (context, orientation) {
             final designSize = getDesignSize(constraints, orientation);
-            
+
             return ScreenUtilInit(
               designSize: designSize,
               minTextAdapt: true,

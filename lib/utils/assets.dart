@@ -25,6 +25,7 @@ abstract class PngAssets {
   static const String treatmentImage = '${_assets}treatmentimage.png';
   static const String treatmentImage2 = '${_assets}image.png';
   static const String simulation = '${_assets}simulation.png';
+  static const String empty = '${_assets}empty.png';
 }
 
 abstract class SvgAssets {
@@ -92,12 +93,10 @@ class DummyAssets {
   static const String profile = "${_assets}profile.png";
   static const String treatmentimage = "${_assets}treatmentimage.png";
   static const String doctorImage = "${_assets}doctor_image.png";
-
 }
 
 abstract class DemoAssets {
   static const String _asset = 'assets/demo/';
   static const String person = '${_asset}person.png';
   static const String simulationLandscape = '${_asset}simulation_landscape.png';
-
 }

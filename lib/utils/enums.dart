@@ -8,15 +8,23 @@ enum SharedPreferencesKeys {
 }
 
 enum Endpoint {
-  signIn('auth/login');
+  login('clinic/login'),
+  getTreatments('clinics/{clinicId}/treatments');
 
-  final String url;
+  final String path;
+  const Endpoint(this.path);
 
-  const Endpoint(this.url);
+  String withParams(Map<String, String> params) {
+    var updatedPath = path;
+    params.forEach((key, value) {
+      updatedPath = updatedPath.replaceAll('{$key}', value);
+    });
+    return updatedPath;
+  }
 }
 
 enum BaseUrls {
-  api('https://api.brunos.kitchen/bruno/api/v1/');
+  api('http://3.128.27.193/api/');
 
   final String url;
 
