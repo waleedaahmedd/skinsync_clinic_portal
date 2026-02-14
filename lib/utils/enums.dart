@@ -9,7 +9,10 @@ enum SharedPreferencesKeys {
 
 enum Endpoint {
   login('clinic/login'),
-  getTreatments('clinics/{clinicId}/treatments');
+  getClinicTreatments('clinics/{clinicId}/treatments'),
+  getAdminTreatments('treatments/masters'),
+  getAdminTreatmentsSideAreas('/clinic/side-areas/treatment/{treatmentId}'),
+  addClinicTreatment('/clinic/treatments');
 
   final String path;
   const Endpoint(this.path);

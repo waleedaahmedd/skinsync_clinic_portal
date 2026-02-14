@@ -27,6 +27,7 @@ class AuthViewModel extends BaseViewModel<AuthState> {
     return await runSafely<bool?>(showLoading: true, () async {
           final response = await _authRepository.login(req: loginReq);
           state = state.copyWith(user: response.user);
+
           return true;
         }) ??
         false;

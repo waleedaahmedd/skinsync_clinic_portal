@@ -6,15 +6,18 @@ import 'package:skinsync_clinic_portal/utils/assets.dart';
 import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 
+import '../models/treatment_model.dart';
 import '../utils/responsive.dart';
 
 class TreatmentListTile extends StatelessWidget {
-  const TreatmentListTile({super.key});
+  const TreatmentListTile({super.key, required this.treatment});
+
+  final TreatmentModel treatment;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: context.isLandscape? 300.h: 500.h,
+      height: context.isLandscape ? 300.h : 500.h,
       margin: EdgeInsets.all(20.w),
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
@@ -42,7 +45,7 @@ class TreatmentListTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(12.r),
             child: Image.asset(
               PngAssets.treatmentImage,
-             // width: 0.5.sw,
+              // width: 0.5.sw,
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) => Container(
                 color: Color(0xFFE8E8E8),
@@ -50,15 +53,17 @@ class TreatmentListTile extends StatelessWidget {
               ),
             ),
           ),
-          context.isLandscape? treatmentResponsiveData(): Expanded(child: treatmentResponsiveData())
+          context.isLandscape
+              ? treatmentResponsiveData()
+              : Expanded(child: treatmentResponsiveData()),
         ],
       ),
     );
   }
 }
 
-Widget treatmentResponsiveData (){
-  return           Column(
+Widget treatmentResponsiveData() {
+  return Column(
     mainAxisSize: MainAxisSize.max,
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -74,64 +79,63 @@ Widget treatmentResponsiveData (){
             runSpacing: 20.r,
             children: List.generate(
               30,
-                  (index) =>
-                  Container(
-                    margin: EdgeInsets.only(right: 10.w),
-                    padding: EdgeInsets.all(14.w),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(14.r),
-                      boxShadow: [
-                        BoxShadow(
-                          color: CustomColors.lightBlueColor,
-                          blurRadius: 8.r,
-                          offset: Offset(0, 2.h),
-                        ),
-                        BoxShadow(
-                          color: CustomColors.lightPurpleColor,
-                          blurRadius: 10.r,
-                          offset: Offset(2.h, 0),
-                        ),
-                      ],
+              (index) => Container(
+                margin: EdgeInsets.only(right: 10.w),
+                padding: EdgeInsets.all(14.w),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(14.r),
+                  boxShadow: [
+                    BoxShadow(
+                      color: CustomColors.lightBlueColor,
+                      blurRadius: 8.r,
+                      offset: Offset(0, 2.h),
                     ),
+                    BoxShadow(
+                      color: CustomColors.lightPurpleColor,
+                      blurRadius: 10.r,
+                      offset: Offset(2.h, 0),
+                    ),
+                  ],
+                ),
 
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Glabella",
+                      style: CustomFonts.black14w500.copyWith(
+                        color: Colors.grey.shade700,
+                      ),
+                    ),
+                    SizedBox(height: 10.h),
+
+                    // Price
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(
-                          "Glabella",
-                          style: CustomFonts.black14w500.copyWith(
-                            color: Colors.grey.shade700,
+                        RichText(
+                          text: TextSpan(
+                            style: CustomFonts.black14w600, // base style
+                            children: [
+                              TextSpan(
+                                text: "\$300 ",
+                                style: CustomFonts.black14w600.copyWith(
+                                  color: CustomColors.blueColor,
+                                ),
+                              ),
+                              const TextSpan(
+                                text: " /Per Syringe",
+                                // inherits font from parent; add color here if you want a different one
+                              ),
+                            ],
                           ),
                         ),
-                        SizedBox(height: 10.h),
-
-                        // Price
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            RichText(
-                              text: TextSpan(
-                                style: CustomFonts.black14w600, // base style
-                                children: [
-                                  TextSpan(
-                                    text: "\$300 ",
-                                    style: CustomFonts.black14w600.copyWith(
-                                      color: CustomColors.blueColor,
-                                    ),
-                                  ),
-                                  const TextSpan(
-                                    text: " /Per Syringe",
-                                    // inherits font from parent; add color here if you want a different one
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
                       ],
                     ),
-                  ),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
@@ -147,5 +151,4 @@ Widget treatmentResponsiveData (){
       ),
     ],
   );
-
 }

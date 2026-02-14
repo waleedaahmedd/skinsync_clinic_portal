@@ -34,6 +34,7 @@ class SecureStorageService {
     _token = token;
     await _storage.write(key: _tokenKey.name, value: token);
     ColoredPrint.green("Token Saved");
+    ColoredPrint.green(token);
     _authStateController.add(true);
   }
 
