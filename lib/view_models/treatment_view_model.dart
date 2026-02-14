@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skinsync_clinic_portal/models/treatment_model.dart';
 import 'package:skinsync_clinic_portal/repositories/treatment_repository.dart';
@@ -5,13 +6,12 @@ import '../models/requests/add_treatment_req_model.dart';
 import '../services/locator.dart';
 import 'base_view_model.dart';
 
-final treatmentViewModelProvider =
-    NotifierProvider<TreamententViewModel, TreatmentState>(
-      () => TreamententViewModel(),
-    );
+final treatmentViewModelProvider = NotifierProvider(
+  () => TreamententViewModel._(),
+);
 
 class TreamententViewModel extends BaseViewModel<TreatmentState> {
-  TreamententViewModel() : super(TreatmentState());
+  TreamententViewModel._() : super(TreatmentState());
 
   final TreatmentRepository _treatmentRepository =
       locator<TreatmentRepository>();

@@ -7,9 +7,12 @@ enum SharedPreferencesKeys {
   final String keyText;
 }
 
+enum DoctorRole { doctor, injector }
+
 enum Endpoint {
   login('clinic/login'),
   getClinicTreatments('clinics/{clinicId}/treatments'),
+  createDoctor('clinic/doctors/register'),
   getAdminTreatments('treatments/masters'),
   getAdminTreatmentsSideAreas('/clinic/side-areas/treatment/{treatmentId}'),
   addClinicTreatment('/clinic/treatments');

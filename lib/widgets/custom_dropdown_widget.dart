@@ -5,11 +5,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../utils/color_constant.dart';
 import '../utils/custom_fonts.dart';
 
-class CustomDropdown extends StatelessWidget {
+class CustomDropdown<T> extends StatelessWidget {
   final String hint;
-  final String? value;
-  final List<String>? items;
-  final Function(String?) onChanged;
+  final T? value;
+  final List<T>? items;
+  final Function(T?) onChanged;
+  final Widget Function(T)? builder;
 
   const CustomDropdown({
     super.key,
@@ -17,6 +18,7 @@ class CustomDropdown extends StatelessWidget {
     required this.value,
     required this.items,
     required this.onChanged,
+    this.builder,
   });
 
   @override
@@ -24,7 +26,7 @@ class CustomDropdown extends StatelessWidget {
     final dropdownItems = items ?? []; // fallback to empty list
     return SizedBox(
       height: 55.h,
-      child: DropdownButtonFormField2<String>(
+      child: DropdownButtonFormField2<T>(
         isExpanded: true,
         value: value,
         style: CustomFonts.black16w400,
@@ -51,9 +53,11 @@ class CustomDropdown extends StatelessWidget {
         hint: Text(hint, style: CustomFonts.black16w400),
         items: dropdownItems
             .map(
-              (item) => DropdownMenuItem<String>(
+              (item) => DropdownMenuItem<T>(
                 value: item,
-                child: Text(item, style: CustomFonts.black18w400),
+                child:
+                    builder?.call(item) ??
+                    Text(item.toString(), style: CustomFonts.black18w400),
               ),
             )
             .toList(),

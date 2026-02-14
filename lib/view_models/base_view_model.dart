@@ -27,7 +27,7 @@ abstract class BaseViewModel<S> extends Notifier<S> {
 
       return await action.call();
     } catch (e, s) {
-      log(e.toString(), stackTrace: s);
+      log('BASE: $e', stackTrace: s);
       onError(e.toString().replaceAll('Exception:', ''));
       return null;
     } finally {

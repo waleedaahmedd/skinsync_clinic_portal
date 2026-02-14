@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skinsync_clinic_portal/models/user_model.dart';
+
 import '../models/requests/login_request_model.dart';
 import '../repositories/auth_repository.dart';
 import '../services/locator.dart';
@@ -7,11 +8,11 @@ import '../services/storage_service.dart';
 import 'base_view_model.dart';
 
 final authViewModelProvider = NotifierProvider<AuthViewModel, AuthState>(
-  () => AuthViewModel(),
+  () => AuthViewModel._(),
 );
 
 class AuthViewModel extends BaseViewModel<AuthState> {
-  AuthViewModel() : super(AuthState());
+  AuthViewModel._() : super(AuthState());
 
   final AuthRepository _authRepository = locator<AuthRepository>();
   final SecureStorageService _storageServices = SecureStorageService();

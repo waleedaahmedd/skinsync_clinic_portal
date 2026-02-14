@@ -1,18 +1,18 @@
 import 'package:go_router/go_router.dart';
 import 'package:skinsync_clinic_portal/screens/about_screen.dart';
 import 'package:skinsync_clinic_portal/screens/change_password_screen.dart';
-import 'package:skinsync_clinic_portal/widgets/dailog%20box/add_treatment_dailogbox.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/manage_doc_injector_screen.dart';
+import 'package:skinsync_clinic_portal/screens/dashboard/mange_staff_screen.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/patient_management_detail.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/payment_history_screen.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/profile_screen.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/treatment_screen.dart';
-import 'package:skinsync_clinic_portal/screens/dashboard/mange_staff_screen.dart';
 import 'package:skinsync_clinic_portal/screens/notification_screen.dart';
 import 'package:skinsync_clinic_portal/screens/sign_in_screen.dart';
 import 'package:skinsync_clinic_portal/screens/signup_screen.dart';
 
 import 'app_init.dart';
+import 'screens/add_doctor_injector_screen.dart';
 import 'screens/dashboard/appointment_screen.dart';
 import 'screens/dashboard/dashboard.dart';
 import 'screens/dashboard/home_screen.dart';
@@ -117,6 +117,11 @@ class RouteGenerator {
       //   path: AddTreatmentScreen.routeName,
       //   builder: (_, _) => AddTreatmentScreen(),
       // ),
+      GoRoute(
+        path: AddDoctorInjectorScreen.routeName,
+        name: AddDoctorInjectorScreen.routeName,
+        builder: (_, _) => AddDoctorInjectorScreen(),
+      ),
       // GoRoute(
       //   name: UpdateTreatmentScreen.routeName,
       //   path: UpdateTreatmentScreen.routeName,

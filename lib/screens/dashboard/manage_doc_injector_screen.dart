@@ -1,13 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:skinsync_clinic_portal/widgets/patient_selection_tile.dart';
+
 import '../../../utils/assets.dart';
-import 'package:intl/intl.dart';
+import '../add_doctor_injector_screen.dart';
 
 class MangeDoctorsInjectorsScreen extends StatefulWidget {
   static const String routeName = '/manage-doctors-injectors';
@@ -85,7 +87,36 @@ class _MangeDoctorsInjectorsScreenState
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 20.h),
-            Text("Manage Doctors / Injectors", style: CustomFonts.black22w600),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Manage Doctors / Injectors",
+                  style: CustomFonts.black22w600,
+                ),
+                ElevatedButton.icon(
+                  onPressed: () =>
+                      context.push(AddDoctorInjectorScreen.routeName),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    foregroundColor: Colors.white,
+                    padding: EdgeInsets.symmetric(
+                      vertical: 20.h,
+                      horizontal: 20.w,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    elevation: 0,
+                  ),
+                  icon: Icon(Icons.add, color: Colors.white, size: 20.r),
+                  label: Text(
+                    'Add Doctor / Injector',
+                    style: CustomFonts.white14w500,
+                  ),
+                ),
+              ],
+            ),
             SizedBox(height: 14.h),
             Divider(color: Colors.grey.shade300),
             SizedBox(height: 50.h),

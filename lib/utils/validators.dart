@@ -1,5 +1,10 @@
-class Validators {
-  Validators._(); // prevents instantiation
+abstract final class Validators {
+  static String? empty(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'This value is required.';
+    }
+    return null;
+  }
 
   /// Email Validator
   static String? email(String? value) {
@@ -16,7 +21,6 @@ class Validators {
     return null;
   }
 
-  /// Password Validator
   static String? password(String? value) {
     if (value == null || value.isEmpty) {
       return 'Password is required';
@@ -42,6 +46,17 @@ class Validators {
     //   return 'Password must contain at least one special character';
     // }
 
+    return null;
+  }
+
+  static String? phone(String? phone) {
+    if (phone == null || phone.isEmpty) {
+      return 'Phone is required';
+    }
+    final regExp = RegExp(r'^\+?[1-9]\d{6,14}$');
+    if (!regExp.hasMatch(phone)) {
+      return 'Invalid Phone';
+    }
     return null;
   }
 }
