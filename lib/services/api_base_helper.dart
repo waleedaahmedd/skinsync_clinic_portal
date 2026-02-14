@@ -1,8 +1,11 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
-import 'package:http/http.dart' as http;
+
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:http/http.dart' as http;
 import 'package:skinsync_clinic_portal/services/storage_service.dart';
+
 import '../utils/enums.dart';
 import '../utils/exception.dart';
 
@@ -43,8 +46,9 @@ class ApiBaseHelper {
       final uri = Uri.parse(
         '${baseUrl.url}$urlPath',
       ).replace(queryParameters: queryParams);
-
+      log('URL: $uri');
       final response = await _client.get(uri, headers: _headers());
+      log('RESPONSE: ${response.body}');
 
       return _processResponse(response);
     });

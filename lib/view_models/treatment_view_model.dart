@@ -1,18 +1,19 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skinsync_clinic_portal/models/Treatment_model.dart';
 import 'package:skinsync_clinic_portal/repositories/treatment_repository.dart';
+
 import '../services/locator.dart';
 import '../utils/exception.dart';
 import 'auth_view_model.dart';
 import 'base_view_model.dart';
 
-final treatmentViewModelProvider =
-    NotifierProvider<TreamententViewModel, TreatmentState>(
-      () => TreamententViewModel(),
-    );
+final treatmentViewModelProvider = NotifierProvider(
+  () => TreamententViewModel._(),
+);
 
 class TreamententViewModel extends BaseViewModel<TreatmentState> {
-  TreamententViewModel() : super(TreatmentState());
+  TreamententViewModel._() : super(TreatmentState());
 
   final TreatmentRepository _treatmentRepository =
       locator<TreatmentRepository>();
@@ -20,11 +21,7 @@ class TreamententViewModel extends BaseViewModel<TreatmentState> {
   @override
   void init() {
     super.init();
-    _loadTreatments();
-  }
-
-  Future<void> _loadTreatments() async {
-    await getTreatments();
+    getTreatments();
   }
 
   Future<bool> getTreatments() async {
@@ -36,7 +33,7 @@ class TreamententViewModel extends BaseViewModel<TreatmentState> {
             throw BadRequestException("Clinic ID not found");
           }
           final response = await _treatmentRepository.getTreatments(
-            clinicId: clinicId,
+            clinicId: kDebugMode ? 9 : clinicId,
           );
 
           state = state.copyWith(treatments: response, loading: false);

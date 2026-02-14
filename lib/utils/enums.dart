@@ -7,9 +7,12 @@ enum SharedPreferencesKeys {
   final String keyText;
 }
 
+enum DoctorRole { doctor, injector }
+
 enum Endpoint {
   login('clinic/login'),
-  getTreatments('clinics/{clinicId}/treatments');
+  getTreatments('clinics/{clinicId}/treatments'),
+  createDoctor('clinic/doctors/register');
 
   final String path;
   const Endpoint(this.path);

@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:skinsync_clinic_portal/services/doctor_service.dart';
 
 import '../repositories/auth_repository.dart';
 import '../repositories/treatment_repository.dart';
@@ -21,4 +22,6 @@ Future<void> initializeServices() async {
     () => TreatmentServices(api: apiBaseHelper),
   );
   locator.registerSingleton(SecureStorageService());
+  locator.registerLazySingleton(() => DoctorService());
+  locator.registerSingleton(apiBaseHelper);
 }
