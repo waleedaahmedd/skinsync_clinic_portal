@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:skinsync_clinic_portal/models/requests/add_treatment_req_model.dart';
-import 'package:skinsync_clinic_portal/models/treatment_model.dart';
 import 'package:skinsync_clinic_portal/models/responses/base_response_model.dart';
+import 'package:skinsync_clinic_portal/models/treatment_model.dart';
 
 import '../repositories/treatment_repository.dart';
 import '../utils/enums.dart';
@@ -19,7 +19,7 @@ class TreatmentServices implements TreatmentRepository {
     required int clinicId,
   }) async {
     final jsonResponse = await _api.get(
-      Endpoint.getClinicTreatments,
+      Endpoint.getTreatments,
 
       pathParams: {'clinicId': clinicId.toString()},
     );

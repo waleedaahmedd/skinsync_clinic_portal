@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:skinsync_clinic_portal/models/Treatment_model.dart';
 import 'package:skinsync_clinic_portal/models/requests/register_doctor_request.dart';
+import 'package:skinsync_clinic_portal/models/treatment_model.dart';
 import 'package:skinsync_clinic_portal/services/locator.dart';
 
 import '../models/requests/treatment_request.dart';
