@@ -4,11 +4,13 @@ import 'package:skinsync_clinic_portal/models/requests/register_doctor_request.d
 import 'package:skinsync_clinic_portal/services/locator.dart';
 
 import '../models/requests/treatment_request.dart';
+import '../models/responses/register_doctor_response.dart';
 import '../services/doctor_service.dart';
 import '../utils/enums.dart';
+import 'auth_view_model.dart';
 import 'base_view_model.dart';
 
-final doctorProvider = NotifierProvider(() => DoctorViewModel._());
+final doctorProvider = NotifierProvider.autoDispose(() => DoctorViewModel._());
 
 class DoctorViewModel extends BaseViewModel<DoctorState> {
   DoctorViewModel._() : super(const DoctorState());
@@ -67,6 +69,21 @@ class DoctorViewModel extends BaseViewModel<DoctorState> {
     });
   }
 
+  Future<void> getDoctors() async {
+    return await runSafely(() async {
+      final authState = ref.read(authViewModelProvider);
+      final clinicId = authState.user?.clinicId;
+      state = state.copyWith(loading: true);
+      final doctors = await locator<DoctorService>().fetchDoctors();
+      state = state.copyWith(
+        loading: false,
+        doctors: doctors
+            .where((doctor) => doctor.clinicId == clinicId)
+            .toList(),
+      );
+    }, showLoading: false);
+  }
+
   @override
   void onError(String message) {
     state = state.copyWith(loading: false);
@@ -78,12 +95,14 @@ class DoctorState {
   final bool loading;
   final DoctorRole? role;
   final List<TreatmentRequest> treatments;
+  final List<Doctor> doctors;
   final bool success;
 
   const DoctorState({
     this.role,
     this.loading = false,
     this.treatments = const [],
+    this.doctors = const [],
     this.success = false,
   });
 
@@ -91,12 +110,14 @@ class DoctorState {
     bool? loading,
     DoctorRole? role,
     List<TreatmentRequest>? treatments,
+    List<Doctor>? doctors,
     bool? success,
   }) {
     return DoctorState(
       loading: loading ?? this.loading,
       role: role ?? this.role,
       treatments: treatments ?? this.treatments,
+      doctors: doctors ?? this.doctors,
       success: success ?? false,
     );
   }

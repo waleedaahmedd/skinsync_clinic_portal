@@ -12,7 +12,8 @@ enum DoctorRole { doctor, injector }
 enum Endpoint {
   login('clinic/login'),
   getTreatments('clinics/{clinicId}/treatments'),
-  createDoctor('clinic/doctors/register');
+  createDoctor('clinic/doctors/register'),
+  getDoctors('doctors');
 
   final String path;
   const Endpoint(this.path);

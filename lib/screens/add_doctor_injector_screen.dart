@@ -41,6 +41,7 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
   void _listener(DoctorState? prev, DoctorState next) {
     if (next.success) {
       log('SUCCESS -> Popping');
+      ref.read(doctorProvider.notifier).getDoctors();
       Navigator.pop(context);
     }
   }

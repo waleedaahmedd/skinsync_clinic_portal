@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
-import 'package:skinsync_clinic_portal/utils/assets.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
-import 'package:skinsync_clinic_portal/utils/extentions.dart';
 import 'package:skinsync_clinic_portal/widgets/empty_widget.dart';
 import 'package:skinsync_clinic_portal/widgets/treatment_list_tile.dart';
+
 import '../../utils/responsive.dart';
 import '../../view_models/treatment_view_model.dart';
 import '../../widgets/dailog box/add_treatment_dailogbox.dart';
@@ -18,7 +16,7 @@ class TreatmentScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(treatmentViewModelProvider);
+    // final state = ref.watch(treatmentViewModelProvider);
 
     return Scaffold(
       body: Padding(

@@ -1,28 +1,32 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
+import 'package:skinsync_clinic_portal/widgets/empty_widget.dart';
 import 'package:skinsync_clinic_portal/widgets/patient_selection_tile.dart';
 
 import '../../../utils/assets.dart';
+import '../../models/responses/register_doctor_response.dart';
+import '../../view_models/doctor_view_model.dart';
 import '../add_doctor_injector_screen.dart';
 
-class MangeDoctorsInjectorsScreen extends StatefulWidget {
+class MangeDoctorsInjectorsScreen extends ConsumerStatefulWidget {
   static const String routeName = '/manage-doctors-injectors';
 
   const MangeDoctorsInjectorsScreen({super.key});
 
   @override
-  State<MangeDoctorsInjectorsScreen> createState() =>
+  ConsumerState<MangeDoctorsInjectorsScreen> createState() =>
       _MangeDoctorsInjectorsScreenState();
 }
 
 class _MangeDoctorsInjectorsScreenState
-    extends State<MangeDoctorsInjectorsScreen> {
+    extends ConsumerState<MangeDoctorsInjectorsScreen> {
   bool isSchedule = true;
 
   DateTime? scheduleStartDateTime;
@@ -32,6 +36,14 @@ class _MangeDoctorsInjectorsScreenState
   DateTime? timeOffEndDateTime;
 
   DateTime selectedDate = DateTime.now();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => ref.read(doctorProvider.notifier).getDoctors(),
+    );
+  }
 
   String getSelectedDayName() {
     return DateFormat('EEEE').format(selectedDate);
@@ -81,7 +93,7 @@ class _MangeDoctorsInjectorsScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
+      body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,14 +132,33 @@ class _MangeDoctorsInjectorsScreenState
             SizedBox(height: 14.h),
             Divider(color: Colors.grey.shade300),
             SizedBox(height: 50.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                patientSelection(),
-                SizedBox(width: 28.9.w),
-                Expanded(child: rightSideContent()),
-              ],
+            Expanded(
+              child: Consumer(
+                builder: (context, ref, _) {
+                  final state = ref.watch(
+                    doctorProvider.select(
+                      (state) =>
+                          (loading: state.loading, doctors: state.doctors),
+                    ),
+                  );
+                  if (state.loading) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (state.doctors.isEmpty) {
+                    return Center(
+                      child: EmptyWidget(height: 300.h, width: 300.h),
+                    );
+                  }
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildDoctorSelection(state.doctors),
+                      SizedBox(width: 28.9.w),
+                      Expanded(child: rightSideContent()),
+                    ],
+                  );
+                },
+              ),
             ),
           ],
         ),
@@ -136,17 +167,19 @@ class _MangeDoctorsInjectorsScreenState
   }
 
   Widget rightSideContent() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        patientInfo(context: context),
-        SizedBox(height: 19.h),
-        medicalInfo(context: context),
-        SizedBox(height: 19.h),
-        calendarAndTimeOffTap(),
-        SizedBox(height: 20.h),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          patientInfo(context: context),
+          SizedBox(height: 19.h),
+          medicalInfo(context: context),
+          SizedBox(height: 19.h),
+          calendarAndTimeOffTap(),
+          SizedBox(height: 20.h),
+        ],
+      ),
     );
   }
 
@@ -476,20 +509,24 @@ class _MangeDoctorsInjectorsScreenState
     );
   }
 
-  Widget patientSelection() {
+  Widget _buildDoctorSelection(List<Doctor> doctors) {
     return SizedBox(
       width: 386.w,
       child: Column(
         children: [
           CupertinoSearchTextField(backgroundColor: Color(0xFFF3F3F5)),
           SizedBox(height: 14.h),
-          ListView.separated(
-            separatorBuilder: (context, index) => SizedBox(height: 15.h),
-            shrinkWrap: true,
-            itemCount: 4,
-            itemBuilder: (context, index) {
-              return PatientSelectionTile(title: "Sarah Johnson");
-            },
+          Expanded(
+            child: ListView.separated(
+              separatorBuilder: (context, index) => SizedBox(height: 15.h),
+              itemCount: doctors.length,
+              itemBuilder: (context, index) {
+                return PatientSelectionTile(
+                  title: doctors[index].name ?? 'N/A',
+                  subTitle: doctors[index].email ?? 'N/A',
+                );
+              },
+            ),
           ),
         ],
       ),
