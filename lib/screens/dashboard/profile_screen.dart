@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skinsync_clinic_portal/screens/about_screen.dart';
-import 'package:skinsync_clinic_portal/screens/mange_staff_screen.dart';
+import 'package:skinsync_clinic_portal/screens/dashboard/mange_staff_screen.dart';
 import 'package:skinsync_clinic_portal/screens/notification_screen.dart';
 import 'package:skinsync_clinic_portal/screens/update_treatment_screen.dart';
 
 import '../change_password_screen.dart';
-import '../create_treatment_screen.dart';
+import '../../widgets/dailog box/add_treatment_dailogbox.dart';
 
 class ProfileScreen extends StatelessWidget {
   static const String routeName = '/profile';
@@ -64,7 +64,7 @@ class ProfileScreen extends StatelessWidget {
                     title: "Manage Staff",
                     subtitle: "Manage clinic staff and services",
                     onTap: () {
-                      context.push(MangeStaffScreen.routeName);
+                      context.push(ManageStaffScreen.routeName);
                     },
                   ),
                 ],
@@ -74,31 +74,31 @@ class ProfileScreen extends StatelessWidget {
             SizedBox(height: 20.h),
 
             // Treatment Management
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: _buildSettingsSection(
-                title: "Treatment Management",
-                items: [
-                  _SettingItemData(
-                    icon: Icons.add_circle_outline,
-                    title: "Create Treatment",
-                    subtitle: "Add new treatments and services",
-                    onTap: () {
-                      context.push(CreateTreatmentScreen.routeName);
-                    },
-                  ),
-                  _SettingItemData(
-                    icon: Icons.edit_outlined,
-                    title: "Update Treatment",
-                    subtitle: "Edit existing treatment details",
-                    onTap: () {
-                      context.push(UpdateTreatmentScreen.routeName);
-                    },
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 20.h),
+            // Padding(
+            //   padding: EdgeInsets.symmetric(horizontal: 16.w),
+            //   child: _buildSettingsSection(
+            //     title: "Treatment Management",
+            //     items: [
+            //       _SettingItemData(
+            //         icon: Icons.add_circle_outline,
+            //         title: "Create Treatment",
+            //         subtitle: "Add new treatments and services",
+            //         onTap: () {
+            //           context.push(CreateTreatmentScreen.routeName);
+            //         },
+            //       ),
+            //       _SettingItemData(
+            //         icon: Icons.edit_outlined,
+            //         title: "Update Treatment",
+            //         subtitle: "Edit existing treatment details",
+            //         onTap: () {
+            //           context.push(UpdateTreatmentScreen.routeName);
+            //         },
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            // SizedBox(height: 20.h),
 
             // password security
             Padding(

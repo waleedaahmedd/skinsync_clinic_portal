@@ -1,23 +1,27 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:skinsync_clinic_portal/models/requests/login_request_model.dart';
 import 'package:skinsync_clinic_portal/utils/responsive.dart';
+import 'package:skinsync_clinic_portal/utils/validators.dart';
 
 import '../utils/assets.dart';
+import '../view_models/auth_view_model.dart';
 import 'dashboard/home_screen.dart';
 
-class SignInScreen extends StatefulWidget {
+class SignInScreen extends ConsumerStatefulWidget {
   static const String routeName = '/sign-in-screen';
 
   const SignInScreen({super.key});
 
   @override
-  State<SignInScreen> createState() => _SignInScreenState();
+  ConsumerState<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
+class _SignInScreenState extends ConsumerState<SignInScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -32,6 +36,14 @@ class _SignInScreenState extends State<SignInScreen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(authViewModelProvider.notifier).initialize();
+    });
+  }
+
+  @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
@@ -43,47 +55,47 @@ class _SignInScreenState extends State<SignInScreen> {
     return Scaffold(
       body: Row(
         children: [
-          context.isLandscape?
-          Expanded(
-            child: Container(
-              color: Colors.white,
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 200.w,
-                      height: 200.h,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: LinearGradient(
-                          colors: [Color(0xFF9BA7D4), Color(0xFF7DD3D3)],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                      ),
-                      child: Image.asset(
-                        PngAssets.splashLogo,
-                        height: 100.w,
-                        width: 100.w,
+          context.isLandscape
+              ? Expanded(
+                  child: Container(
+                    color: Colors.white,
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 200.w,
+                            height: 200.h,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              gradient: LinearGradient(
+                                colors: [Color(0xFF9BA7D4), Color(0xFF7DD3D3)],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                            ),
+                            child: Image.asset(
+                              PngAssets.splashLogo,
+                              height: 100.w,
+                              width: 100.w,
+                            ),
+                          ),
+                          SizedBox(height: 30.h),
+                          Text(
+                            "SkinSync AI",
+                            style: TextStyle(
+                              fontSize: 48.sp,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xFF6B7BA8),
+                              letterSpacing: 4,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    SizedBox(height: 30.h),
-                    Text(
-                      "SkinSync AI",
-                      style: TextStyle(
-                        fontSize: 48.sp,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFF6B7BA8),
-                        letterSpacing: 4,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ):
-          SizedBox.shrink(),
+                  ),
+                )
+              : SizedBox.shrink(),
           Container(width: 1.w, color: Colors.grey.shade300),
           Expanded(
             child: SingleChildScrollView(
@@ -201,22 +213,79 @@ class _SignInScreenState extends State<SignInScreen> {
                             ),
                             SizedBox(height: 40.h),
                             // Full Name Field
-                            _buildTextField(
-                              label: "Email Address",
-                              hintText: "Enter Your Email Address",
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: RichText(
+                                text: TextSpan(
+                                  text: "Email Address",
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    height: 0,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: "*",
+                                      style: TextStyle(
+                                        height: 0,
+                                        color: Colors.red,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 8.h),
+                            TextFormField(
                               controller: _emailController,
-                              isRequired: true,
                               keyboardType: TextInputType.emailAddress,
+                              validator: Validators.email,
+                              decoration: InputDecoration(
+                                hintText: "Enter Your Email Address",
+                              ),
                             ),
                             SizedBox(height: 20.h),
                             // Password Field
-                            _buildPasswordField(
-                              label: "Password",
-                              hintText: "Enter your password",
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: RichText(
+                                text: TextSpan(
+                                  text: "Password",
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    height: 0,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: "*",
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 8.h),
+                            TextFormField(
                               controller: _passwordController,
+                              validator: Validators.password,
                               obscureText: _obscurePassword,
-                              onToggle: () => setState(
-                                () => _obscurePassword = !_obscurePassword,
+                              decoration: InputDecoration(
+                                hintText: "Enter your password",
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _obscurePassword
+                                        ? Icons.visibility_outlined
+                                        : Icons.visibility_off_outlined,
+                                    color: Colors.grey.shade600,
+                                    size: 20.sp,
+                                  ),
+                                  onPressed: () => setState(
+                                    () => _obscurePassword = !_obscurePassword,
+                                  ),
+                                ),
                               ),
                             ),
                             SizedBox(height: 8.h),
@@ -238,10 +307,24 @@ class _SignInScreenState extends State<SignInScreen> {
                               ),
                             ),
                             SizedBox(height: 30.h),
-                            // Create Account Button
                             GestureDetector(
                               onTap: () {
-                                context.goNamed(HomeScreen.routeName);
+                                if (!_formKey.currentState!.validate()) return;
+
+                                ref
+                                    .read(authViewModelProvider.notifier)
+                                    .login(
+                                      loginReq: LoginRequestModel(
+                                        email: _emailController.text.trim(),
+                                        password: _passwordController.text
+                                            .trim(),
+                                      ),
+                                    )
+                                    .then((success) {
+                                      if (success && context.mounted) {
+                                        context.goNamed(HomeScreen.routeName);
+                                      }
+                                    });
                               },
                               child: Container(
                                 width: 215.w,
@@ -288,138 +371,6 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildTextField({
-    required String label,
-    required String hintText,
-    required TextEditingController controller,
-    bool isRequired = false,
-    TextInputType? keyboardType,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        RichText(
-          text: TextSpan(
-            text: label,
-            style: TextStyle(
-              fontSize: 14.sp,
-              height: 0,
-              fontWeight: FontWeight.w600,
-              color: Colors.black,
-            ),
-            children: [
-              if (isRequired)
-                TextSpan(
-                  text: "*",
-                  style: TextStyle(height: 0, color: Colors.red),
-                ),
-            ],
-          ),
-        ),
-        SizedBox(height: 8.h),
-        TextFormField(
-          controller: controller,
-          keyboardType: keyboardType,
-          decoration: InputDecoration(
-            hintText: hintText,
-             //hintStyle: TextStyle(fontSize: 14.sp, color: Colors.grey.shade400),
-            // filled: true,
-            // fillColor: Colors.white,
-            // border: OutlineInputBorder(
-            //   borderRadius: BorderRadius.circular(8.r),
-            //   borderSide: BorderSide(color: Colors.grey.shade300),
-            // ),
-            // enabledBorder: OutlineInputBorder(
-            //   borderRadius: BorderRadius.circular(8.r),
-            //   borderSide: BorderSide(color: Colors.grey.shade300),
-            // ),
-            // focusedBorder: OutlineInputBorder(
-            //   borderRadius: BorderRadius.circular(8.r),
-            //   borderSide: BorderSide(color: Colors.blue, width: 1.5),
-            // ),
-            // contentPadding: EdgeInsets.symmetric(
-            //   horizontal: 16.w,
-            //   vertical: 14.h,
-            // ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildPasswordField({
-    required String label,
-    required String hintText,
-    required TextEditingController controller,
-    required bool obscureText,
-    required VoidCallback onToggle,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        RichText(
-          text: TextSpan(
-            text: label,
-            style: TextStyle(
-              fontSize: 14.sp,
-              height: 0,
-              fontWeight: FontWeight.w600,
-              color: Colors.black,
-            ),
-            children: [
-              TextSpan(
-                text: "*",
-                style: TextStyle(color: Colors.red),
-              ),
-            ],
-          ),
-        ),
-        SizedBox(height: 8.h),
-        TextFormField(
-          controller: controller,
-          obscureText: obscureText,
-          decoration: InputDecoration(
-            hintText: hintText,
-            // hintStyle: TextStyle(
-            //   height: 0,
-            //
-            //   fontSize: 14.sp,
-            //   color: Colors.grey.shade400,
-            // ),
-            // filled: true,
-            // fillColor: Colors.white,
-            // border: OutlineInputBorder(
-            //   borderRadius: BorderRadius.circular(8.r),
-            //   borderSide: BorderSide(color: Colors.grey.shade300),
-            // ),
-            // enabledBorder: OutlineInputBorder(
-            //   borderRadius: BorderRadius.circular(8.r),
-            //   borderSide: BorderSide(color: Colors.grey.shade300),
-            // ),
-            // focusedBorder: OutlineInputBorder(
-            //   borderRadius: BorderRadius.circular(8.r),
-            //   borderSide: BorderSide(color: Colors.blue, width: 1.5),
-            // ),
-            // contentPadding: EdgeInsets.symmetric(
-            //   horizontal: 16.w,
-            //   vertical: 14.h,
-            // ),
-            suffixIcon: IconButton(
-              icon: Icon(
-                obscureText
-                    ? Icons.visibility_outlined
-                    : Icons.visibility_off_outlined,
-                color: Colors.grey.shade600,
-                size: 20.sp,
-              ),
-              onPressed: onToggle,
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

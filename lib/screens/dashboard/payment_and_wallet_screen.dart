@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/payment_history_screen.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
+import 'package:skinsync_clinic_portal/utils/responsive.dart';
 import 'package:skinsync_clinic_portal/widgets/dailog%20box/payment_withdrawal_dailog_box.dart';
 
 import '../../utils/assets.dart';
@@ -95,23 +96,43 @@ class PaymentAndWalletScreen extends StatelessWidget {
           colors: [Color(0xFF0C3987), Color(0xFF6B0DAE)],
         ),
       ),
-      child: Row(
+      child: AdaptiveLayoutRowColumn(
+        alignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: .center,
+        expandedWidget: false,
+        widthBetween: 0,
         children: [
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: .center,
             children: [
               Text("Available Balance", style: CustomFonts.white22w600),
               Text("\$ 228,565", style: CustomFonts.white40w700),
             ],
           ),
-          Spacer(),
-          Icon(
-            CupertinoIcons.arrowtriangle_up_fill,
-            size: 14.sp,
-            color: AppTheme.greenColor,
+          context.isLandscape? Spacer() : SizedBox.shrink(),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: .center,
+            children: [
+              Icon(
+                CupertinoIcons.arrowtriangle_up_fill,
+                size: 14.sp,
+                color: AppTheme.greenColor,
+                
+              ),
+              SizedBox(width: 10.r),
+              Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(text: "\$ 20,600 ", style: CustomFonts.green16w600),
+                    TextSpan(text: "Last Week ", style: CustomFonts.white16w600),
+                  ],
+                ),
+              ),
+            ],
           ),
-          SizedBox(width: 10.w),
-          Text("\$ 20,600 ", style: CustomFonts.green16w600),
-          Text("Last Week ", style: CustomFonts.white16w600),
           SizedBox(width: 20.w),
           GestureDetector(
             onTap: () {
@@ -127,6 +148,8 @@ class PaymentAndWalletScreen extends StatelessWidget {
                 color: Colors.white,
               ),
               child: Row(
+                mainAxisAlignment: .center,
+                crossAxisAlignment: .center,
                 children: [
                   SvgPicture.asset(
                     SvgAssets.withdraw,
@@ -135,13 +158,13 @@ class PaymentAndWalletScreen extends StatelessWidget {
                     width: 16.47.w,
                   ),
                   SizedBox(width: 8.w),
-                  Text("Withdraw Balance", style: CustomFonts.purple14w500),
+                  Center(child: Text("Withdraw Balance", style: CustomFonts.purple14w500)),
                 ],
               ),
             ),
           ),
         ],
-      ),
+      )
     );
   }
 

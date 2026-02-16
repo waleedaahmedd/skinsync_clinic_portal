@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
+import 'package:skinsync_clinic_portal/utils/responsive.dart';
 import 'package:skinsync_clinic_portal/widgets/dailog%20box/receipt_details.dart';
 
 import '../utils/theme.dart';
@@ -11,20 +12,22 @@ class TranscationTileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         showDialog<bool>(
-                    context: context,
-                    builder: (context) => ReceiptDialog()
-                     
-                  );
+          context: context,
+          builder: (context) => ReceiptDialog(),
+        );
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15.r),
-          border: Border.all(color:Colors.grey.shade300),
+          border: Border.all(color: Colors.grey.shade300),
         ),
-        child: Row(
+        child: AdaptiveLayoutRowColumn(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          alignment: MainAxisAlignment.spaceBetween,
+          widthBetween: 0,
           children: [
             Container(
               padding: EdgeInsets.all(12.w),
@@ -38,71 +41,67 @@ class TranscationTileWidget extends StatelessWidget {
                 color: AppTheme.purpleColor,
               ),
             ),
-            SizedBox(width: 30.w),
+            SizedBox(width: 30.r),
             Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: context.isLandscape? CrossAxisAlignment.start : .center,
+              mainAxisAlignment: .center,
               children: [
-                Text(
-                  "Sarah Johnson",
-                  style: CustomFonts.black18w500
-                ),
-                Text(
-                  "Botox",
-                 style: CustomFonts.grey18w500
-                ),
+                Text("Sarah Johnson", style: CustomFonts.black18w500),
+                Text("Botox", style: CustomFonts.grey18w500),
                 Row(
+                  crossAxisAlignment: .center,
+                  mainAxisAlignment: .center,
                   children: [
                     Icon(
                       Icons.calendar_today,
                       size: 16.sp,
                       color: AppTheme.textSecondary,
                     ),
-                    SizedBox(width: 10.w),
-                    Text(
-                      "10/29/2025",
-                      style: CustomFonts.grey18w500
-                    ),
-                    SizedBox(width: 20.w),
+                    SizedBox(width: 10.r),
+                    Text("10/29/2025", style: CustomFonts.grey18w500),
+                    SizedBox(width: 20.r),
                     Icon(
                       Icons.access_time,
                       size: 16.sp,
                       color: AppTheme.textSecondary,
                     ),
-                    SizedBox(width: 10.w),
-                    Text(
-                      "3:00 PM",
-                      style:CustomFonts.grey18w500
-                    ),
+                    SizedBox(width: 10.r),
+                    Text("3:00 PM", style: CustomFonts.grey18w500),
                   ],
                 ),
               ],
             ),
-            Spacer(),
-            Text(
-              "\$350",
-              style: TextStyle(
-                fontSize: 22.sp,
-                fontWeight: FontWeight.w600,
-                color: Color(0xFF312C85),
-                fontFamily: 'Degular'
-              ),
-      
-            ),
-            SizedBox(width: 10.w),
-            GestureDetector(
-              onTap: (){},
-              child: Container(
-                padding: EdgeInsets.all(7.w),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.r),
-                  border: Border.all(color: AppTheme.fillCOlor),
+            context.isLandscape ? Spacer() : SizedBox.shrink(),
+            Row(
+              crossAxisAlignment: .center,
+              mainAxisAlignment: .center,
+              children: [
+                Text(
+                  "\$350",
+                  style: TextStyle(
+                    fontSize: 22.sp,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF312C85),
+                    fontFamily: 'Degular',
+                  ),
                 ),
-                child: Icon(
-                  Icons.file_download_outlined,
-                  size: 16.sp,
-                  color: AppTheme.textPrimary,
+                SizedBox(width: 10.r),
+                GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    padding: EdgeInsets.all(7.w),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.r),
+                      border: Border.all(color: AppTheme.fillCOlor),
+                    ),
+                    child: Icon(
+                      Icons.file_download_outlined,
+                      size: 16.sp,
+                      color: AppTheme.textPrimary,
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
           ],
         ),

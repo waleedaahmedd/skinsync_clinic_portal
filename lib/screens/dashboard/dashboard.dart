@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/appointment_screen.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/payment_and_wallet_screen.dart';
 import 'package:skinsync_clinic_portal/utils/responsive.dart';
@@ -9,10 +11,13 @@ import 'package:skinsync_clinic_portal/utils/responsive.dart';
 import '../../utils/assets.dart';
 import '../../utils/color_constant.dart';
 import '../../widgets/custom_app_bar.dart';
+import 'manage_doc_injector_screen.dart';
+import 'mange_staff_screen.dart';
 import 'home_screen.dart';
 import 'patient_ai_management.dart';
 import 'patient_management.dart';
 import 'profile_screen.dart';
+import 'treatment_screen.dart';
 
 class Dashboard extends StatelessWidget {
   static const String routeName = '/dashboard';
@@ -48,7 +53,7 @@ class Dashboard extends StatelessWidget {
         return Container(
           width: 270.w,
           height: double.infinity,
-          padding: EdgeInsets.only(top: 38.h,bottom: 20.h),
+          padding: EdgeInsets.only(top: 38.h, bottom: 20.h),
           margin: EdgeInsets.all(10.w),
           decoration: BoxDecoration(
             color: CustomColors.navigationRailBackground,
@@ -60,55 +65,71 @@ class Dashboard extends StatelessWidget {
             children: [
               Image.asset(PngAssets.splashLogo, width: 48.r, height: 48.r),
               SizedBox(width: 5.w),
-              Image.asset(PngAssets.logo, height: 20.r,),
+              Image.asset(PngAssets.logo, height: 20.r),
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-
                       SizedBox(width: 40.w),
 
                       _buildRailItem(
                         context: context,
                         title: 'Home',
-                        icon: SvgAssets.home,
+                        chipIcon: Iconsax.home_2,
                         routeName: HomeScreen.routeName,
                       ),
                       _buildRailItem(
                         context: context,
                         title: 'Patient Management',
-                        icon: SvgAssets.user,
+                        chipIcon: Iconsax.profile_2user,
                         routeName: PatientManagementScreen.routeName,
                       ),
                       _buildRailItem(
                         context: context,
                         title: 'Patient AI Management',
-                        icon: SvgAssets.ai,
+                        chipIcon: Iconsax.chart_34,
                         routeName: PatientAiManagementScreen.routeName,
                       ),
                       _buildRailItem(
                         context: context,
                         title: 'Appointments',
-                        icon: SvgAssets.appointments,
+                        chipIcon: Iconsax.calendar,
                         routeName: AppointmentScreen.routeName,
                       ),
                       _buildRailItem(
                         context: context,
+                        title: 'Treatments',
+                        chipIcon: Icons.vaccines_outlined,
+                        routeName: TreatmentScreen.routeName,
+                      ),
+                      _buildRailItem(
+                        context: context,
+                        title: 'Doctors / Injectors',
+                        chipIcon: Icons.masks_outlined,
+                        routeName: MangeDoctorsInjectorsScreen.routeName,
+                      ),
+                      _buildRailItem(
+                        context: context,
+                        title: 'Staff',
+                        chipIcon: Iconsax.user_octagon,
+                        routeName: ManageStaffScreen.routeName,
+                      ),
+                      _buildRailItem(
+                        context: context,
                         title: 'Payments & Wallets',
-                        icon: SvgAssets.payments,
+                        chipIcon: Iconsax.wallet_3,
                         routeName: PaymentAndWalletScreen.routeName,
                       ),
                       _buildRailItem(
                         context: context,
                         title: 'Profile',
-                        icon: SvgAssets.profile,
+                        chipIcon: Iconsax.profile_circle,
                         routeName: ProfileScreen.routeName,
                       ),
                     ],
                   ),
                 ),
               ),
-
             ],
           ),
         );
@@ -119,7 +140,7 @@ class Dashboard extends StatelessWidget {
   Widget _buildRailItem({
     required BuildContext context,
     required String title,
-    required String icon,
+    required IconData chipIcon,
     required String routeName,
   }) {
     final uri = GoRouter.of(context).state.path;
@@ -141,16 +162,18 @@ class Dashboard extends StatelessWidget {
               : CustomColors.textGreyColor,
         ),
       ),
-      icon: SvgPicture.asset(
-        icon,
-        width: 20.w,
-        height: 20.w,
-        color: isSelected
-            ? context.isLandscape
-                  ? CustomColors.blueColor
-                  : Colors.black
-            : CustomColors.textGreyColor,
-      ),
+      icon: Icon(chipIcon,size: 20.r,color: isSelected? CustomColors.purpleColor:CustomColors.blueColor,),
+      // icon: SvgPicture.asset(
+      //   icon,
+      //   width: 20.w,
+      //   height: 20.w,
+      //   color: isSelected
+      //       ?
+      //   // context.isLandscape ?
+      //    CustomColors.blueColor
+      //             // : Colors.black
+      //       : CustomColors.purpleColor,
+      // ),
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.transparent,
         minimumSize: Size(double.infinity, 22.h),

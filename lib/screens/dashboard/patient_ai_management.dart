@@ -30,9 +30,9 @@ class _PatientAiManagementScreenState extends State<PatientAiManagementScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 20.h),
-            Text('Patient Management', style: CustomFonts.black22w600),
+            Text('Patient Ai Management', style: CustomFonts.black22w600),
             SizedBox(height: 14.h),
-            Divider(color: AppTheme.fillCOlor),
+            Divider(color: Colors.grey.shade300),
             SizedBox(height: 50.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,

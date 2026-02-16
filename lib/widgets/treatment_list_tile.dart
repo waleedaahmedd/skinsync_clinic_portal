@@ -1,0 +1,154 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:skinsync_clinic_portal/utils/assets.dart';
+import 'package:skinsync_clinic_portal/utils/color_constant.dart';
+import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
+
+import '../models/treatment_model.dart';
+import '../utils/responsive.dart';
+
+class TreatmentListTile extends StatelessWidget {
+  const TreatmentListTile({super.key, required this.treatment});
+
+  final TreatmentModel treatment;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: context.isLandscape ? 300.h : 500.h,
+      margin: EdgeInsets.all(20.w),
+      padding: EdgeInsets.all(20.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: CustomColors.lightBlueColor,
+            blurRadius: 8.r,
+            offset: Offset(0, 2.h),
+          ),
+          BoxShadow(
+            color: CustomColors.lightPurpleColor,
+            blurRadius: 10.r,
+            offset: Offset(2.h, 0),
+          ),
+        ],
+        borderRadius: BorderRadius.circular(15.r),
+      ),
+      child: AdaptiveLayoutRowColumn(
+        size: MainAxisSize.max,
+        expandedWidget: true,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12.r),
+            child: Image.asset(
+              PngAssets.treatmentImage,
+              // width: 0.5.sw,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) => Container(
+                color: Color(0xFFE8E8E8),
+                child: Icon(Icons.broken_image, color: Colors.grey),
+              ),
+            ),
+          ),
+          context.isLandscape
+              ? treatmentResponsiveData()
+              : Expanded(child: treatmentResponsiveData()),
+        ],
+      ),
+    );
+  }
+}
+
+Widget treatmentResponsiveData() {
+  return Column(
+    mainAxisSize: MainAxisSize.max,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      // Title
+      Text("Botox Treatment", style: CustomFonts.black18w600),
+      SizedBox(height: 20.h),
+      // Area
+      Expanded(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(10.w),
+          child: Wrap(
+            spacing: 20.r,
+            runSpacing: 20.r,
+            children: List.generate(
+              30,
+              (index) => Container(
+                margin: EdgeInsets.only(right: 10.w),
+                padding: EdgeInsets.all(14.w),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(14.r),
+                  boxShadow: [
+                    BoxShadow(
+                      color: CustomColors.lightBlueColor,
+                      blurRadius: 8.r,
+                      offset: Offset(0, 2.h),
+                    ),
+                    BoxShadow(
+                      color: CustomColors.lightPurpleColor,
+                      blurRadius: 10.r,
+                      offset: Offset(2.h, 0),
+                    ),
+                  ],
+                ),
+
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Glabella",
+                      style: CustomFonts.black14w500.copyWith(
+                        color: Colors.grey.shade700,
+                      ),
+                    ),
+                    SizedBox(height: 10.h),
+
+                    // Price
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            style: CustomFonts.black14w600, // base style
+                            children: [
+                              TextSpan(
+                                text: "\$300 ",
+                                style: CustomFonts.black14w600.copyWith(
+                                  color: CustomColors.blueColor,
+                                ),
+                              ),
+                              const TextSpan(
+                                text: " /Per Syringe",
+                                // inherits font from parent; add color here if you want a different one
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+      Align(
+        alignment: Alignment.bottomRight,
+        child: Text(
+          " Price: \$100",
+          style: CustomFonts.black18w600.copyWith(
+            color: CustomColors.purpleColor,
+          ),
+        ),
+      ),
+    ],
+  );
+}

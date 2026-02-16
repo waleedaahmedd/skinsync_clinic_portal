@@ -2,9 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:skinsync_clinic_portal/app_init.dart';
 import 'package:skinsync_clinic_portal/utils/responsive.dart';
-
 import '../../utils/assets.dart';
 import '../../widgets/treatment_stats_card_widget.dart';
 
@@ -397,7 +395,7 @@ class HomeScreen extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 20.h,),
+        SizedBox(height: 20.h),
         AdaptiveLayoutRowColumn(
           expandedWidget: true,
           children: [

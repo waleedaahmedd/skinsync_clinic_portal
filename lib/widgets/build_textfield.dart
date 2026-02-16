@@ -7,13 +7,18 @@ class BuildTextField extends StatelessWidget {
   final String label;
   final TextEditingController controller;
   final String hintText;
-  final int maxLines = 1;
+  final int maxLines;
+  final String? Function(String?)? validator;
+  final TextInputType? keyboardType;
+
   const BuildTextField({
     super.key,
     required this.label,
     required this.controller,
     required this.hintText,
-    maxLines,
+    this.maxLines = 1,
+    this.validator,
+    this.keyboardType,
   });
 
   @override
@@ -21,12 +26,14 @@ class BuildTextField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: CustomFonts.black18w600),
+        Text(label, style: CustomFonts.black14w500),
         SizedBox(height: 8.h),
         TextFormField(
           controller: controller,
           maxLines: maxLines,
           style: TextStyle(fontSize: 14.sp, color: Colors.black87),
+          keyboardType: keyboardType,
+          validator: validator,
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: TextStyle(fontSize: 14.sp, color: Colors.grey[400]),

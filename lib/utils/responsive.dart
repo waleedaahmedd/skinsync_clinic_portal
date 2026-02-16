@@ -20,6 +20,7 @@ extension ResponsiveExtension on BuildContext {
 class AdaptiveLayoutRowColumn extends StatelessWidget {
   final List<Widget> children;
   final MainAxisAlignment? alignment;
+  final CrossAxisAlignment? crossAxisAlignment;
   final double? widthBetween;
   final double? heightBetween;
   final MainAxisSize? size;
@@ -31,7 +32,9 @@ class AdaptiveLayoutRowColumn extends StatelessWidget {
     this.alignment,
     this.size,
     this.widthBetween,
-    this.heightBetween, this.expandedWidget,
+    this.heightBetween,
+    this.expandedWidget,
+    this.crossAxisAlignment
   });
 
   @override
@@ -49,6 +52,7 @@ class AdaptiveLayoutRowColumn extends StatelessWidget {
       return Row(
         mainAxisAlignment: alignment ?? MainAxisAlignment.start,
         mainAxisSize: size ?? MainAxisSize.max,
+        crossAxisAlignment: crossAxisAlignment ?? CrossAxisAlignment.start,
         children: rowChildren,
       );
     }
@@ -68,7 +72,6 @@ class AdaptiveLayoutRowColumn extends StatelessWidget {
 class AdaptiveLayoutList extends StatelessWidget {
   final List<Widget> children;
   final double? horizontalHeight;
-
   final double? spaceHeight;
   final double? spaceWidth;
 

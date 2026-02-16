@@ -1,33 +1,52 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'dart:async';
 
-class StorageService {
-  static FlutterSecureStorage? _storage;
+import '../utils/Colored_print.dart';
+import '../utils/enums.dart';
 
-  String? _cachedToken;
-  static const String _authKey = 'access-token';
+class SecureStorageService {
+  static final SecureStorageService _instance =
+      SecureStorageService._internal();
+  factory SecureStorageService() => _instance;
 
+  SecureStorageService._internal();
+
+  static const _tokenKey = SharedPreferencesKeys.accessTokenKey;
+  final FlutterSecureStorage _storage = const FlutterSecureStorage();
+
+  final _authStateController = StreamController<bool>.broadcast();
+
+  String? _token;
+
+  /// Call once at app start
   Future<void> init() async {
-    _storage = FlutterSecureStorage(
-      aOptions: AndroidOptions(),
-      iOptions: IOSOptions(
-        accessibility: KeychainAccessibility.first_unlock_this_device,
-      ),
-    );
+    _token = await _storage.read(key: _tokenKey.name);
+    ColoredPrint.green("Auth Token: $_token");
+    _authStateController.add(isLoggedIn);
   }
 
-  Future<void> saveAccessToken(String? accessToken) async {
-    if (accessToken == null) {
-      return;
-    }
-    await _storage?.write(key: _authKey, value: accessToken);
+  String? get token => _token;
+  bool get isLoggedIn => _token != null;
+
+  Stream<bool> get authStateChanges => _authStateController.stream;
+
+  Future<void> saveToken(String token) async {
+    _token = token;
+    await _storage.write(key: _tokenKey.name, value: token);
+    ColoredPrint.green("Token Saved");
+    ColoredPrint.green(token);
+    _authStateController.add(true);
   }
 
-  Future<String?> getAccessToken() async {
-    if (_cachedToken != null) {
-      return _cachedToken;
-    }
-    final token = await _storage?.read(key: _authKey);
-    _cachedToken = token;
-    return token;
+  Future<void> clearToken() async {
+    _token = null;
+    await _storage.delete(key: _tokenKey.name);
+    ColoredPrint.red("Token Cleared");
+    _authStateController.add(false);
+  }
+
+  void dispose() {
+    ColoredPrint.red("Dispose: SecureStorageService");
+    _authStateController.close();
   }
 }
