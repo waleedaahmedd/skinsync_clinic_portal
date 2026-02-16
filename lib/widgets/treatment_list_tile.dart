@@ -60,95 +60,96 @@ class TreatmentListTile extends StatelessWidget {
       ),
     );
   }
-}
 
-Widget treatmentResponsiveData() {
-  return Column(
-    mainAxisSize: MainAxisSize.max,
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      // Title
-      Text("Botox Treatment", style: CustomFonts.black18w600),
-      SizedBox(height: 20.h),
-      // Area
-      Expanded(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.all(10.w),
-          child: Wrap(
-            spacing: 20.r,
-            runSpacing: 20.r,
-            children: List.generate(
-              30,
-              (index) => Container(
-                margin: EdgeInsets.only(right: 10.w),
-                padding: EdgeInsets.all(14.w),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(14.r),
-                  boxShadow: [
-                    BoxShadow(
-                      color: CustomColors.lightBlueColor,
-                      blurRadius: 8.r,
-                      offset: Offset(0, 2.h),
-                    ),
-                    BoxShadow(
-                      color: CustomColors.lightPurpleColor,
-                      blurRadius: 10.r,
-                      offset: Offset(2.h, 0),
-                    ),
-                  ],
-                ),
-
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Glabella",
-                      style: CustomFonts.black14w500.copyWith(
-                        color: Colors.grey.shade700,
+  Widget treatmentResponsiveData() {
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Title
+        Text(treatment.name ?? "N/A", style: CustomFonts.black18w600),
+        SizedBox(height: 20.h),
+        // Area
+        Expanded(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.all(10.w),
+            child: Wrap(
+              spacing: 20.r,
+              runSpacing: 20.r,
+              children: List.generate(
+                treatment.sideAreas?.length ?? 0,
+                (index) => Container(
+                  margin: EdgeInsets.only(right: 10.w),
+                  padding: EdgeInsets.all(14.w),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(14.r),
+                    boxShadow: [
+                      BoxShadow(
+                        color: CustomColors.lightBlueColor,
+                        blurRadius: 8.r,
+                        offset: Offset(0, 2.h),
                       ),
-                    ),
-                    SizedBox(height: 10.h),
+                      BoxShadow(
+                        color: CustomColors.lightPurpleColor,
+                        blurRadius: 10.r,
+                        offset: Offset(2.h, 0),
+                      ),
+                    ],
+                  ),
 
-                    // Price
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        RichText(
-                          text: TextSpan(
-                            style: CustomFonts.black14w600, // base style
-                            children: [
-                              TextSpan(
-                                text: "\$300 ",
-                                style: CustomFonts.black14w600.copyWith(
-                                  color: CustomColors.blueColor,
-                                ),
-                              ),
-                              const TextSpan(
-                                text: " /Per Syringe",
-                                // inherits font from parent; add color here if you want a different one
-                              ),
-                            ],
-                          ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        treatment.sideAreas?[index].name ?? "N/A",
+                        style: CustomFonts.black14w500.copyWith(
+                          color: Colors.grey.shade700,
                         ),
-                      ],
-                    ),
-                  ],
+                      ),
+                      SizedBox(height: 10.h),
+
+                      // Price
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          RichText(
+                            text: TextSpan(
+                              style: CustomFonts.black14w600, // base style
+                              children: [
+                                TextSpan(
+                                  text:
+                                      "\$${treatment.sideAreas?[index].perSyringePrice ?? "N/A"} ",
+                                  style: CustomFonts.black14w600.copyWith(
+                                    color: CustomColors.blueColor,
+                                  ),
+                                ),
+                                const TextSpan(
+                                  text: " /Per Syringe",
+                                  // inherits font from parent; add color here if you want a different one
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
         ),
-      ),
-      Align(
-        alignment: Alignment.bottomRight,
-        child: Text(
-          " Price: \$100",
-          style: CustomFonts.black18w600.copyWith(
-            color: CustomColors.purpleColor,
-          ),
-        ),
-      ),
-    ],
-  );
+        // Align(
+        //   alignment: Alignment.bottomRight,
+        //   child: Text(
+        //     " Price: \$100",
+        //     style: CustomFonts.black18w600.copyWith(
+        //       color: CustomColors.purpleColor,
+        //     ),
+        //   ),
+        // ),
+      ],
+    );
+  }
 }

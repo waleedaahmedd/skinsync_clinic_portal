@@ -15,14 +15,8 @@ class TreatmentServices implements TreatmentRepository {
   TreatmentServices({required ApiBaseHelper api}) : _api = api;
 
   @override
-  Future<List<TreatmentModel>> getClinicTreatments({
-    required int clinicId,
-  }) async {
-    final jsonResponse = await _api.get(
-      Endpoint.getClinicTreatments,
-
-      pathParams: {'clinicId': clinicId.toString()},
-    );
+  Future<List<TreatmentModel>> getClinicTreatments() async {
+    final jsonResponse = await _api.get(Endpoint.getClinicTreatments);
     final response = BaseApiResponseModel<List<TreatmentModel>>.fromJson(
       jsonResponse,
       (treatmentList) {

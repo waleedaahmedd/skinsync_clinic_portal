@@ -11,11 +11,11 @@ enum DoctorRole { doctor, injector }
 
 enum Endpoint {
   login('clinic/login'),
-  getClinicTreatments('clinics/{clinicId}/treatments'),
+  getClinicTreatments('clinic/treatments'),
   createDoctor('clinic/doctors/register'),
   getAdminTreatments('treatments/masters'),
-  getAdminTreatmentsSideAreas('/clinic/side-areas/treatment/{treatmentId}'),
-  addClinicTreatment('/clinic/treatments');
+  getAdminTreatmentsSideAreas('clinic/side-areas/treatment/{treatmentId}'),
+  addClinicTreatment('clinic/side-areas/bulk');
 
   final String path;
   const Endpoint(this.path);
@@ -31,6 +31,7 @@ enum Endpoint {
 
 enum BaseUrls {
   api('http://3.128.27.193/api/');
+  // api('https://s21hn0m8-8084.asse.devtunnels.ms/api/');
 
   final String url;
 
