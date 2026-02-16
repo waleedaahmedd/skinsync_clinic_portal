@@ -4,20 +4,37 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 import 'package:skinsync_clinic_portal/widgets/empty_widget.dart';
 import 'package:skinsync_clinic_portal/widgets/treatment_list_tile.dart';
-
 import '../../utils/responsive.dart';
+import '../../view_models/auth_view_model.dart';
 import '../../view_models/treatment_view_model.dart';
 import '../../widgets/dailog box/add_treatment_dailogbox.dart';
 
-class TreatmentScreen extends ConsumerWidget {
+class TreatmentScreen extends ConsumerStatefulWidget {
   const TreatmentScreen({super.key});
 
   static const String routeName = '/treatment';
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // final state = ref.watch(treatmentViewModelProvider);
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _TreatmentScreenState();
+}
 
+class _TreatmentScreenState extends ConsumerState<TreatmentScreen> {
+  @override
+  void initState() {
+    final authState = ref.read(authViewModelProvider);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref
+          .read(treatmentViewModelProvider.notifier)
+          .getTreatments(authState.user!.clinicId!);
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // final state = ref.watch(treatmentViewModelProvider);
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
@@ -99,7 +116,7 @@ class TreatmentScreen extends ConsumerWidget {
                     separatorBuilder: (_, __) => SizedBox(height: 20.h),
                     itemBuilder: (context, index) {
                       final treatment = state.treatments[index];
-                      return TreatmentListTile();
+                      return TreatmentListTile(treatment: treatment);
                     },
                   );
                 },

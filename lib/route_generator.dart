@@ -122,11 +122,11 @@ class RouteGenerator {
         name: AddDoctorInjectorScreen.routeName,
         builder: (_, _) => AddDoctorInjectorScreen(),
       ),
-      GoRoute(
-        name: UpdateTreatmentScreen.routeName,
-        path: UpdateTreatmentScreen.routeName,
-        builder: (_, _) => UpdateTreatmentScreen(),
-      ),
+      // GoRoute(
+      //   name: UpdateTreatmentScreen.routeName,
+      //   path: UpdateTreatmentScreen.routeName,
+      //   builder: (_, _) => UpdateTreatmentScreen(),
+      // ),
       GoRoute(
         name: ChangePasswordScreen.routeName,
         path: ChangePasswordScreen.routeName,
