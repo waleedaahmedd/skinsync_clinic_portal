@@ -1,5 +1,6 @@
 class TreatmentModel {
   int? id;
+  int? price;
   String? name;
   String? description;
   bool? isArea;
@@ -9,6 +10,7 @@ class TreatmentModel {
 
   TreatmentModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    price = json['price'];
     name = json['name'];
     description = json['description'];
     isArea = json['is_area'];

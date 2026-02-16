@@ -140,15 +140,15 @@ class TreatmentListTile extends StatelessWidget {
             ),
           ),
         ),
-        // Align(
-        //   alignment: Alignment.bottomRight,
-        //   child: Text(
-        //     " Price: \$100",
-        //     style: CustomFonts.black18w600.copyWith(
-        //       color: CustomColors.purpleColor,
-        //     ),
-        //   ),
-        // ),
+        Align(
+          alignment: Alignment.bottomRight,
+          child: Text(
+            " Price: \$${treatment.id ?? "N/A"}",
+            style: CustomFonts.black18w600.copyWith(
+              color: CustomColors.purpleColor,
+            ),
+          ),
+        ),
       ],
     );
   }
