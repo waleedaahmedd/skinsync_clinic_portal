@@ -8,8 +8,12 @@ class AddTreatmentReqModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': treatmentId,
-      'sideareas': sideareas.map((area) => area.toJson()).toList(),
+      'treatment_id': treatmentId,
+      'side_area': sideareas
+          .map(
+            (area) => {'side_area_id': area.id, 'price': area.perSyringePrice},
+          )
+          .toList(),
     };
   }
 }

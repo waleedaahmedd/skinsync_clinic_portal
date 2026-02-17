@@ -21,7 +21,9 @@ Future<void> initializeServices() async {
   locator.registerLazySingleton<TreatmentRepository>(
     () => TreatmentServices(api: apiBaseHelper),
   );
-  locator.registerSingleton(SecureStorageService());
+  final secureStorageService = SecureStorageService();
+  await secureStorageService.init();
+  locator.registerSingleton(secureStorageService);
   locator.registerLazySingleton(() => DoctorService());
   locator.registerSingleton(apiBaseHelper);
 }

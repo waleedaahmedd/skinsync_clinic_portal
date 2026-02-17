@@ -3,8 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skinsync_clinic_portal/screens/sign_in_screen.dart';
 
+import '../services/storage_service.dart';
 import '../utils/assets.dart';
 import '../utils/color_constant.dart';
+import 'dashboard/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -23,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Future.delayed(const Duration(milliseconds: 1000));
+      await Future.delayed(Duration(milliseconds: _duration));
       setState(() {
         _animate = true;
       });
@@ -31,7 +33,11 @@ class _SplashScreenState extends State<SplashScreen> {
       await Future.delayed(Duration(milliseconds: _duration - 800));
 
       if (mounted) {
-        context.go(SignInScreen.routeName);
+        if (SecureStorageService().isLoggedIn) {
+          context.goNamed(HomeScreen.routeName);
+        } else {
+          context.goNamed(SignInScreen.routeName);
+        }
       }
     });
   }
