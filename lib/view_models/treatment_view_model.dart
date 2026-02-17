@@ -26,7 +26,7 @@ class TreamententViewModel extends BaseViewModel<TreatmentState> {
   //   await getTreatments();
   // }
 
-  Future<bool> getTreatments(int clinicId) async {
+  Future<bool> getTreatments() async {
     return await runSafely<bool?>(showLoading: false, () async {
           state = state.copyWith(loading: true);
           // final authState = ref.read(authViewModelProvider);
@@ -34,9 +34,7 @@ class TreamententViewModel extends BaseViewModel<TreatmentState> {
           // if (clinicId == null) {
           //   throw BadRequestException("Clinic ID not found");
           // }
-          final response = await _treatmentRepository.getClinicTreatments(
-            clinicId: clinicId,
-          );
+          final response = await _treatmentRepository.getClinicTreatments();
 
           state = state.copyWith(treatments: response, loading: false);
 
@@ -86,7 +84,7 @@ class TreamententViewModel extends BaseViewModel<TreatmentState> {
   Future<bool> addClinicTreatment({
     required AddTreatmentReqModel treatment,
   }) async {
-    return await runSafely<bool?>(showLoading: false, () async {
+    return await runSafely<bool?>(showLoading: true, () async {
           final response = await _treatmentRepository.addTreatment(treatment);
           state = state.copyWith(treatments: state.treatments..add(response));
           return true;

@@ -10,6 +10,7 @@ class BuildTextField extends StatelessWidget {
   final int maxLines;
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
+  final Function(String?)? onChanged;
 
   const BuildTextField({
     super.key,
@@ -19,6 +20,7 @@ class BuildTextField extends StatelessWidget {
     this.maxLines = 1,
     this.validator,
     this.keyboardType,
+    this.onChanged,
   });
 
   @override
@@ -34,6 +36,7 @@ class BuildTextField extends StatelessWidget {
           style: TextStyle(fontSize: 14.sp, color: Colors.black87),
           keyboardType: keyboardType,
           validator: validator,
+          onChanged: onChanged,
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: TextStyle(fontSize: 14.sp, color: Colors.grey[400]),

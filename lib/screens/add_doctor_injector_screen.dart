@@ -35,13 +35,10 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final authState = ref.read(authViewModelProvider);
 
-      WidgetsBinding.instance.addPostFrameCallback((_) {
         ref
             .read(treatmentViewModelProvider.notifier)
-            .getTreatments(authState.user!.clinicId!);
-      });
+            .getTreatments();
     });
   }
 
@@ -233,9 +230,9 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
                 fontWeight: FontWeight.w500,
               ),
               onSelected: (selected) {
-                ref
-                    .read(doctorProvider.notifier)
-                    .toggleSelectedTreatment(treatment);
+                // ref
+                //     .read(doctorProvider.notifier)
+                //     .toggleSelectedTreatment(treatment);
               },
             );
           }).toList(),

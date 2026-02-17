@@ -1,5 +1,6 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -31,6 +32,8 @@ class _AddTreatmentDialogState extends ConsumerState<AddTreatmentDialog> {
 
     super.initState();
   }
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   bool _loadingTreatments = true;
   bool _loadingAreas = false;
@@ -108,7 +111,11 @@ class _AddTreatmentDialogState extends ConsumerState<AddTreatmentDialog> {
                                   )
                                   .toList(),
                               onChanged: (value) {
-                                if (value == null) return;
+                                if (value == null ||
+                                    value == _selectedTreatment) {
+                                  return;
+                                }
+
                                 setState(() {
                                   _selectedTreatment = value;
                                 });
@@ -123,7 +130,10 @@ class _AddTreatmentDialogState extends ConsumerState<AddTreatmentDialog> {
                                       )
                                       .then((areas) {
                                         setState(() {
+                                          _sideAreas = areas;
                                           _loadingAreas = false;
+                                          _selectedAreas = [];
+                                          _areaPriceControllers.clear();
                                         });
                                       });
                                 }
@@ -140,6 +150,25 @@ class _AddTreatmentDialogState extends ConsumerState<AddTreatmentDialog> {
                           ),
                   ],
                 ),
+
+                if (_selectedTreatment?.isArea == true && _loadingAreas) ...[
+                  SizedBox(height: 16.h),
+
+                  Wrap(
+                    spacing: 8.w,
+                    runSpacing: 8.h,
+                    children: List.generate(8, (index) {
+                      return Container(
+                        height: 48.h,
+                        width: 150.w,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                      ).withShimmer();
+                    }).toList(),
+                  ),
+                ],
 
                 if (_selectedTreatment?.isArea == true && !_loadingAreas) ...[
                   SizedBox(height: 16.h),
@@ -180,20 +209,39 @@ class _AddTreatmentDialogState extends ConsumerState<AddTreatmentDialog> {
                     }).toList(),
                   ),
                   SizedBox(height: 16.h),
-                  Column(
-                    children: _selectedAreas.map((area) {
-                      return Padding(
-                        padding: EdgeInsets.only(bottom: 12.h),
-                        child: BuildTextField(
-                          label: '${area.name} Per Syringe Price',
-                          controller:
-                              _areaPriceControllers[_selectedAreas.indexOf(
-                                area,
-                              )],
-                          hintText: '\$200',
-                        ),
-                      );
-                    }).toList(),
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      children: _selectedAreas.map((area) {
+                        return Padding(
+                          padding: EdgeInsets.only(bottom: 12.h),
+                          child: BuildTextField(
+                            onChanged: (value) {
+                              _selectedAreas[_selectedAreas.indexOf(area)]
+                                  .perSyringePrice = double.tryParse(
+                                value ?? '0',
+                              );
+                              print(_sideAreas);
+                            },
+                            validator: (value) {
+                              if (value == null ||
+                                  value.isEmpty ||
+                                  int.parse(value) == 0) {
+                                return 'Price is required';
+                              }
+                              return null;
+                            },
+
+                            label: '${area.name} Per Syringe Price',
+                            controller:
+                                _areaPriceControllers[_selectedAreas.indexOf(
+                                  area,
+                                )],
+                            hintText: '\$200',
+                          ),
+                        );
+                      }).toList(),
+                    ),
                   ),
                 ],
                 SizedBox(height: 32.h),
@@ -202,6 +250,27 @@ class _AddTreatmentDialogState extends ConsumerState<AddTreatmentDialog> {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () {
+                          // 1️⃣ Treatment must be selected
+                          if (_selectedTreatment == null) {
+                            EasyLoading.showError('Please select a treatment');
+                            return;
+                          }
+
+                          // 2️⃣ If treatment has areas → at least one area required
+                          if (_selectedTreatment!.isArea == true &&
+                              _selectedAreas.isEmpty) {
+                            EasyLoading.showError(
+                              'Please select at least one area',
+                            );
+                            return;
+                          }
+
+                          // 3️⃣ Validate form (prices)
+                          final isValid =
+                              _formKey.currentState?.validate() ?? false;
+                          if (!isValid) {
+                            return;
+                          }
                           ref
                               .read(treatmentViewModelProvider.notifier)
                               .addClinicTreatment(
@@ -209,7 +278,12 @@ class _AddTreatmentDialogState extends ConsumerState<AddTreatmentDialog> {
                                   treatmentId: _selectedTreatment!.id!,
                                   sideareas: _selectedAreas,
                                 ),
-                              );
+                              )
+                              .then((value) {
+                                if (value && context.mounted) {
+                                  context.pop();
+                                }
+                              });
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.black,
