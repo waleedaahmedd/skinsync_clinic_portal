@@ -9,6 +9,7 @@ import 'package:skinsync_clinic_portal/utils/validators.dart';
 
 import '../utils/enums.dart';
 import '../utils/string_utils.dart';
+import '../view_models/auth_view_model.dart';
 import '../view_models/doctor_view_model.dart';
 import '../view_models/treatment_view_model.dart';
 import '../widgets/build_textfield.dart';
@@ -34,13 +35,17 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // ref.read(treatmentViewModelProvider.notifier).getTreatments();
+
+        ref
+            .read(treatmentViewModelProvider.notifier)
+            .getTreatments();
     });
   }
 
   void _listener(DoctorState? prev, DoctorState next) {
     if (next.success) {
       log('SUCCESS -> Popping');
+      ref.read(doctorProvider.notifier).getDoctors();
       Navigator.pop(context);
     }
   }

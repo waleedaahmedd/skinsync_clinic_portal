@@ -13,6 +13,7 @@ enum Endpoint {
   login('clinic/login'),
   getClinicTreatments('clinic/treatments'),
   createDoctor('clinic/doctors/register'),
+  getDoctors('doctors'),
   getAdminTreatments('treatments/masters'),
   getAdminTreatmentsSideAreas('clinic/side-areas/treatment/{treatmentId}'),
   addClinicTreatment('clinic/side-areas/bulk');
