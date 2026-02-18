@@ -1,7 +1,8 @@
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:async';
 
-import '../utils/Colored_print.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+import '../utils/colored_print.dart';
 import '../utils/enums.dart';
 
 class SecureStorageService {
