@@ -94,4 +94,21 @@ class TreatmentServices implements TreatmentRepository {
     }
     return response.data!;
   }
+
+  @override
+  Future<TreatmentModel> editTreatment(AddTreatmentReqModel req) async {
+    final jsonResponse = await _api.patch(
+      Endpoint.addClinicTreatment,
+      body: req.toJson(),
+    );
+    final response = BaseApiResponseModel<TreatmentModel>.fromJson(
+      jsonResponse,
+      (treatment) => TreatmentModel.fromJson(treatment as Map<String, dynamic>),
+    );
+
+    if (!response.isSuccess) {
+      throw BadRequestException(response.message);
+    }
+    return response.data!;
+  }
 }

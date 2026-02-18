@@ -1,21 +1,22 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:skinsync_clinic_portal/utils/assets.dart';
 import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
+import 'package:skinsync_clinic_portal/widgets/dailog%20box/edit_treatment_dailogbox.dart';
 
 import '../models/treatment_model.dart';
 import '../utils/responsive.dart';
+import '../view_models/treatment_view_model.dart';
 
-class TreatmentListTile extends StatelessWidget {
+class TreatmentListTile extends ConsumerWidget {
   const TreatmentListTile({super.key, required this.treatment});
 
   final TreatmentModel treatment;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       height: context.isLandscape ? 300.h : 500.h,
       margin: EdgeInsets.all(20.w),
@@ -54,18 +55,36 @@ class TreatmentListTile extends StatelessWidget {
             ),
           ),
           context.isLandscape
-              ? treatmentResponsiveData()
-              : Expanded(child: treatmentResponsiveData()),
+              ? treatmentResponsiveData(context, ref)
+              : Expanded(child: treatmentResponsiveData(context, ref)),
+
+          // Icon(Icons.edit),
         ],
       ),
     );
   }
 
-  Widget treatmentResponsiveData() {
+  Widget treatmentResponsiveData(BuildContext context, WidgetRef ref) {
     return Column(
       mainAxisSize: MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Align(
+          alignment: AlignmentGeometry.centerRight,
+          child: InkWell(
+            onTap: () {
+              ref
+                  .read(treatmentViewModelProvider.notifier)
+                  .setTreatment(treatment.id!);
+              showDialog(
+                context: context,
+                builder: (context) => const EditTreatmentDialog(),
+              );
+            },
+            child: Icon(Icons.edit),
+          ),
+        ),
+
         // Title
         Text(treatment.name ?? "N/A", style: CustomFonts.black18w600),
         SizedBox(height: 20.h),
@@ -143,7 +162,7 @@ class TreatmentListTile extends StatelessWidget {
         Align(
           alignment: Alignment.bottomRight,
           child: Text(
-            " Price: \$${treatment.id ?? "N/A"}",
+            " Price: \$${treatment.price ?? "N/A"}",
             style: CustomFonts.black18w600.copyWith(
               color: CustomColors.purpleColor,
             ),

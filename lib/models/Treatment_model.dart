@@ -10,7 +10,7 @@ class TreatmentModel {
 
   TreatmentModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    price = json['price'];
+    price = json['treatment_price'];
     name = json['name'];
     description = json['description'];
     isArea = json['is_area'];

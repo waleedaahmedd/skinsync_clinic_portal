@@ -91,18 +91,43 @@ class TreamententViewModel extends BaseViewModel<TreatmentState> {
         }) ??
         false;
   }
+
+  Future<bool> editClinicTreatment({
+    required AddTreatmentReqModel treatment,
+  }) async {
+    return await runSafely<bool?>(showLoading: true, () async {
+          final response = await _treatmentRepository.addTreatment(treatment);
+          state = state.copyWith(treatments: state.treatments..add(response));
+          return true;
+        }) ??
+        false;
+  }
+
+  void setTreatment(int treatmentId) {
+    state = state.copyWith(selectedTreatmentId: treatmentId);
+  }
 }
 
 class TreatmentState {
   final List<TreatmentModel> treatments;
+  final int? selectedTreatmentId;
   final bool loading;
 
-  TreatmentState({this.treatments = const [], this.loading = false});
+  TreatmentState({
+    this.treatments = const [],
+    this.loading = false,
+    this.selectedTreatmentId,
+  });
 
-  TreatmentState copyWith({bool? loading, List<TreatmentModel>? treatments}) {
+  TreatmentState copyWith({
+    bool? loading,
+    List<TreatmentModel>? treatments,
+    int? selectedTreatmentId,
+  }) {
     return TreatmentState(
       loading: loading ?? this.loading,
       treatments: treatments ?? this.treatments,
+      selectedTreatmentId: selectedTreatmentId ?? this.selectedTreatmentId,
     );
   }
 }
