@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 import 'package:skinsync_clinic_portal/utils/validators.dart';
+import 'package:skinsync_clinic_portal/widgets/dailog%20box/add_slot_dailogBox.dart';
 
 import '../utils/enums.dart';
 import '../utils/string_utils.dart';
@@ -104,7 +105,39 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Details', style: CustomFonts.black22w600),
+                  Row(
+                    children: [
+                      Text('Details', style: CustomFonts.black22w600),
+                      Spacer(),
+                       ElevatedButton.icon(
+                  onPressed: () {
+                     showDialog(
+      context: context,
+      builder: (context) => const AddSlotDialog(),
+    );
+                  },
+                  
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    foregroundColor: Colors.white,
+                    padding: EdgeInsets.symmetric(
+                      vertical: 20.h,
+                      horizontal: 20.w,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    elevation: 0,
+                  ),
+                  icon: Icon(Icons.add, color: Colors.white, size: 20.r),
+                  label: Text(
+                    'Add Slot',
+                    style: CustomFonts.white14w500,
+                  ),
+                ),
+
+                    ],
+                  ),
                   SizedBox(height: 24.h),
                   Consumer(
                     builder: (_, ref, _) {
