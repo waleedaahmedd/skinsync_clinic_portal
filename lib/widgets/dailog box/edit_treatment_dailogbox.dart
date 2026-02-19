@@ -22,40 +22,58 @@ class EditTreatmentDialog extends ConsumerStatefulWidget {
 class EditTreatmentDialogState extends ConsumerState<EditTreatmentDialog> {
   @override
   void initState() {
+    super.initState();
     final provider = ref.read(treatmentViewModelProvider);
-    _selectedTreatment = provider.treatments.firstWhere(
+    final fromProvider = provider.treatments.firstWhere(
       (e) => e.id == provider.selectedTreatmentId,
     );
+    // Work on a copy so we don't mutate provider state; ensures unselect/select updates UI
+    _selectedTreatment =
+        TreatmentModel(
+            id: fromProvider.id,
+            name: fromProvider.name,
+            description: fromProvider.description,
+            isArea: true,
+          )
+          ..price = fromProvider.price
+          ..sideAreas = fromProvider.sideAreas
+              ?.map(
+                (e) => SideAreaModel(
+                  id: e.id,
+                  name: e.name,
+                  perSyringePrice: e.perSyringePrice,
+                ),
+              )
+              .toList();
 
-    if (_selectedTreatment!.isArea!) {
-      setState(() {
-        _loadingAreas = true;
-      });
-    }
     _treatmentPriceControllers = TextEditingController(
       text: _selectedTreatment!.price.toString(),
     );
 
-    if (_selectedTreatment!.isArea ?? false) {
+    if (_selectedTreatment!.sideAreas != null &&
+        _selectedTreatment!.sideAreas!.isNotEmpty) {
+      _loadingAreas = true;
+      // One controller per selected side area, in the same order
       for (var e in _selectedTreatment!.sideAreas!) {
         _areaPriceControllers.add(
-          TextEditingController(text: e.perSyringePrice.toString()),
+          TextEditingController(text: e.perSyringePrice?.toString() ?? ''),
         );
       }
-
+      // Fetch full list of side areas once (outside the loop)
       ref
           .read(treatmentViewModelProvider.notifier)
           .getTreatmentsSideAreas(treatmentId: _selectedTreatment!.id!)
           .then((areas) {
-            setState(() {
-              _sideAreas = areas;
-              _loadingAreas = false;
-              _areaPriceControllers.clear();
-            });
+            if (mounted) {
+              setState(() {
+                _sideAreas = areas;
+                _loadingAreas = false;
+              });
+            }
           });
+    } else {
+      _sideAreas = _selectedTreatment!.sideAreas ?? [];
     }
-
-    super.initState();
   }
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -63,6 +81,7 @@ class EditTreatmentDialogState extends ConsumerState<EditTreatmentDialog> {
   TreatmentModel? _selectedTreatment;
   final List<TextEditingController> _areaPriceControllers = [];
   late List<SideAreaModel> _sideAreas;
+  // late List<SideAreaModel> _selectedSideAreas;
   bool _loadingAreas = false;
   late TextEditingController _treatmentPriceControllers;
 
@@ -87,7 +106,7 @@ class EditTreatmentDialogState extends ConsumerState<EditTreatmentDialog> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                mainAxisAlignment: .spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Add Treatment', style: CustomFonts.black22w600),
                   IconButton(
@@ -144,7 +163,7 @@ class EditTreatmentDialogState extends ConsumerState<EditTreatmentDialog> {
                 ),
               ),
 
-              if (_selectedTreatment?.isArea == true && _loadingAreas) ...[
+              if ((_selectedTreatment?.isArea ?? false) && _loadingAreas) ...[
                 SizedBox(height: 16.h),
 
                 Wrap(
@@ -163,14 +182,16 @@ class EditTreatmentDialogState extends ConsumerState<EditTreatmentDialog> {
                 ),
               ],
 
-              if (_selectedTreatment!.isArea == true && !_loadingAreas) ...[
+              if ((_selectedTreatment?.isArea ?? false) && !_loadingAreas) ...[
                 SizedBox(height: 16.h),
 
                 Wrap(
                   spacing: 8.w,
                   runSpacing: 8.h,
                   children: (_sideAreas).map((area) {
-                    final isSelected = _sideAreas.contains(area);
+                    final isSelected = _selectedTreatment!.sideAreas!.any(
+                      (e) => e.id == area.id,
+                    );
                     return ChoiceChip(
                       label: Text(area.name ?? "N/A"),
                       selected: isSelected,
@@ -187,10 +208,11 @@ class EditTreatmentDialogState extends ConsumerState<EditTreatmentDialog> {
                             _selectedTreatment!.sideAreas!.add(area);
                             _areaPriceControllers.add(TextEditingController());
                           } else {
-                            _selectedTreatment!.sideAreas!.remove(area);
+                            // Find by id: area is from _sideAreas, selected list may have different instances
                             final index = _selectedTreatment!.sideAreas!
-                                .indexOf(area);
+                                .indexWhere((e) => e.id == area.id);
                             if (index != -1) {
+                              _selectedTreatment!.sideAreas!.removeAt(index);
                               _areaPriceControllers[index].dispose();
                               _areaPriceControllers.removeAt(index);
                             }
@@ -202,34 +224,36 @@ class EditTreatmentDialogState extends ConsumerState<EditTreatmentDialog> {
                 ),
                 SizedBox(height: 16.h),
                 Column(
-                  children: _selectedTreatment!.sideAreas!.map((area) {
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: 12.h),
-                      child: BuildTextField(
-                        onChanged: (value) {
-                          _selectedTreatment!
-                              .sideAreas![_sideAreas.indexOf(area)]
-                              .perSyringePrice = double.tryParse(
-                            value ?? '0',
-                          );
-                        },
-                        validator: (value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              int.parse(value) == 0) {
-                            return 'Price is required';
-                          }
-                          return null;
-                        },
-
-                        label: '${area.name} Per Syringe Price',
-                        controller:
-                            _areaPriceControllers[_selectedTreatment!.sideAreas!
-                                .indexOf(area)],
-                        hintText: '\$200',
-                      ),
-                    );
-                  }).toList(),
+                  // Use index so controllers and sideAreas stay in sync (avoids indexOf -1)
+                  children: List.generate(
+                    _selectedTreatment!.sideAreas!.length,
+                    (index) {
+                      final area = _selectedTreatment!.sideAreas![index];
+                      return Padding(
+                        padding: EdgeInsets.only(bottom: 12.h),
+                        child: BuildTextField(
+                          onChanged: (value) {
+                            _selectedTreatment!
+                                .sideAreas![index]
+                                .perSyringePrice = double.tryParse(
+                              value ?? '0',
+                            );
+                          },
+                          validator: (value) {
+                            if (value == null ||
+                                value.isEmpty ||
+                                int.tryParse(value) == 0) {
+                              return 'Price is required';
+                            }
+                            return null;
+                          },
+                          label: '${area.name} Per Syringe Price',
+                          controller: _areaPriceControllers[index],
+                          hintText: '\$200',
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ],
               SizedBox(height: 32.h),

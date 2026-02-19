@@ -63,7 +63,7 @@ class TreamententViewModel extends BaseViewModel<TreatmentState> {
   Future<List<SideAreaModel>> getTreatmentsSideAreas({
     required int treatmentId,
   }) async {
-    return await runSafely<List<SideAreaModel>?>(showLoading: false, () async {
+    return await runSafely<List<SideAreaModel>?>(showLoading: true, () async {
           // state = state.copyWith(loading: true);
           // final authState = ref.read(authViewModelProvider);
           // final clinicId = authState.user?.clinicId;
