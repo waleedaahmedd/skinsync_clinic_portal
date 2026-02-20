@@ -66,14 +66,14 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           Container(
                             width: 200.w,
                             height: 200.h,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              gradient: LinearGradient(
-                                colors: [Color(0xFF9BA7D4), Color(0xFF7DD3D3)],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                            ),
+                            // decoration: BoxDecoration(
+                            //   shape: BoxShape.circle,
+                            //   gradient: LinearGradient(
+                            //     colors: [Color(0xFF9BA7D4), Color(0xFF7DD3D3)],
+                            //     begin: Alignment.topLeft,
+                            //     end: Alignment.bottomRight,
+                            //   ),
+                            // ),
                             child: Image.asset(
                               PngAssets.splashLogo,
                               height: 100.w,
