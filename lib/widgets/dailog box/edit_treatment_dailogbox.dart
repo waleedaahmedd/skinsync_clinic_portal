@@ -108,7 +108,7 @@ class EditTreatmentDialogState extends ConsumerState<EditTreatmentDialog> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Add Treatment', style: CustomFonts.black22w600),
+                  Text('Edit Treatment', style: CustomFonts.black22w600),
                   IconButton(
                     onPressed: () {
                       context.pop();
@@ -121,14 +121,14 @@ class EditTreatmentDialogState extends ConsumerState<EditTreatmentDialog> {
               Text('Treatment Details', style: CustomFonts.black22w600),
               SizedBox(height: 24.h),
 
-              Text("Select Treatment", style: CustomFonts.black14w500),
-              SizedBox(height: 8.h),
+              // Text("Select Treatment", style: CustomFonts.black14w500),
+              // SizedBox(height: 8.h),
               AbsorbPointer(
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton2<TreatmentModel>(
                     isExpanded: true,
                     hint: Text(
-                      "Select Treatment",
+                      _selectedTreatment?.name ?? "N/A",
                       style: TextStyle(color: Colors.grey[400]),
                     ),
                     value: _selectedTreatment,
