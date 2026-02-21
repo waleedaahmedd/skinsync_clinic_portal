@@ -26,13 +26,15 @@ class SideAreaModel {
   int? id;
   String? name;
   double? perSyringePrice;
+  int? maxSyringe;
 
-  SideAreaModel({this.id, this.name, this.perSyringePrice});
+  SideAreaModel({this.id, this.name, this.perSyringePrice, this.maxSyringe});
 
   SideAreaModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     perSyringePrice = json['per_syringe_price'];
+   // maxSyringe = json['max_syringe'];
   }
   Map<String, dynamic> toJson() {
     return {"id": id, "name": name, "per_syringe_price": perSyringePrice};
