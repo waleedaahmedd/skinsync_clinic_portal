@@ -36,10 +36,7 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-
-        ref
-            .read(treatmentViewModelProvider.notifier)
-            .getTreatments();
+      ref.read(treatmentViewModelProvider.notifier).getTreatments();
     });
   }
 
@@ -109,33 +106,29 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
                     children: [
                       Text('Details', style: CustomFonts.black22w600),
                       Spacer(),
-                       ElevatedButton.icon(
-                  onPressed: () {
-                     showDialog(
-      context: context,
-      builder: (context) => const AddSlotDialog(),
-    );
-                  },
-                  
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    foregroundColor: Colors.white,
-                    padding: EdgeInsets.symmetric(
-                      vertical: 20.h,
-                      horizontal: 20.w,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    elevation: 0,
-                  ),
-                  icon: Icon(Icons.add, color: Colors.white, size: 20.r),
-                  label: Text(
-                    'Add Slot',
-                    style: CustomFonts.white14w500,
-                  ),
-                ),
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => const AddSlotDialog(),
+                          );
+                        },
 
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          foregroundColor: Colors.white,
+                          padding: EdgeInsets.symmetric(
+                            vertical: 20.h,
+                            horizontal: 20.w,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                          elevation: 0,
+                        ),
+                        icon: Icon(Icons.add, color: Colors.white, size: 20.r),
+                        label: Text('Add Slot', style: CustomFonts.white14w500),
+                      ),
                     ],
                   ),
                   SizedBox(height: 24.h),
@@ -241,6 +234,7 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
         final treatments = ref.watch(
           treatmentViewModelProvider.select((state) => state.treatments),
         );
+
         final selected = ref.watch(
           doctorProvider.select((state) => state.treatments),
         );
@@ -251,22 +245,52 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
             final isSelected = selected.any(
               (t) => t.treatmentId == treatment.id,
             );
-            return ChoiceChip(
-              label: Text(treatment.name ?? 'N/A'),
-              selected: isSelected,
-              selectedColor: Colors.black,
-              // showCheckmark: false,
-              checkmarkColor: Colors.white,
-              labelStyle: TextStyle(
-                color: isSelected ? Colors.white : Colors.black,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
-              ),
-              onSelected: (selected) {
-                // ref
-                //     .read(doctorProvider.notifier)
-                //     .toggleSelectedTreatment(treatment);
-              },
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                /// 🔹 Main Treatment Chip
+                ChoiceChip(
+                  label: Text(treatment.name ?? 'N/A'),
+                  selected: isSelected,
+                  selectedColor: Colors.black,
+                  // showCheckmark: false,
+                  checkmarkColor: Colors.white,
+                  labelStyle: TextStyle(
+                    color: isSelected ? Colors.white : Colors.black,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  onSelected: (selected) {
+                    ref
+                        .read(doctorProvider.notifier)
+                        .toggleSelectedTreatment(treatment);
+                  },
+                ),
+                if (isSelected && treatment.sideAreas!.isNotEmpty)
+                  Padding(
+                    padding: EdgeInsets.only(top: 10.h),
+                    child: Wrap(
+                      spacing: 8.w,
+                      runSpacing: 8.h,
+                      children: treatment.sideAreas!.map((sideArea) {
+                        return ChoiceChip(
+                          label: Text(sideArea.name ?? 'N/A'),
+                          selected: false,
+                          selectedColor: Colors.blue,
+                          checkmarkColor: Colors.white,
+                          labelStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 13.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          onSelected: (_) {},
+                        );
+                      }).toList(),
+                    ),
+                  ),
+
+                /// 🔹 Static Sub Treatments
+              ],
             );
           }).toList(),
         );
