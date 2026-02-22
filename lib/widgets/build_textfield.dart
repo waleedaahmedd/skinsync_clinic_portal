@@ -11,6 +11,8 @@ class BuildTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
   final Function(String?)? onChanged;
+  final Widget? prefixIcon;
+
 
   const BuildTextField({
     super.key,
@@ -21,6 +23,7 @@ class BuildTextField extends StatelessWidget {
     this.validator,
     this.keyboardType,
     this.onChanged,
+    this.prefixIcon,
   });
 
   @override
@@ -29,7 +32,7 @@ class BuildTextField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(label, style: CustomFonts.black14w500),
-        SizedBox(height: 8.h),
+        SizedBox(height: 10.h),
         TextFormField(
           controller: controller,
           maxLines: maxLines,
@@ -38,6 +41,7 @@ class BuildTextField extends StatelessWidget {
           validator: validator,
           onChanged: onChanged,
           decoration: InputDecoration(
+            prefixIcon:prefixIcon,
             hintText: hintText,
             hintStyle: TextStyle(fontSize: 14.sp, color: Colors.grey[400]),
             filled: true,

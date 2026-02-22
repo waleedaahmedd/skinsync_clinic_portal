@@ -4,6 +4,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 import 'package:skinsync_clinic_portal/utils/extentions.dart';
 import '../../models/requests/add_treatment_req_model.dart';
@@ -78,9 +79,9 @@ class _AddTreatmentDialogState extends ConsumerState<AddTreatmentDialog> {
                   ),
                 ],
               ),
-              SizedBox(height: 24.h),
-              Text('Treatment Details', style: CustomFonts.black22w600),
-              SizedBox(height: 24.h),
+              // SizedBox(height: 24.h),
+              // Text('Treatment Details', style: CustomFonts.black22w600),
+              SizedBox(height: 40.h),
 
               Text("Select Treatment", style: CustomFonts.black14w500),
               SizedBox(height: 8.h),
@@ -143,11 +144,13 @@ class _AddTreatmentDialogState extends ConsumerState<AddTreatmentDialog> {
                         ),
                       ),
                     ),
+              SizedBox(height: 30.h),
               _selectedTreatment == null
                   ? SizedBox()
                   : Padding(
-                      padding: EdgeInsets.only(bottom: 12.h),
+                      padding: EdgeInsets.only(bottom: 30.h),
                       child: BuildTextField(
+                        prefixIcon: Icon(Icons.attach_money,color: CustomColors.blueColor,size: 20.sp,),
                         validator: (value) {
                           if (value == null ||
                               value.isEmpty ||
@@ -160,13 +163,13 @@ class _AddTreatmentDialogState extends ConsumerState<AddTreatmentDialog> {
                         label:
                             '${_selectedTreatment?.name ?? "N/A"} Treatment Price',
                         controller: _treatmentPriceControllers,
-                        hintText: '\$200',
+                        hintText: '200',
                       ),
                     ),
+              Text("Select Areas", style: CustomFonts.black14w500),
 
               if (_selectedTreatment?.isArea == true && _loadingAreas) ...[
-                SizedBox(height: 16.h),
-
+                SizedBox(height: 20.h),
                 Wrap(
                   spacing: 8.w,
                   runSpacing: 8.h,
@@ -185,7 +188,6 @@ class _AddTreatmentDialogState extends ConsumerState<AddTreatmentDialog> {
 
               if (_selectedTreatment?.isArea == true && !_loadingAreas) ...[
                 SizedBox(height: 16.h),
-
                 Wrap(
                   spacing: 8.w,
                   runSpacing: 8.h,
@@ -219,18 +221,21 @@ class _AddTreatmentDialogState extends ConsumerState<AddTreatmentDialog> {
                     );
                   }).toList(),
                 ),
-                SizedBox(height: 16.h),
+                SizedBox(height: 30.h),
                 Column(
-                  children: _selectedAreas.map((area) {
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: 12.h),
+                  children:
+                  _selectedAreas.map((area) {
+                    return
+                      area.maxSyringe != 0?
+                     Padding(
+                      padding: EdgeInsets.only(bottom: 20.h),
                       child: BuildTextField(
+                        prefixIcon: Icon(Icons.attach_money,color: CustomColors.blueColor,size: 20.sp,),
                         onChanged: (value) {
                           _selectedAreas[_selectedAreas.indexOf(area)]
                               .perSyringePrice = double.tryParse(
                             value ?? '0',
                           );
-                          print(_sideAreas);
                         },
                         validator: (value) {
                           if (value == null ||
@@ -244,9 +249,9 @@ class _AddTreatmentDialogState extends ConsumerState<AddTreatmentDialog> {
                         label: '${area.name} Per Syringe Price',
                         controller:
                             _areaPriceControllers[_selectedAreas.indexOf(area)],
-                        hintText: '\$200',
+                        hintText: '200',
                       ),
-                    );
+                    ): SizedBox.shrink();
                   }).toList(),
                 ),
               ],

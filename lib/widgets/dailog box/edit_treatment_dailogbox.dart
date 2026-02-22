@@ -8,6 +8,7 @@ import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 import 'package:skinsync_clinic_portal/utils/extentions.dart';
 import '../../models/requests/add_treatment_req_model.dart';
 import '../../models/treatment_model.dart';
+import '../../utils/color_constant.dart';
 import '../../view_models/treatment_view_model.dart';
 import '../build_textfield.dart';
 
@@ -117,9 +118,7 @@ class EditTreatmentDialogState extends ConsumerState<EditTreatmentDialog> {
                   ),
                 ],
               ),
-              SizedBox(height: 24.h),
-              Text('Treatment Details', style: CustomFonts.black22w600),
-              SizedBox(height: 24.h),
+              SizedBox(height: 40.h),
 
               // Text("Select Treatment", style: CustomFonts.black14w500),
               // SizedBox(height: 8.h),
@@ -145,9 +144,12 @@ class EditTreatmentDialogState extends ConsumerState<EditTreatmentDialog> {
                   ),
                 ),
               ),
+              SizedBox(height: 30.h),
+
               Padding(
-                padding: EdgeInsets.only(bottom: 12.h),
+                padding: EdgeInsets.only(bottom: 20.h),
                 child: BuildTextField(
+                  prefixIcon: Icon(Icons.attach_money,color: CustomColors.blueColor,size: 20.sp,),
                   validator: (value) {
                     if (value == null ||
                         value.isEmpty ||
@@ -162,6 +164,7 @@ class EditTreatmentDialogState extends ConsumerState<EditTreatmentDialog> {
                   hintText: '\$200',
                 ),
               ),
+              Text("Select Areas", style: CustomFonts.black14w500),
 
               if ((_selectedTreatment?.isArea ?? false) && _loadingAreas) ...[
                 SizedBox(height: 16.h),
@@ -222,15 +225,17 @@ class EditTreatmentDialogState extends ConsumerState<EditTreatmentDialog> {
                     );
                   }).toList(),
                 ),
-                SizedBox(height: 16.h),
+                SizedBox(height: 30.h),
                 Column(
                   // Use index so controllers and sideAreas stay in sync (avoids indexOf -1)
                   children: List.generate(
                     _selectedTreatment!.sideAreas!.length,
                     (index) {
                       final area = _selectedTreatment!.sideAreas![index];
-                      return Padding(
-                        padding: EdgeInsets.only(bottom: 12.h),
+                      return
+                        area.maxSyringe != 0?
+                        Padding(
+                        padding: EdgeInsets.only(bottom: 20.h),
                         child: BuildTextField(
                           onChanged: (value) {
                             _selectedTreatment!
@@ -251,7 +256,7 @@ class EditTreatmentDialogState extends ConsumerState<EditTreatmentDialog> {
                           controller: _areaPriceControllers[index],
                           hintText: '\$200',
                         ),
-                      );
+                      ): SizedBox.shrink();
                     },
                   ),
                 ),
