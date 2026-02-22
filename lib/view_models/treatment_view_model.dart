@@ -63,7 +63,7 @@ class TreamententViewModel extends BaseViewModel<TreatmentState> {
   Future<List<SideAreaModel>> getTreatmentsSideAreas({
     required int treatmentId,
   }) async {
-    return await runSafely<List<SideAreaModel>?>(showLoading: false, () async {
+    return await runSafely<List<SideAreaModel>?>(showLoading: true, () async {
           // state = state.copyWith(loading: true);
           // final authState = ref.read(authViewModelProvider);
           // final clinicId = authState.user?.clinicId;
@@ -96,8 +96,19 @@ class TreamententViewModel extends BaseViewModel<TreatmentState> {
     required AddTreatmentReqModel treatment,
   }) async {
     return await runSafely<bool?>(showLoading: true, () async {
-          final response = await _treatmentRepository.addTreatment(treatment);
-          state = state.copyWith(treatments: state.treatments..add(response));
+          final response = await _treatmentRepository.editTreatment(treatment);
+
+          final updatedList = [...state.treatments];
+
+          final index = updatedList.indexWhere((e) => e.id == response.id);
+
+          if (index != -1) {
+            updatedList[index] = response;
+          }
+
+          // Update state
+          state = state.copyWith(treatments: updatedList);
+
           return true;
         }) ??
         false;
