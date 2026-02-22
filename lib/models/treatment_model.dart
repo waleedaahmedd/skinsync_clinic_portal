@@ -34,9 +34,14 @@ class SideAreaModel {
     id = json['id'];
     name = json['name'];
     perSyringePrice = json['per_syringe_price'];
-   // maxSyringe = json['max_syringe'];
+    maxSyringe = json['max_syringe'];
   }
   Map<String, dynamic> toJson() {
-    return {"id": id, "name": name, "per_syringe_price": perSyringePrice};
+    return {
+      "id": id,
+      "name": name,
+      "per_syringe_price": perSyringePrice,
+      "max_syringe": maxSyringe,
+    };
   }
 }

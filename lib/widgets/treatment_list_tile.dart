@@ -162,7 +162,7 @@ class TreatmentListTile extends ConsumerWidget {
         Align(
           alignment: Alignment.bottomRight,
           child: Text(
-            " Price: \$${treatment.price ?? "N/A"}",
+            " Price: \$${treatment.price ?? "0"}",
             style: CustomFonts.black18w600.copyWith(
               color: CustomColors.purpleColor,
             ),
