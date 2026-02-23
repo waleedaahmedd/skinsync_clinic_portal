@@ -4,6 +4,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 import 'package:skinsync_clinic_portal/utils/validators.dart';
 import 'package:skinsync_clinic_portal/widgets/dailog%20box/add_slot_dailogBox.dart';
@@ -60,17 +61,22 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
   @override
   Widget build(BuildContext context) {
     ref.listen(doctorProvider, _listener);
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 250.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              BuildHeader(title: 'Add Doctor / Injector'),
-              SizedBox(height: 24.h),
-              _buildFormContainer(),
-            ],
+    return PopScope(
+      canPop: true,
+      onPopInvokedWithResult: (_, _) =>
+          ref.read(doctorProvider.notifier).clearData(),
+      child: Scaffold(
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 250.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                BuildHeader(title: 'Add Doctor / Injector'),
+                SizedBox(height: 24.h),
+                _buildFormContainer(),
+              ],
+            ),
           ),
         ),
       ),
@@ -117,10 +123,6 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.black,
                           foregroundColor: Colors.white,
-                          padding: EdgeInsets.symmetric(
-                            vertical: 20.h,
-                            horizontal: 20.w,
-                          ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.r),
                           ),
@@ -144,10 +146,6 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.black,
                           foregroundColor: Colors.white,
-                          padding: EdgeInsets.symmetric(
-                            vertical: 20.h,
-                            horizontal: 20.w,
-                          ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.r),
                           ),
@@ -259,36 +257,55 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
     return Consumer(
       builder: (_, ref, _) {
         final treatments = ref.watch(
-          treatmentViewModelProvider.select((state) => state.treatments),
-        );
-        final selected = ref.watch(
           doctorProvider.select((state) => state.treatments),
         );
-        return Wrap(
-          spacing: 8.w,
-          runSpacing: 8.h,
-          children: treatments.map((treatment) {
-            final isSelected = selected.any(
-              (t) => t.treatmentId == treatment.id,
-            );
-            return ChoiceChip(
-              label: Text(treatment.name ?? 'N/A'),
-              selected: isSelected,
-              selectedColor: Colors.black,
-              // showCheckmark: false,
-              checkmarkColor: Colors.white,
-              labelStyle: TextStyle(
-                color: isSelected ? Colors.white : Colors.black,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          spacing: 10.h,
+          children: [
+            Text('Selected Treatments', style: CustomFonts.black14w600),
+            for (final treatment in treatments)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ChoiceChip(
+                    label: Text(treatment.name ?? 'N/A'),
+                    selected: true,
+                    selectedColor: Colors.black,
+                    showCheckmark: false,
+                    checkmarkColor: Colors.white,
+                    labelStyle: TextStyle(
+                      color: CustomColors.whiteColor,
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    onSelected: (selected) {},
+                  ),
+                  if (treatment.sideAreas!.isNotEmpty)
+                    Padding(
+                      padding: EdgeInsets.only(top: 10.h),
+                      child: Wrap(
+                        spacing: 8.w,
+                        runSpacing: 8.h,
+                        children: treatment.sideAreas!.map((sideArea) {
+                          return ChoiceChip(
+                            label: Text(sideArea.name ?? 'N/A'),
+                            selected: false,
+                            selectedColor: Colors.blue,
+                            checkmarkColor: Colors.white,
+                            labelStyle: TextStyle(
+                              color: Colors.black,
+                              fontSize: 13.sp,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            onSelected: (_) {},
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                ],
               ),
-              onSelected: (selected) {
-                // ref
-                //     .read(doctorProvider.notifier)
-                //     .toggleSelectedTreatment(treatment);
-              },
-            );
-          }).toList(),
+          ],
         );
       },
     );

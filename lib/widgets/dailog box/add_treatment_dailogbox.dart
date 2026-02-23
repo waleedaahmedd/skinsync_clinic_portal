@@ -150,7 +150,11 @@ class _AddTreatmentDialogState extends ConsumerState<AddTreatmentDialog> {
                   : Padding(
                       padding: EdgeInsets.only(bottom: 30.h),
                       child: BuildTextField(
-                        prefixIcon: Icon(Icons.attach_money,color: CustomColors.blueColor,size: 20.sp,),
+                        prefixIcon: Icon(
+                          Icons.attach_money,
+                          color: CustomColors.blueColor,
+                          size: 20.sp,
+                        ),
                         validator: (value) {
                           if (value == null ||
                               value.isEmpty ||
@@ -223,35 +227,40 @@ class _AddTreatmentDialogState extends ConsumerState<AddTreatmentDialog> {
                 ),
                 SizedBox(height: 30.h),
                 Column(
-                  children:
-                  _selectedAreas.map((area) {
-                    return
-                      area.maxSyringe != 0?
-                     Padding(
-                      padding: EdgeInsets.only(bottom: 20.h),
-                      child: BuildTextField(
-                        prefixIcon: Icon(Icons.attach_money,color: CustomColors.blueColor,size: 20.sp,),
-                        onChanged: (value) {
-                          _selectedAreas[_selectedAreas.indexOf(area)]
-                              .perSyringePrice = double.tryParse(
-                            value ?? '0',
-                          );
-                        },
-                        validator: (value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              int.parse(value) == 0) {
-                            return 'Price is required';
-                          }
-                          return null;
-                        },
+                  children: _selectedAreas.map((area) {
+                    return area.maxSyringe != 0
+                        ? Padding(
+                            padding: EdgeInsets.only(bottom: 20.h),
+                            child: BuildTextField(
+                              prefixIcon: Icon(
+                                Icons.attach_money,
+                                color: CustomColors.blueColor,
+                                size: 20.sp,
+                              ),
+                              onChanged: (value) {
+                                _selectedAreas[_selectedAreas.indexOf(area)]
+                                    .perSyringePrice = double.tryParse(
+                                  value ?? '0',
+                                );
+                              },
+                              validator: (value) {
+                                if (value == null ||
+                                    value.isEmpty ||
+                                    int.parse(value) == 0) {
+                                  return 'Price is required';
+                                }
+                                return null;
+                              },
 
-                        label: '${area.name} Per Syringe Price',
-                        controller:
-                            _areaPriceControllers[_selectedAreas.indexOf(area)],
-                        hintText: '200',
-                      ),
-                    ): SizedBox.shrink();
+                              label: '${area.name} Per Syringe Price',
+                              controller:
+                                  _areaPriceControllers[_selectedAreas.indexOf(
+                                    area,
+                                  )],
+                              hintText: '200',
+                            ),
+                          )
+                        : SizedBox.shrink();
                   }).toList(),
                 ),
               ],

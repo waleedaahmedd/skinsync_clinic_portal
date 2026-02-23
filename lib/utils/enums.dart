@@ -16,7 +16,8 @@ enum Endpoint {
   getDoctors('doctors'),
   getAdminTreatments('treatments/masters'),
   getAdminTreatmentsSideAreas('clinic/side-areas/treatment/{treatmentId}'),
-  addClinicTreatment('clinic/side-areas/bulk');
+  addClinicTreatment('clinic/side-areas/bulk'),
+  deleteTreatment('clinic/treatments/{treatment_id}');
 
   final String path;
   const Endpoint(this.path);

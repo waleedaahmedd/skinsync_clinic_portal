@@ -112,10 +112,7 @@ class _MangeDoctorsInjectorsScreenState
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,
                     foregroundColor: Colors.white,
-                    padding: EdgeInsets.symmetric(
-                      vertical: 20.h,
-                      horizontal: 20.w,
-                    ),
+
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.r),
                     ),

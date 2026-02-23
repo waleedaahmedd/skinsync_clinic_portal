@@ -71,17 +71,29 @@ class TreatmentListTile extends ConsumerWidget {
       children: [
         Align(
           alignment: AlignmentGeometry.centerRight,
-          child: InkWell(
-            onTap: () {
-              ref
-                  .read(treatmentViewModelProvider.notifier)
-                  .setTreatment(treatment.id!);
-              showDialog(
-                context: context,
-                builder: (context) => const EditTreatmentDialog(),
-              );
-            },
-            child: Icon(Icons.edit),
+          child: Column(
+            children: [
+              InkWell(
+                onTap: () {
+                  ref
+                      .read(treatmentViewModelProvider.notifier)
+                      .setTreatment(treatment.id!);
+                  showDialog(
+                    context: context,
+                    builder: (context) => const EditTreatmentDialog(),
+                  );
+                },
+                child: Icon(Icons.edit),
+              ),
+              InkWell(
+                onTap: () {
+                  ref
+                      .read(treatmentViewModelProvider.notifier)
+                      .deleteTreatment(treatmentId: treatment.id!);
+                },
+                child: Icon(Icons.delete, color: Colors.red),
+              ),
+            ],
           ),
         ),
 
@@ -162,7 +174,7 @@ class TreatmentListTile extends ConsumerWidget {
         Align(
           alignment: Alignment.bottomRight,
           child: Text(
-            " Price: \$${treatment.price ?? "N/A"}",
+            " Price: \$${treatment.price ?? "0"}",
             style: CustomFonts.black18w600.copyWith(
               color: CustomColors.purpleColor,
             ),

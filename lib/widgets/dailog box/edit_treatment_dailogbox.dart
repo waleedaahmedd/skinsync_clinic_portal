@@ -43,6 +43,7 @@ class EditTreatmentDialogState extends ConsumerState<EditTreatmentDialog> {
                   id: e.id,
                   name: e.name,
                   perSyringePrice: e.perSyringePrice,
+                  maxSyringe: e.maxSyringe ?? 0,
                 ),
               )
               .toList();
@@ -56,9 +57,13 @@ class EditTreatmentDialogState extends ConsumerState<EditTreatmentDialog> {
       _loadingAreas = true;
       // One controller per selected side area, in the same order
       for (var e in _selectedTreatment!.sideAreas!) {
-        _areaPriceControllers.add(
-          TextEditingController(text: e.perSyringePrice?.toString() ?? ''),
-        );
+        e.maxSyringe != 0
+            ? _areaPriceControllers.add(
+                TextEditingController(
+                  text: e.perSyringePrice?.toString() ?? '',
+                ),
+              )
+            : null;
       }
       // Fetch full list of side areas once (outside the loop)
       ref
@@ -149,7 +154,11 @@ class EditTreatmentDialogState extends ConsumerState<EditTreatmentDialog> {
               Padding(
                 padding: EdgeInsets.only(bottom: 20.h),
                 child: BuildTextField(
-                  prefixIcon: Icon(Icons.attach_money,color: CustomColors.blueColor,size: 20.sp,),
+                  prefixIcon: Icon(
+                    Icons.attach_money,
+                    color: CustomColors.blueColor,
+                    size: 20.sp,
+                  ),
                   validator: (value) {
                     if (value == null ||
                         value.isEmpty ||
@@ -209,15 +218,32 @@ class EditTreatmentDialogState extends ConsumerState<EditTreatmentDialog> {
                         setState(() {
                           if (selected) {
                             _selectedTreatment!.sideAreas!.add(area);
-                            _areaPriceControllers.add(TextEditingController());
+                            // Only add a controller if this area has per-syringe price (maxSyringe != 0)
+                            if (area.maxSyringe != 0) {
+                              _areaPriceControllers.add(
+                                TextEditingController(),
+                              );
+                            }
                           } else {
-                            // Find by id: area is from _sideAreas, selected list may have different instances
                             final index = _selectedTreatment!.sideAreas!
                                 .indexWhere((e) => e.id == area.id);
                             if (index != -1) {
+                              final areaToRemove =
+                                  _selectedTreatment!.sideAreas![index];
+                              // Controller index = count of areas with maxSyringe!=0 before this index (must compute before remove)
+                              final controllerIndex =
+                                  areaToRemove.maxSyringe != 0
+                                  ? _selectedTreatment!.sideAreas!
+                                        .sublist(0, index)
+                                        .where((e) => e.maxSyringe != 0)
+                                        .length
+                                  : -1;
                               _selectedTreatment!.sideAreas!.removeAt(index);
-                              _areaPriceControllers[index].dispose();
-                              _areaPriceControllers.removeAt(index);
+                              if (controllerIndex >= 0) {
+                                _areaPriceControllers[controllerIndex]
+                                    .dispose();
+                                _areaPriceControllers.removeAt(controllerIndex);
+                              }
                             }
                           }
                         });
@@ -227,38 +253,43 @@ class EditTreatmentDialogState extends ConsumerState<EditTreatmentDialog> {
                 ),
                 SizedBox(height: 30.h),
                 Column(
-                  // Use index so controllers and sideAreas stay in sync (avoids indexOf -1)
-                  children: List.generate(
-                    _selectedTreatment!.sideAreas!.length,
-                    (index) {
-                      final area = _selectedTreatment!.sideAreas![index];
-                      return
-                        area.maxSyringe != 0?
-                        Padding(
-                        padding: EdgeInsets.only(bottom: 20.h),
-                        child: BuildTextField(
-                          onChanged: (value) {
-                            _selectedTreatment!
-                                .sideAreas![index]
-                                .perSyringePrice = double.tryParse(
-                              value ?? '0',
-                            );
-                          },
-                          validator: (value) {
-                            if (value == null ||
-                                value.isEmpty ||
-                                int.tryParse(value) == 0) {
-                              return 'Price is required';
-                            }
-                            return null;
-                          },
-                          label: '${area.name} Per Syringe Price',
-                          controller: _areaPriceControllers[index],
-                          hintText: '\$200',
-                        ),
-                      ): SizedBox.shrink();
-                    },
-                  ),
+                  // _areaPriceControllers has one entry per area with maxSyringe != 0; use controllerIndex for that list
+                  children: () {
+                    int controllerIndex = 0;
+                    return List.generate(
+                      _selectedTreatment!.sideAreas!.length,
+                      (index) {
+                        final area = _selectedTreatment!.sideAreas![index];
+                        if (area.maxSyringe != 0) {
+                          final ctrlIndex = controllerIndex++;
+                          return Padding(
+                            padding: EdgeInsets.only(bottom: 20.h),
+                            child: BuildTextField(
+                              onChanged: (value) {
+                                _selectedTreatment!
+                                    .sideAreas![index]
+                                    .perSyringePrice = double.tryParse(
+                                  value ?? '0',
+                                );
+                              },
+                              validator: (value) {
+                                if (value == null ||
+                                    value.isEmpty ||
+                                    int.tryParse(value) == 0) {
+                                  return 'Price is required';
+                                }
+                                return null;
+                              },
+                              label: '${area.name} Per Syringe Price',
+                              controller: _areaPriceControllers[ctrlIndex],
+                              hintText: '\$200',
+                            ),
+                          );
+                        }
+                        return SizedBox.shrink();
+                      },
+                    );
+                  }(),
                 ),
               ],
               SizedBox(height: 32.h),

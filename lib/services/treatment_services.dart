@@ -111,4 +111,21 @@ class TreatmentServices implements TreatmentRepository {
     }
     return response.data!;
   }
+
+  @override
+  Future<bool> deleteTreatment(int treatmentId) async {
+    final jsonResponse = await _api.delete(
+      Endpoint.deleteTreatment,
+      pathParams: {"treatment_id": treatmentId.toString()},
+    );
+    final response = BaseApiResponseModel<TreatmentModel>.fromJson(
+      jsonResponse,
+      (treatment) => TreatmentModel.fromJson(treatment as Map<String, dynamic>),
+    );
+
+    if (!response.isSuccess) {
+      throw BadRequestException(response.message);
+    }
+    return response.isSuccess;
+  }
 }

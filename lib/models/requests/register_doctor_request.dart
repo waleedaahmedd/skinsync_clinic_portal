@@ -1,7 +1,6 @@
-import 'package:skinsync_clinic_portal/models/requests/base_request.dart';
-
 import '../../utils/enums.dart';
-import 'treatment_request.dart';
+import '../treatment_model.dart';
+import 'base_request.dart';
 
 class RegisterDoctorRequest extends BaseRequest {
   final DoctorRole role;
@@ -9,7 +8,7 @@ class RegisterDoctorRequest extends BaseRequest {
   final String? image;
   final String specialization;
   final ContactInfo contactInfo;
-  final List<TreatmentRequest> treatments;
+  final List<TreatmentModel> treatments;
 
   RegisterDoctorRequest({
     required this.role,
@@ -28,7 +27,7 @@ class RegisterDoctorRequest extends BaseRequest {
       'image': image,
       'specialization': specialization,
       'contact_info': contactInfo.toJson(),
-      'treatments': treatments.map((t) => t.toJson()).toList(),
+      'treatments': treatments.map((t) => t.toRequest()).toList(),
     };
   }
 }
