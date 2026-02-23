@@ -87,12 +87,21 @@ class ApiBaseHelper {
     });
   }
 
-  Future<dynamic> delete(Endpoint endpoint) {
+  Future<dynamic> delete(
+    Endpoint endpoint, {
+    Map<String, String>? pathParams,
+    Map<String, String>? queryParams,
+  }) {
     return _safeRequest(() async {
-      final response = await _client.delete(
-        Uri.parse('${baseUrl.url}${endpoint.path}'),
-        headers: _headers(),
-      );
+      final urlPath = pathParams != null
+          ? endpoint.withParams(pathParams)
+          : endpoint.path;
+
+      final uri = Uri.parse(
+        '${baseUrl.url}$urlPath',
+      ).replace(queryParameters: queryParams);
+      log('URL: $uri');
+      final response = await _client.delete(uri, headers: _headers());
       return _processResponse(response);
     });
   }

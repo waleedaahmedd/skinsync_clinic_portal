@@ -71,17 +71,29 @@ class TreatmentListTile extends ConsumerWidget {
       children: [
         Align(
           alignment: AlignmentGeometry.centerRight,
-          child: InkWell(
-            onTap: () {
-              ref
-                  .read(treatmentViewModelProvider.notifier)
-                  .setTreatment(treatment.id!);
-              showDialog(
-                context: context,
-                builder: (context) => const EditTreatmentDialog(),
-              );
-            },
-            child: Icon(Icons.edit),
+          child: Column(
+            children: [
+              InkWell(
+                onTap: () {
+                  ref
+                      .read(treatmentViewModelProvider.notifier)
+                      .setTreatment(treatment.id!);
+                  showDialog(
+                    context: context,
+                    builder: (context) => const EditTreatmentDialog(),
+                  );
+                },
+                child: Icon(Icons.edit),
+              ),
+              InkWell(
+                onTap: () {
+                  ref
+                      .read(treatmentViewModelProvider.notifier)
+                      .deleteTreatment(treatmentId: treatment.id!);
+                },
+                child: Icon(Icons.delete, color: Colors.red),
+              ),
+            ],
           ),
         ),
 

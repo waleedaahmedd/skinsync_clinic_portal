@@ -114,6 +114,24 @@ class TreamententViewModel extends BaseViewModel<TreatmentState> {
         false;
   }
 
+  Future<bool> deleteTreatment({required int treatmentId}) async {
+    return await runSafely<bool?>(showLoading: true, () async {
+          final _ = await _treatmentRepository.deleteTreatment(treatmentId);
+
+          final updatedList = [...state.treatments];
+
+          final index = updatedList.indexWhere((e) => e.id == treatmentId);
+
+          updatedList.removeAt(index);
+
+          // Update state
+          state = state.copyWith(treatments: updatedList);
+
+          return true;
+        }) ??
+        false;
+  }
+
   void setTreatment(int treatmentId) {
     state = state.copyWith(selectedTreatmentId: treatmentId);
   }
