@@ -7,10 +7,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 import 'package:skinsync_clinic_portal/utils/validators.dart';
 import 'package:skinsync_clinic_portal/widgets/dailog%20box/add_slot_dailogBox.dart';
+import 'package:skinsync_clinic_portal/widgets/dailog%20box/select_treatment_dialog.dart';
 
 import '../utils/enums.dart';
 import '../utils/string_utils.dart';
-import '../view_models/auth_view_model.dart';
 import '../view_models/doctor_view_model.dart';
 import '../view_models/treatment_view_model.dart';
 import '../widgets/build_textfield.dart';
@@ -36,10 +36,7 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-
-        ref
-            .read(treatmentViewModelProvider.notifier)
-            .getTreatments();
+      ref.read(treatmentViewModelProvider.notifier).getTreatments();
     });
   }
 
@@ -109,33 +106,56 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
                     children: [
                       Text('Details', style: CustomFonts.black22w600),
                       Spacer(),
-                       ElevatedButton.icon(
-                  onPressed: () {
-                     showDialog(
-      context: context,
-      builder: (context) => const AddSlotDialog(),
-    );
-                  },
-                  
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    foregroundColor: Colors.white,
-                    padding: EdgeInsets.symmetric(
-                      vertical: 20.h,
-                      horizontal: 20.w,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    elevation: 0,
-                  ),
-                  icon: Icon(Icons.add, color: Colors.white, size: 20.r),
-                  label: Text(
-                    'Add Slot',
-                    style: CustomFonts.white14w500,
-                  ),
-                ),
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => const SelectTreatmentDialog(),
+                          );
+                        },
 
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          foregroundColor: Colors.white,
+                          padding: EdgeInsets.symmetric(
+                            vertical: 20.h,
+                            horizontal: 20.w,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                          elevation: 0,
+                        ),
+                        icon: Icon(Icons.add, color: Colors.white, size: 20.r),
+                        label: Text(
+                          'Add Treatment',
+                          style: CustomFonts.white14w500,
+                        ),
+                      ),
+                      SizedBox(width: 10.w),
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => const AddSlotDialog(),
+                          );
+                        },
+
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          foregroundColor: Colors.white,
+                          padding: EdgeInsets.symmetric(
+                            vertical: 20.h,
+                            horizontal: 20.w,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                          elevation: 0,
+                        ),
+                        icon: Icon(Icons.add, color: Colors.white, size: 20.r),
+                        label: Text('Add Slot', style: CustomFonts.white14w500),
+                      ),
                     ],
                   ),
                   SizedBox(height: 24.h),
