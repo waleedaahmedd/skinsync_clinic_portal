@@ -95,7 +95,9 @@ class AppTheme {
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           elevation: 0,
-          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 10.h),
+          fixedSize: Size(double.infinity, 40.h),
+          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 0.h),
+          visualDensity: VisualDensity.compact,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(50.r),
           ),
@@ -106,7 +108,9 @@ class AppTheme {
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 10.h),
+          fixedSize: Size(double.infinity, 40.h),
+          padding: EdgeInsets.symmetric(horizontal: 24.w),
+          visualDensity: VisualDensity.compact,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(50.r),
           ),

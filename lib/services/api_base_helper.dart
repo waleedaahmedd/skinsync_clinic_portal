@@ -56,6 +56,8 @@ class ApiBaseHelper {
 
   Future<dynamic> post(Endpoint endpoint, {Object? body}) {
     return _safeRequest(() async {
+      log('URL: ${baseUrl.url}${endpoint.path}');
+      log('REQUEST: $body');
       final response = await _client.post(
         Uri.parse('${baseUrl.url}${endpoint.path}'),
         headers: _headers(),

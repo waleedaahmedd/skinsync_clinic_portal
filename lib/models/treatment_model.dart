@@ -6,7 +6,14 @@ class TreatmentModel {
   bool? isArea;
   List<SideAreaModel>? sideAreas;
 
-  TreatmentModel({this.id, this.name, this.description, this.isArea});
+  TreatmentModel({
+    this.id,
+    this.name,
+    this.description,
+    this.isArea,
+    this.sideAreas,
+    this.price,
+  });
 
   TreatmentModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -19,6 +26,33 @@ class TreatmentModel {
               .map((e) => SideAreaModel.fromJson(e))
               .toList()
         : null;
+  }
+
+  TreatmentModel copyWith({
+    int? id,
+    String? name,
+    String? description,
+    bool? isArea,
+    List<SideAreaModel>? sideAreas,
+    int? price,
+  }) {
+    return TreatmentModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      isArea: isArea ?? this.isArea,
+      sideAreas: sideAreas ?? this.sideAreas,
+      price: price ?? this.price,
+    );
+  }
+
+  Map<String, dynamic> toRequest() {
+    return {
+      'treatment_id': id,
+      'treatments_sub_sec_id': sideAreas
+          ?.map((sideArea) => sideArea.id)
+          .toList(),
+    };
   }
 }
 
