@@ -142,7 +142,7 @@ class ApiBaseHelper {
         throw NotFoundException('Endpoint not found');
 
       default:
-        throw ServerException('Server error (${response.statusCode})');
+        throw ServerException(_message(response));
     }
   }
 
