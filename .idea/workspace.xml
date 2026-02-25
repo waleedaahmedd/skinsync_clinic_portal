@@ -5,26 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3620f7d8-3f35-4b2e-83b7-eb383f1a2dc5" name="Changes" comment="chore: update Flutter plugin dependencies and IDE configuration">
-      <change afterPath="$PROJECT_DIR$/.idea/studiobot.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/models/requests/register_doctor_request.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/requests/register_doctor_request.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/models/requests/treatment_request.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/models/treatment_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/treatment_model.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/repositories/treatment_repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/repositories/treatment_repository.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/add_doctor_injector_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/add_doctor_injector_screen.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/screens/dashboard/manage_doc_injector_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/dashboard/manage_doc_injector_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/services/api_base_helper.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/services/api_base_helper.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/services/treatment_services.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/services/treatment_services.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/utils/enums.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utils/enums.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/utils/theme.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utils/theme.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/view_models/doctor_view_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/view_models/doctor_view_model.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/view_models/treatment_view_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/view_models/treatment_view_model.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/widgets/dailog box/add_treatment_dailogbox.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/dailog box/add_treatment_dailogbox.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/widgets/dailog box/edit_treatment_dailogbox.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/dailog box/edit_treatment_dailogbox.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/widgets/dailog box/select_treatment_dialog.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/dailog box/select_treatment_dialog.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/widgets/treatment_list_tile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/treatment_list_tile.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/widgets/patient_selection_tile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/patient_selection_tile.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,12 +37,12 @@
     &quot;assignee&quot;: &quot;tauqeerkhattak&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/waleedaahmedd/skinsync_clinic_portal",
-    "accountId": "7e5ab2a3-01b3-4413-b4ab-b9ddd9775a1e"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/waleedaahmedd/skinsync_clinic_portal&quot;,
+    &quot;accountId&quot;: &quot;7e5ab2a3-01b3-4413-b4ab-b9ddd9775a1e&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
 }</component>
@@ -64,28 +51,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Flutter.main.dart.executor": "Debug",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "Merging main",
-    "io.flutter.project.isFirstOpen": "true",
-    "io.flutter.reload.alreadyRun": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/StudioProjects/skinsync_clinic_portal/web",
-    "settings.editor.selected.configurable": "com.android.studio.ml.bot.mainConfigurable",
-    "show.migrate.to.gradle.popup": "false"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Flutter.main.dart.executor&quot;: &quot;Debug&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;api__integration&quot;,
+    &quot;io.flutter.project.isFirstOpen&quot;: &quot;true&quot;,
+    &quot;io.flutter.reload.alreadyRun&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/StudioProjects/skinsync_clinic_portal/web&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.android.studio.ml.bot.mainConfigurable&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\StudioProjects\skinsync_clinic_portal\web" />
@@ -222,6 +209,11 @@
           <url>file://$PROJECT_DIR$/lib/widgets/dailog box/edit_treatment_dailogbox.dart</url>
           <line>258</line>
           <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="Dart">
+          <url>file://$PROJECT_DIR$/lib/widgets/dailog box/select_treatment_dialog.dart</url>
+          <line>114</line>
+          <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

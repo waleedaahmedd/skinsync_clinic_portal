@@ -7,12 +7,14 @@ class PatientSelectionTile extends StatelessWidget {
   final String title;
   final String? subTitle;
   final String? imageUrl;
+  final double? borderWidth;
   const PatientSelectionTile({
     super.key,
     required,
     required this.title,
     this.subTitle,
     this.imageUrl,
+    this.borderWidth,
   });
 
   @override
@@ -21,7 +23,10 @@ class PatientSelectionTile extends StatelessWidget {
       padding: EdgeInsets.all(15.w),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15.r),
-        border: Border.all(color: AppTheme.titleBorderColor),
+        border: Border.all(
+          color: AppTheme.titleBorderColor,
+          width: borderWidth ?? 1.r,
+        ),
       ),
       child: Row(
         children: [
