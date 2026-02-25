@@ -11,7 +11,6 @@ import 'package:skinsync_clinic_portal/widgets/empty_widget.dart';
 import 'package:skinsync_clinic_portal/widgets/patient_selection_tile.dart';
 
 import '../../../utils/assets.dart';
-import '../../models/responses/register_doctor_response.dart';
 import '../../view_models/doctor_view_model.dart';
 import '../add_doctor_injector_screen.dart';
 
@@ -132,12 +131,7 @@ class _MangeDoctorsInjectorsScreenState
             Expanded(
               child: Consumer(
                 builder: (context, ref, _) {
-                  final state = ref.watch(
-                    doctorProvider.select(
-                      (state) =>
-                          (loading: state.loading, doctors: state.doctors),
-                    ),
-                  );
+                  final state = ref.watch(doctorProvider);
                   if (state.loading) {
                     return Center(child: CircularProgressIndicator());
                   } else if (state.doctors.isEmpty) {
@@ -149,7 +143,7 @@ class _MangeDoctorsInjectorsScreenState
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildDoctorSelection(state.doctors),
+                      _buildDoctorSelection(state),
                       SizedBox(width: 28.9.w),
                       Expanded(child: rightSideContent()),
                     ],
@@ -506,7 +500,7 @@ class _MangeDoctorsInjectorsScreenState
     );
   }
 
-  Widget _buildDoctorSelection(List<Doctor> doctors) {
+  Widget _buildDoctorSelection(DoctorState state) {
     return SizedBox(
       width: 386.w,
       child: Column(
@@ -516,11 +510,14 @@ class _MangeDoctorsInjectorsScreenState
           Expanded(
             child: ListView.separated(
               separatorBuilder: (context, index) => SizedBox(height: 15.h),
-              itemCount: doctors.length,
+              itemCount: state.doctors.length,
               itemBuilder: (context, index) {
                 return PatientSelectionTile(
-                  title: doctors[index].name ?? 'N/A',
-                  subTitle: doctors[index].email ?? 'N/A',
+                  title: state.doctors[index].name ?? 'N/A',
+                  subTitle: state.doctors[index].email ?? 'N/A',
+                  borderWidth: state.selectedDoctor == state.doctors[index]
+                      ? 2.r
+                      : 1.r,
                 );
               },
             ),
