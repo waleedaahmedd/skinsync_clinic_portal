@@ -263,7 +263,8 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           spacing: 10.h,
           children: [
-            Text('Selected Treatments', style: CustomFonts.black14w600),
+            if (treatments.isNotEmpty)
+              Text('Selected Treatments', style: CustomFonts.black14w600),
             for (final treatment in treatments)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
