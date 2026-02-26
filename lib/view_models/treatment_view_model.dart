@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skinsync_clinic_portal/models/treatment_model.dart';
 import 'package:skinsync_clinic_portal/repositories/treatment_repository.dart';

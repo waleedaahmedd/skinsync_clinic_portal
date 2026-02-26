@@ -63,7 +63,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Container(
+                          SizedBox(
                             width: 200.w,
                             height: 200.h,
                             // decoration: BoxDecoration(

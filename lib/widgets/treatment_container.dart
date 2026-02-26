@@ -39,6 +39,5 @@ class TreatmentContainer extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }

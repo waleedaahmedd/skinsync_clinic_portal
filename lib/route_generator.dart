@@ -20,7 +20,6 @@ import 'screens/dashboard/patient_ai_management.dart';
 import 'screens/dashboard/patient_management.dart';
 import 'screens/dashboard/payment_and_wallet_screen.dart';
 import 'screens/splash_screen.dart';
-import 'screens/update_treatment_screen.dart';
 
 class RouteGenerator {
   static final GoRouter router = GoRouter(

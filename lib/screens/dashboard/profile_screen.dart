@@ -5,10 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:skinsync_clinic_portal/screens/about_screen.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/mange_staff_screen.dart';
 import 'package:skinsync_clinic_portal/screens/notification_screen.dart';
-import 'package:skinsync_clinic_portal/screens/update_treatment_screen.dart';
 
 import '../change_password_screen.dart';
-import '../../widgets/dailog box/add_treatment_dailogbox.dart';
 
 class ProfileScreen extends StatelessWidget {
   static const String routeName = '/profile';
