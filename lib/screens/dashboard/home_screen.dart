@@ -3,8 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:skinsync_clinic_portal/utils/responsive.dart';
+
 import '../../utils/assets.dart';
+import '../../widgets/ai_row_widget.dart';
+import '../../widgets/analytics_grid_widget.dart';
+import '../../widgets/appointments_list_widget.dart';
+import '../../widgets/recent_clients_widget.dart';
+import '../../widgets/recent_treatment_row_widget.dart';
 import '../../widgets/treatment_stats_card_widget.dart';
+import '../../widgets/welcome_banner_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   static const String routeName = '/home';
@@ -64,7 +71,7 @@ class HomeScreen extends StatelessWidget {
             crossAxisAlignment: .start,
             children: [
               // Welcome Banner
-              _buildWelcomeBanner(),
+              const WelcomeBannerWidget(),
               SizedBox(height: 24.h),
 
               // Analytics Section
@@ -93,7 +100,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 16.h),
-                    _buildAnalyticsGrid(),
+                    const AnalyticsGridWidget(),
                   ],
                 ),
               ),
@@ -153,12 +160,12 @@ class HomeScreen extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 18.h),
-                    _buildAppointmentsList(),
+                    const AppointmentsListWidget(),
                   ],
                 ),
               ),
               SizedBox(height: 30.h),
-              recentClientsWidget(),
+              const RecentClientsWidget(),
               SizedBox(height: 30.h),
               Container(
                 padding: EdgeInsets.all(20.w),
@@ -195,7 +202,7 @@ class HomeScreen extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 18.h),
-                    _aiRowWidget(stats: treatmentStats),
+                    AiRowWidget(stats: treatmentStats),
                   ],
                 ),
               ),
@@ -252,7 +259,7 @@ class HomeScreen extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 18.h),
-                    _recentTreatmentRowWidget(),
+                    const RecentTreatmentRowWidget(),
                   ],
                 ),
               ),

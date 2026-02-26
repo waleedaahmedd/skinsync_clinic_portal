@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../utils/custom_fonts.dart';
+import '../utils/responsive.dart';
 import '../widgets/header__with_back_btn.dart';
 
 class TwoFactorAuthScreen extends StatefulWidget {
@@ -18,10 +19,13 @@ class _TwoFactorAuthScreenState extends State<TwoFactorAuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFBDBDBD),
+      // backgroundColor: const Color(0xFFBDBDBD),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 250.w),
+          padding: EdgeInsets.symmetric(
+            vertical: 20.h,
+            horizontal: context.isLandscape ? 250.w : 20.w,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

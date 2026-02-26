@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skinsync_clinic_portal/widgets/header__with_back_btn.dart';
 
 import '../utils/custom_fonts.dart';
+import '../utils/responsive.dart';
 
 class ReportProblemScreen extends StatefulWidget {
   const ReportProblemScreen({super.key});
@@ -37,10 +38,13 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFBDBDBD),
+      // backgroundColor: const Color(0xFFBDBDBD),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 250.w, vertical: 20.h),
+          padding: EdgeInsets.symmetric(
+            vertical: 20.h,
+            horizontal: context.isLandscape ? 250.w : 20.w,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

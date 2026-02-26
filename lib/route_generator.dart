@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:skinsync_clinic_portal/screens/about_screen.dart';
+import 'package:skinsync_clinic_portal/screens/business_info_screen.dart';
 import 'package:skinsync_clinic_portal/screens/change_password_screen.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/manage_doc_injector_screen.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/mange_staff_screen.dart';
@@ -13,6 +14,7 @@ import 'package:skinsync_clinic_portal/screens/signup_screen.dart';
 
 import 'app_init.dart';
 import 'screens/add_doctor_injector_screen.dart';
+import 'screens/create_treatment_screen.dart';
 import 'screens/dashboard/appointment_screen.dart';
 import 'screens/dashboard/dashboard.dart';
 import 'screens/dashboard/home_screen.dart';
@@ -120,6 +122,16 @@ class RouteGenerator {
         path: AddDoctorInjectorScreen.routeName,
         name: AddDoctorInjectorScreen.routeName,
         builder: (_, _) => AddDoctorInjectorScreen(),
+      ),
+      GoRoute(
+        name: CreateTreatmentScreen.routeName,
+        path: CreateTreatmentScreen.routeName,
+        builder: (_, _) => CreateTreatmentScreen(),
+      ),
+      GoRoute(
+        name: BusinessInformationScreen.routeName,
+        path: BusinessInformationScreen.routeName,
+        builder: (_, _) => BusinessInformationScreen(),
       ),
       // GoRoute(
       //   name: UpdateTreatmentScreen.routeName,

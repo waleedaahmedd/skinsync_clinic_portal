@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 
+import '../utils/responsive.dart';
 import '../widgets/header__with_back_btn.dart';
 
 class NotificationScreen extends StatefulWidget {
@@ -79,7 +80,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 250.w, vertical: 20.h),
+          padding: EdgeInsets.symmetric(
+            vertical: 20.h,
+            horizontal: context.isLandscape ? 250.w : 20.w,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
