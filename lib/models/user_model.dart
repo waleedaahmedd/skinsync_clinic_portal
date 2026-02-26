@@ -28,4 +28,15 @@ class UserModel {
     status = json['status'];
     clinic = json['clinic'] != null ? Clinic.fromJson(json['clinic']) : null;
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'clinic_id': clinicId,
+      'email': email,
+      'name': name,
+      'role': role,
+      'status': status,
+    };
+  }
 }

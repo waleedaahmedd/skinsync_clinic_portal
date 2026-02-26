@@ -1,6 +1,7 @@
 enum SharedPreferencesKeys {
   themeModeKey("theme-mode"),
-  accessTokenKey("access-token");
+  accessTokenKey("access-token"),
+  userKey('user-key');
 
   const SharedPreferencesKeys(this.keyText);
 

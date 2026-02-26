@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:skinsync_clinic_portal/models/requests/login_request_model.dart';
 import 'package:skinsync_clinic_portal/models/responses/base_response_model.dart';
 import 'package:skinsync_clinic_portal/models/responses/login_response_model.dart';
+
 import '../repositories/auth_repository.dart';
 import '../utils/enums.dart';
 import '../utils/exception.dart';
@@ -32,6 +33,7 @@ class AuthService implements AuthRepository {
     }
 
     await _secureStorage.saveToken(response.data!.accessToken!);
+    await _secureStorage.saveUser(response.data!.user);
     return response.data!;
   }
 }

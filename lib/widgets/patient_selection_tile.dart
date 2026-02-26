@@ -7,14 +7,15 @@ class PatientSelectionTile extends StatelessWidget {
   final String title;
   final String? subTitle;
   final String? imageUrl;
-  final double? borderWidth;
+  final bool isSelected;
   const PatientSelectionTile({
     super.key,
     required,
     required this.title,
     this.subTitle,
     this.imageUrl,
-    this.borderWidth,
+
+    this.isSelected = false,
   });
 
   @override
@@ -24,8 +25,8 @@ class PatientSelectionTile extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15.r),
         border: Border.all(
-          color: AppTheme.titleBorderColor,
-          width: borderWidth ?? 1.r,
+          color: isSelected ? AppTheme.primaryColor : AppTheme.titleBorderColor,
+          width: isSelected ? 2.r : 1.r,
         ),
       ),
       child: Row(
