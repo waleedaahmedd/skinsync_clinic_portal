@@ -72,13 +72,19 @@ class DoctorViewModel extends BaseViewModel<DoctorState> {
       log('CLINIC ID: $clinicId');
       state = state.copyWith(loading: true);
       final doctors = await locator<DoctorService>().fetchDoctors();
+      final clinicDoctors = doctors
+          .where((doctor) => doctor.clinicId == clinicId)
+          .toList();
       state = state.copyWith(
         loading: false,
-        doctors: doctors
-            .where((doctor) => doctor.clinicId == clinicId)
-            .toList(),
+        doctors: clinicDoctors,
+        selectedDoctor: clinicDoctors.firstOrNull,
       );
     }, showLoading: false);
+  }
+
+  void setSelectedDoctor(Doctor doctor) {
+    state = state.copyWith(selectedDoctor: doctor);
   }
 
   void clearData() {
@@ -97,6 +103,7 @@ class DoctorState {
   final DoctorRole? role;
   final List<TreatmentModel> treatments;
   final List<Doctor> doctors;
+  final Doctor? selectedDoctor;
   final bool success;
 
   const DoctorState({
@@ -104,6 +111,7 @@ class DoctorState {
     this.loading = false,
     this.treatments = const [],
     this.doctors = const [],
+    this.selectedDoctor,
     this.success = false,
   });
 
@@ -112,6 +120,7 @@ class DoctorState {
     DoctorRole? role,
     List<TreatmentModel>? treatments,
     List<Doctor>? doctors,
+    Doctor? selectedDoctor,
     bool? success,
   }) {
     return DoctorState(
@@ -119,6 +128,7 @@ class DoctorState {
       role: role ?? this.role,
       treatments: treatments ?? this.treatments,
       doctors: doctors ?? this.doctors,
+      selectedDoctor: selectedDoctor ?? this.selectedDoctor,
       success: success ?? false,
     );
   }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -22,12 +24,18 @@ class SelectTreatmentDialog extends ConsumerStatefulWidget {
 class _AddTreatmentDialogState extends ConsumerState<SelectTreatmentDialog> {
   @override
   void initState() {
-    ref.read(treatmentViewModelProvider.notifier).getAdminTreatments().then((
-      treatments,
-    ) {
-      setState(() {
-        _loadingTreatments = false;
-        _adminTreatments = treatments;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(treatmentViewModelProvider.notifier).getTreatments().then((
+        success,
+      ) {
+        if (!success) {
+          return;
+        }
+        final treatments = ref.read(treatmentViewModelProvider).treatments;
+        setState(() {
+          _loadingTreatments = false;
+          _treatments = treatments;
+        });
       });
     });
 
@@ -35,10 +43,9 @@ class _AddTreatmentDialogState extends ConsumerState<SelectTreatmentDialog> {
   }
 
   bool _loadingTreatments = true;
-  bool _loadingAreas = false;
 
   TreatmentModel? _selectedTreatment;
-  late List<TreatmentModel> _adminTreatments;
+  late List<TreatmentModel> _treatments;
   late List<SideAreaModel> _sideAreas;
   late List<SideAreaModel> _selectedAreas;
 
@@ -86,7 +93,7 @@ class _AddTreatmentDialogState extends ConsumerState<SelectTreatmentDialog> {
                         style: TextStyle(color: Colors.grey[400]),
                       ),
                       value: _selectedTreatment,
-                      items: _adminTreatments
+                      items: _treatments
                           .map(
                             (item) => DropdownMenuItem(
                               value: item,
@@ -95,6 +102,7 @@ class _AddTreatmentDialogState extends ConsumerState<SelectTreatmentDialog> {
                           )
                           .toList(),
                       onChanged: (value) {
+                        log('VALUE: ${value?.description}');
                         if (value == null || value == _selectedTreatment) {
                           return;
                         }
@@ -102,21 +110,9 @@ class _AddTreatmentDialogState extends ConsumerState<SelectTreatmentDialog> {
                         setState(() {
                           _selectedTreatment = value;
                         });
-                        if (value.isArea == true) {
-                          setState(() {
-                            _loadingAreas = true;
-                          });
-                          ref
-                              .read(treatmentViewModelProvider.notifier)
-                              .getTreatmentsSideAreas(treatmentId: value.id!)
-                              .then((areas) {
-                                setState(() {
-                                  _sideAreas = areas;
-                                  _loadingAreas = false;
-                                  _selectedAreas = [];
-                                });
-                              });
-                        }
+                        _sideAreas = _selectedTreatment!.sideAreas ?? [];
+                        _selectedAreas = [];
+                        setState(() {});
                       },
                       buttonStyleData: ButtonStyleData(
                         height: 48.h,
@@ -129,26 +125,7 @@ class _AddTreatmentDialogState extends ConsumerState<SelectTreatmentDialog> {
                     ),
                   ),
             SizedBox(height: 30.h),
-
-            if (_selectedTreatment?.isArea == true && _loadingAreas) ...[
-              SizedBox(height: 20.h),
-              Wrap(
-                spacing: 8.w,
-                runSpacing: 8.h,
-                children: List.generate(8, (index) {
-                  return Container(
-                    height: 48.h,
-                    width: 150.w,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                  ).withShimmer();
-                }).toList(),
-              ),
-            ],
-
-            if (_selectedTreatment?.isArea == true && !_loadingAreas) ...[
+            if (_selectedTreatment != null) ...[
               Text("Select Areas", style: CustomFonts.black14w500),
               SizedBox(height: 16.h),
               Wrap(
@@ -189,7 +166,7 @@ class _AddTreatmentDialogState extends ConsumerState<SelectTreatmentDialog> {
                   child: ElevatedButton(
                     onPressed: () {
                       // 2️⃣ If treatments or side areas are loading
-                      if (_loadingAreas || _loadingTreatments) {
+                      if (_loadingTreatments) {
                         EasyLoading.showError('Please wait while we load');
                         return;
                       }
