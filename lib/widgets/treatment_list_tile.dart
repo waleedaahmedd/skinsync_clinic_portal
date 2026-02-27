@@ -150,7 +150,7 @@ class TreatmentListTile extends ConsumerWidget {
                               children: [
                                 TextSpan(
                                   text:
-                                      "\$${treatment.sideAreas?[index].perSyringePrice ?? "N/A"} ",
+                                      "\$${treatment.sideAreas?[index].perSyringePrice ?? ""} ",
                                   style: CustomFonts.black14w600.copyWith(
                                     color: CustomColors.blueColor,
                                   ),
@@ -174,7 +174,7 @@ class TreatmentListTile extends ConsumerWidget {
         Align(
           alignment: Alignment.bottomRight,
           child: Text(
-            " Price: \$${treatment.price ?? "0"}",
+            " Price: \$${treatment.price ?? ""}",
             style: CustomFonts.black18w600.copyWith(
               color: CustomColors.purpleColor,
             ),
