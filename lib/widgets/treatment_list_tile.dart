@@ -141,29 +141,32 @@ class TreatmentListTile extends ConsumerWidget {
                       SizedBox(height: 10.h),
 
                       // Price
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          RichText(
-                            text: TextSpan(
-                              style: CustomFonts.black14w600, // base style
+                      treatment.sideAreas?[index].perSyringePrice == null
+                          ? SizedBox()
+                          : Row(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
-                                TextSpan(
-                                  text:
-                                      "\$${treatment.sideAreas?[index].perSyringePrice ?? ""} ",
-                                  style: CustomFonts.black14w600.copyWith(
-                                    color: CustomColors.blueColor,
+                                RichText(
+                                  text: TextSpan(
+                                    style:
+                                        CustomFonts.black14w600, // base style
+                                    children: [
+                                      TextSpan(
+                                        text:
+                                            "\$${treatment.sideAreas?[index].perSyringePrice ?? ""} ",
+                                        style: CustomFonts.black14w600.copyWith(
+                                          color: CustomColors.blueColor,
+                                        ),
+                                      ),
+                                      const TextSpan(
+                                        text: " /Per Syringe",
+                                        // inherits font from parent; add color here if you want a different one
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                const TextSpan(
-                                  text: " /Per Syringe",
-                                  // inherits font from parent; add color here if you want a different one
                                 ),
                               ],
                             ),
-                          ),
-                        ],
-                      ),
                     ],
                   ),
                 ),
