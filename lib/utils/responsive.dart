@@ -34,7 +34,7 @@ class AdaptiveLayoutRowColumn extends StatelessWidget {
     this.widthBetween,
     this.heightBetween,
     this.expandedWidget,
-    this.crossAxisAlignment
+    this.crossAxisAlignment,
   });
 
   @override
@@ -74,7 +74,6 @@ class AdaptiveLayoutList extends StatelessWidget {
   final double? horizontalHeight;
   final double? spaceHeight;
   final double? spaceWidth;
-
   final bool isScrollVertical;
 
   const AdaptiveLayoutList({

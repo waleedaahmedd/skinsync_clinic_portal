@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:skinsync_clinic_portal/models/user_model.dart';
 
 import '../utils/colored_print.dart';
 import '../utils/enums.dart';
@@ -13,6 +15,8 @@ class SecureStorageService {
   SecureStorageService._internal();
 
   static const _tokenKey = SharedPreferencesKeys.accessTokenKey;
+  static const _userKey = SharedPreferencesKeys.userKey;
+
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
 
   final _authStateController = StreamController<bool>.broadcast();
@@ -44,6 +48,21 @@ class SecureStorageService {
     await _storage.delete(key: _tokenKey.name);
     ColoredPrint.red("Token Cleared");
     _authStateController.add(false);
+  }
+
+  Future<void> saveUser(UserModel? user) async {
+    if (user == null) {
+      return;
+    }
+    await _storage.write(key: _userKey.name, value: jsonEncode(user.toJson()));
+  }
+
+  Future<UserModel?> getUser() async {
+    final userJson = await _storage.read(key: _userKey.name);
+    if (userJson == null) {
+      return null;
+    }
+    return UserModel.fromJson(jsonDecode(userJson));
   }
 
   void dispose() {

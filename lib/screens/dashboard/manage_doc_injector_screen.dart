@@ -7,10 +7,12 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
+import 'package:skinsync_clinic_portal/utils/string_utils.dart';
 import 'package:skinsync_clinic_portal/widgets/empty_widget.dart';
 import 'package:skinsync_clinic_portal/widgets/patient_selection_tile.dart';
 
 import '../../../utils/assets.dart';
+import '../../models/responses/register_doctor_response.dart';
 import '../../view_models/doctor_view_model.dart';
 import '../add_doctor_injector_screen.dart';
 
@@ -145,7 +147,7 @@ class _MangeDoctorsInjectorsScreenState
                     children: [
                       _buildDoctorSelection(state),
                       SizedBox(width: 28.9.w),
-                      Expanded(child: rightSideContent()),
+                      Expanded(child: rightSideContent(state.selectedDoctor)),
                     ],
                   );
                 },
@@ -157,13 +159,16 @@ class _MangeDoctorsInjectorsScreenState
     );
   }
 
-  Widget rightSideContent() {
+  Widget rightSideContent(Doctor? selectedDoctor) {
+    if (selectedDoctor == null) {
+      return SizedBox.shrink();
+    }
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          patientInfo(context: context),
+          patientInfo(context: context, selectedDoctor: selectedDoctor),
           SizedBox(height: 19.h),
           medicalInfo(context: context),
           SizedBox(height: 19.h),
@@ -343,7 +348,7 @@ class _MangeDoctorsInjectorsScreenState
             child: ClipRect(
               child: Align(
                 alignment: Alignment.topCenter,
-                heightFactor: 0.80, // 🔥 trims bottom internal padding
+                heightFactor: 0.80,
                 child: CalendarDatePicker(
                   initialDate: DateTime.now(),
                   firstDate: DateTime.now(),
@@ -447,7 +452,7 @@ class _MangeDoctorsInjectorsScreenState
                   borderRadius: BorderRadius.circular(10.r),
                 ),
                 child: Row(
-                  mainAxisSize: MainAxisSize.min, // 👈 important
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     SvgPicture.asset(
                       SvgAssets.stethoscope,
@@ -467,7 +472,10 @@ class _MangeDoctorsInjectorsScreenState
     );
   }
 
-  Widget patientInfo({required BuildContext context}) {
+  Widget patientInfo({
+    required BuildContext context,
+    required Doctor selectedDoctor,
+  }) {
     return Container(
       padding: EdgeInsets.all(15.w),
       decoration: BoxDecoration(
@@ -480,15 +488,25 @@ class _MangeDoctorsInjectorsScreenState
         children: [
           Row(
             children: [
-              ClipOval(
-                child: Image.asset(PngAssets.person, height: 96.w, width: 96.w),
+              // ClipOval(
+              //   child: Image.asset(PngAssets.person, height: 96.w, width: 96.w),
+              // ),
+              CircleAvatar(
+                radius: 96.w / 2,
+                child: Icon(Icons.person, size: 30.sp),
               ),
               SizedBox(width: 15.w),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Charmaine Arnaud", style: CustomFonts.black18w600),
-                  Text("Doctor", style: CustomFonts.grey16w400),
+                  Text(
+                    selectedDoctor.name ?? 'N/A',
+                    style: CustomFonts.black18w600,
+                  ),
+                  Text(
+                    selectedDoctor.role?.name.capitalize ?? 'N/A',
+                    style: CustomFonts.grey16w400,
+                  ),
                 ],
               ),
               Spacer(),
@@ -512,12 +530,16 @@ class _MangeDoctorsInjectorsScreenState
               separatorBuilder: (context, index) => SizedBox(height: 15.h),
               itemCount: state.doctors.length,
               itemBuilder: (context, index) {
-                return PatientSelectionTile(
-                  title: state.doctors[index].name ?? 'N/A',
-                  subTitle: state.doctors[index].email ?? 'N/A',
-                  borderWidth: state.selectedDoctor == state.doctors[index]
-                      ? 2.r
-                      : 1.r,
+                return InkWell(
+                  borderRadius: BorderRadius.circular(15.r),
+                  onTap: () => ref
+                      .read(doctorProvider.notifier)
+                      .setSelectedDoctor(state.doctors[index]),
+                  child: PatientSelectionTile(
+                    title: state.doctors[index].name ?? 'N/A',
+                    subTitle: state.doctors[index].email ?? 'N/A',
+                    isSelected: state.selectedDoctor == state.doctors[index],
+                  ),
                 );
               },
             ),

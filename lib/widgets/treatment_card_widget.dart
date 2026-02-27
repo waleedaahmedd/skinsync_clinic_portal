@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class TreatmentCard extends StatelessWidget {
+class TreatmentCardWidget extends StatelessWidget {
   final String title;
   final String date;
   final String? price;
   final String image;
 
-  const TreatmentCard({
+  const TreatmentCardWidget({
     super.key,
     required this.title,
     required this.date,

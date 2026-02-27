@@ -1,24 +1,22 @@
-import 'dart:io';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 
-import '../utils/custom_fonts.dart';
 import '../utils/responsive.dart';
 import '../widgets/build_textfield.dart';
 import '../widgets/header__with_back_btn.dart';
-import 'business_info_screen.dart';
 
-class CreateStaffScreen extends StatefulWidget {
-  const CreateStaffScreen({super.key});
+class CreateTreatmentScreen extends StatefulWidget {
+  const CreateTreatmentScreen({super.key});
+  static const String routeName = '/create-treatment';
 
   @override
-  State<CreateStaffScreen> createState() => _CreateStaffScreenState();
+  State<CreateTreatmentScreen> createState() => _CreateTreatmentScreenState();
 }
 
-class _CreateStaffScreenState extends State<CreateStaffScreen> {
+class _CreateTreatmentScreenState extends State<CreateTreatmentScreen> {
   final TextEditingController _treatmentNameController =
       TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
@@ -56,150 +54,6 @@ class _CreateStaffScreenState extends State<CreateStaffScreen> {
     super.dispose();
   }
 
-  Future<void> _pickImage() async {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
-      ),
-      builder: (context) => SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(16.w),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'Select Image',
-                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
-              ),
-              SizedBox(height: 20.h),
-              ListTile(
-                leading: Container(
-                  padding: EdgeInsets.all(10.w),
-                  decoration: BoxDecoration(
-                    color: Colors.blue.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  child: Icon(
-                    Icons.photo_library_outlined,
-                    color: Colors.blue,
-                    size: 24.sp,
-                  ),
-                ),
-                title: Text(
-                  'Choose from Gallery',
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                  _pickFromGallery();
-                },
-              ),
-              SizedBox(height: 8.h),
-              ListTile(
-                leading: Container(
-                  padding: EdgeInsets.all(10.w),
-                  decoration: BoxDecoration(
-                    color: Colors.green.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  child: Icon(
-                    Icons.camera_alt_outlined,
-                    color: Colors.green,
-                    size: 24.sp,
-                  ),
-                ),
-                title: Text(
-                  'Take a Photo',
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                  _pickFromCamera();
-                },
-              ),
-              if (_selectedImage != null) ...[
-                SizedBox(height: 8.h),
-                ListTile(
-                  leading: Container(
-                    padding: EdgeInsets.all(10.w),
-                    decoration: BoxDecoration(
-                      color: Colors.red.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    child: Icon(
-                      Icons.delete_outline,
-                      color: Colors.red,
-                      size: 24.sp,
-                    ),
-                  ),
-                  title: Text(
-                    'Remove Photo',
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.red,
-                    ),
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                    setState(() {
-                      _selectedImage = null;
-                    });
-                  },
-                ),
-              ],
-              SizedBox(height: 16.h),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Future<void> _pickFromGallery() async {
-    try {
-      final XFile? image = await _imagePicker.pickImage(
-        source: ImageSource.gallery,
-        maxWidth: 800,
-        maxHeight: 800,
-        imageQuality: 85,
-      );
-      if (image != null) {
-        setState(() {
-          _selectedImage = image;
-        });
-      }
-    } catch (e) {
-      debugPrint('Error picking image from gallery: $e');
-    }
-  }
-
-  Future<void> _pickFromCamera() async {
-    try {
-      final XFile? image = await _imagePicker.pickImage(
-        source: ImageSource.camera,
-        maxWidth: 800,
-        maxHeight: 800,
-        imageQuality: 85,
-      );
-      if (image != null) {
-        setState(() {
-          _selectedImage = image;
-        });
-      }
-    } catch (e) {
-      debugPrint('Error picking image from camera: $e');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -214,7 +68,7 @@ class _CreateStaffScreenState extends State<CreateStaffScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Header with back button
-              BuildHeader(title: 'Create Staff'),
+              BuildHeader(title: 'Create Treatment'),
               SizedBox(height: 24.h),
               // Main Form Container
               _buildFormContainer(),
@@ -244,7 +98,7 @@ class _CreateStaffScreenState extends State<CreateStaffScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Profile Picture Section
-          _buildProfilePictureSection(),
+          Text('Treatment Details', style: CustomFonts.black22w600),
           SizedBox(height: 24.h),
           // Treatment Name
           BuildTextField(
@@ -286,84 +140,35 @@ class _CreateStaffScreenState extends State<CreateStaffScreen> {
             hintText: 'Describe the treatment and its benefits',
             maxLines: 5,
           ),
+          SizedBox(height: 20.h),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: BuildTextField(
+                  label: 'Price',
+                  controller: _treatmentNameController,
+                  hintText: '\$500',
+                ),
+              ),
+              SizedBox(width: 16.w),
+              Expanded(
+                child: BuildTextField(
+                  label: 'Discount',
+                  controller: _treatmentNameController,
+                  hintText: '%30 Off',
+                ),
+              ),
+            ],
+          ),
+
           SizedBox(height: 32.h),
+
           // Buttons Row
           _buildButtonsRow(),
         ],
       ),
-    );
-  }
-
-  Widget _buildProfilePictureSection() {
-    return Row(
-      children: [
-        // Profile Picture Circle with Dotted Border
-        GestureDetector(
-          onTap: _pickImage,
-          child: CustomPaint(
-            painter: DottedCircleBorderPainter(
-              color: Colors.black87,
-              strokeWidth: 1.5,
-              dashLength: 6,
-              gapLength: 4,
-            ),
-            child: Container(
-              width: 68.w,
-              height: 68.w,
-              padding: EdgeInsets.all(2.w),
-              child: Container(
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white,
-                ),
-                child: _selectedImage != null
-                    ? ClipOval(
-                        child: kIsWeb
-                            ? Image.network(
-                                _selectedImage!.path,
-                                width: 64.w,
-                                height: 64.w,
-                                fit: BoxFit.cover,
-                              )
-                            : Image.file(
-                                File(_selectedImage!.path),
-                                width: 64.w,
-                                height: 64.w,
-                                fit: BoxFit.cover,
-                              ),
-                      )
-                    : Center(
-                        child: Icon(
-                          Icons.camera_alt_outlined,
-                          size: 24.sp,
-                          color: Colors.black87,
-                        ),
-                      ),
-              ),
-            ),
-          ),
-        ),
-        SizedBox(width: 16.w),
-        // Text Column
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Profile Picture',
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
-                color: Colors.black,
-              ),
-            ),
-            SizedBox(height: 4.h),
-            Text(
-              'Upload your profile picture',
-              style: TextStyle(fontSize: 12.sp, color: Colors.grey[500]),
-            ),
-          ],
-        ),
-      ],
     );
   }
 
@@ -476,7 +281,7 @@ class _CreateStaffScreenState extends State<CreateStaffScreen> {
               ),
               elevation: 0,
             ),
-            child: Text('Create Staff', style: CustomFonts.white14w500),
+            child: Text('Create Treatment', style: CustomFonts.white18w500),
           ),
         ),
         SizedBox(width: 16.w),
@@ -485,7 +290,7 @@ class _CreateStaffScreenState extends State<CreateStaffScreen> {
           child: OutlinedButton(
             onPressed: () {
               // Handle cancel
-              Navigator.pop(context);
+              // context.pop();
             },
             style: OutlinedButton.styleFrom(
               foregroundColor: Colors.black,
@@ -495,7 +300,7 @@ class _CreateStaffScreenState extends State<CreateStaffScreen> {
               ),
               side: BorderSide(color: Colors.grey[300]!, width: 1),
             ),
-            child: Text('Cancel', style: CustomFonts.black14w500),
+            child: Text('Cancel', style: CustomFonts.black18w500),
           ),
         ),
       ],

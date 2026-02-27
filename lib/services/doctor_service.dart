@@ -2,6 +2,7 @@ import 'package:skinsync_clinic_portal/models/requests/register_doctor_request.d
 import 'package:skinsync_clinic_portal/models/responses/get_doctors_response.dart';
 import 'package:skinsync_clinic_portal/repositories/doctor_repository.dart';
 import 'package:skinsync_clinic_portal/services/api_base_helper.dart';
+import 'package:skinsync_clinic_portal/services/storage_service.dart';
 import 'package:skinsync_clinic_portal/utils/enums.dart';
 
 import '../models/responses/register_doctor_response.dart';
@@ -27,6 +28,10 @@ class DoctorService extends DoctorRepository {
     if (!model.isSuccess) {
       throw Exception(model.message);
     }
-    return model.data ?? [];
+    final user = await locator<SecureStorageService>().getUser();
+    final clinicDoctors = model.data
+        ?.where((doctor) => doctor.clinicId == user?.clinicId)
+        .toList();
+    return clinicDoctors ?? [];
   }
 }

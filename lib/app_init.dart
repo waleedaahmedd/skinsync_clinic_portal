@@ -3,7 +3,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'route_generator.dart';
-import 'services/storage_service.dart';
 import 'utils/color_constant.dart';
 import 'utils/screen_size.dart';
 import 'utils/theme.dart';

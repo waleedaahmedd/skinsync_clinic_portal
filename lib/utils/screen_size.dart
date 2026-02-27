@@ -1,8 +1,6 @@
-import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 
-import 'package:flutter/rendering.dart';
 
 enum DeviceType { foldOuter, mobile, tablet, desktop }
 

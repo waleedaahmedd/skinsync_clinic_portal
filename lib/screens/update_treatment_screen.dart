@@ -1,8 +1,8 @@
 // import 'package:flutter/material.dart';
-// import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
-// import 'package:skinsync_clinic_portal/widgets/header__with_back_btn.dart';
-
+//
+// import '../utils/responsive.dart';
+// import '../widgets/header__with_back_btn.dart';
+//
 // class UpdateTreatmentScreen extends StatefulWidget {
 //   const UpdateTreatmentScreen({super.key});
 //   static const String routeName = '/update-treatment';

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skinsync_clinic_portal/models/requests/register_doctor_request.dart';
 import 'package:skinsync_clinic_portal/models/treatment_model.dart';
@@ -8,7 +6,6 @@ import 'package:skinsync_clinic_portal/services/locator.dart';
 import '../models/responses/register_doctor_response.dart';
 import '../services/doctor_service.dart';
 import '../utils/enums.dart';
-import 'auth_view_model.dart';
 import 'base_view_model.dart';
 
 final doctorProvider = NotifierProvider.autoDispose(() => DoctorViewModel._());
@@ -67,18 +64,12 @@ class DoctorViewModel extends BaseViewModel<DoctorState> {
 
   Future<void> getDoctors() async {
     return await runSafely(() async {
-      final authState = ref.read(authViewModelProvider);
-      final clinicId = authState.user?.clinicId;
-      log('CLINIC ID: $clinicId');
       state = state.copyWith(loading: true);
       final doctors = await locator<DoctorService>().fetchDoctors();
-      final clinicDoctors = doctors
-          .where((doctor) => doctor.clinicId == clinicId)
-          .toList();
       state = state.copyWith(
         loading: false,
-        doctors: clinicDoctors,
-        selectedDoctor: clinicDoctors.firstOrNull,
+        doctors: doctors,
+        selectedDoctor: doctors.firstOrNull,
       );
     }, showLoading: false);
   }

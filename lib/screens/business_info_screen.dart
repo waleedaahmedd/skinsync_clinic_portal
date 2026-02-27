@@ -6,10 +6,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../utils/custom_fonts.dart';
+import '../utils/responsive.dart';
 import '../widgets/header__with_back_btn.dart';
 
 class BusinessInformationScreen extends StatefulWidget {
   const BusinessInformationScreen({super.key});
+  static const String routeName = '/business_information';
 
   @override
   State<BusinessInformationScreen> createState() =>
@@ -194,10 +196,13 @@ class _BusinessInformationScreenState extends State<BusinessInformationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFBDBDBD),
+      // backgroundColor: const Color(0xFFBDBDBD),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 250.w),
+          padding: EdgeInsets.symmetric(
+            vertical: 20.h,
+            horizontal: context.isLandscape ? 250.w : 20.w,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
