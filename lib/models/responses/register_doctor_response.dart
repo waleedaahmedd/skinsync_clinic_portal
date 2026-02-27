@@ -25,6 +25,10 @@ class Doctor {
   final DoctorRole? role;
   final String? password;
   final String? status;
+  final String? image;
+  final String? specialization;
+  final String? phone;
+  final List<Treatment>? treatments;
 
   Doctor({
     this.id,
@@ -34,6 +38,10 @@ class Doctor {
     this.role,
     this.password,
     this.status,
+      this.image,
+    this.specialization,
+    this.phone,
+    this.treatments,
   });
 
   factory Doctor.fromJson(Map<String, dynamic> json) => Doctor(
@@ -44,5 +52,55 @@ class Doctor {
     role: json["role"] != null ? DoctorRole.values.byName(json["role"]) : null,
     password: json["password"],
     status: json["status"],
-  );
+     image: json["image"],
+      specialization: json["specialization"],
+      phone: json["phone"],
+      treatments: json["treatments"] == null
+          ? []
+          : List<Treatment>.from(
+              (json["treatments"] as List)
+                  .map((x) => Treatment.fromJson(x)),
+            ),
+    );
+  
+}
+class Treatment {
+  final int? treatmentId;
+  final String? treatmentName;
+  final List<SideArea>? sideAreas;
+
+  Treatment({
+    this.treatmentId,
+    this.treatmentName,
+    this.sideAreas,
+  });
+
+  factory Treatment.fromJson(Map<String, dynamic> json) {
+    return Treatment(
+      treatmentId: json["treatment_id"],
+      treatmentName: json["treatment_name"],
+      sideAreas: json["side_areas"] == null
+          ? []
+          : List<SideArea>.from(
+              (json["side_areas"] as List)
+                  .map((x) => SideArea.fromJson(x)),
+            ),
+    );
+  }
+}
+class SideArea {
+  final int? sideAreaId;
+  final String? sideAreaName;
+
+  SideArea({
+    this.sideAreaId,
+    this.sideAreaName,
+  });
+
+  factory SideArea.fromJson(Map<String, dynamic> json) {
+    return SideArea(
+      sideAreaId: json["side_area_id"],
+      sideAreaName: json["side_area_name"],
+    );
+  }
 }

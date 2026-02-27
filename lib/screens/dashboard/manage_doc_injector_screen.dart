@@ -170,7 +170,7 @@ class _MangeDoctorsInjectorsScreenState
         children: [
           patientInfo(context: context, selectedDoctor: selectedDoctor),
           SizedBox(height: 19.h),
-          medicalInfo(context: context),
+          medicalInfo(context: context, selectedDoctor: selectedDoctor),
           SizedBox(height: 19.h),
           calendarAndTimeOffTap(),
           SizedBox(height: 20.h),
@@ -428,7 +428,10 @@ class _MangeDoctorsInjectorsScreenState
     );
   }
 
-  Widget medicalInfo({required BuildContext context}) {
+  Widget medicalInfo({
+    required BuildContext context,
+    required Doctor selectedDoctor,
+  }) {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(15.w),
@@ -444,27 +447,86 @@ class _MangeDoctorsInjectorsScreenState
           Wrap(
             spacing: 10.w,
             runSpacing: 10.h,
-            children: List.generate(7, (index) {
+            children: List.generate(selectedDoctor.treatments?.length ?? 0, (
+              index,
+            ) {
+              final Treatment? treatment = selectedDoctor.treatments?[index];
               return Container(
-                padding: EdgeInsets.symmetric(horizontal: 9.w, vertical: 14.h),
+                padding: EdgeInsets.all(16.w),
                 decoration: BoxDecoration(
-                  color: CustomColors.iconColor,
                   borderRadius: BorderRadius.circular(10.r),
+                  color: Colors.white,
+                  border: Border.all(color: Colors.grey.shade300),
                 ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
+                child: Column(
+                  crossAxisAlignment: .start,
                   children: [
-                    SvgPicture.asset(
-                      SvgAssets.stethoscope,
-                      height: 17.h,
-                      width: 17.w,
-                      color: Colors.black,
+                    Text(
+                      treatment?.treatmentName ?? "",
+                      style: CustomFonts.black18w600,
                     ),
-                    SizedBox(width: 6.w),
-                    Text("Laser Treatments", style: CustomFonts.black14w500),
+                    SizedBox(height: 10.h),
+                    Wrap(
+                      spacing: 10.w,
+                      runSpacing: 10.h,
+                      children: List.generate(
+                        treatment?.sideAreas?.length ?? 0,
+                        (index) {
+                          final SideArea? sideArea =
+                              treatment?.sideAreas?[index];
+
+                          return Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 9.w,
+                              vertical: 12.h,
+                            ),
+                            decoration: BoxDecoration(
+                              color: CustomColors.iconColor,
+                              borderRadius: BorderRadius.circular(15.r),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SvgPicture.asset(
+                                  SvgAssets.stethoscope,
+                                  height: 17.h,
+                                  width: 17.w,
+                                  color: Colors.black,
+                                ),
+                                SizedBox(width: 6.w),
+                                Text(
+                                  sideArea?.sideAreaName ?? "",
+                                  style: CustomFonts.black14w500,
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                   ],
                 ),
               );
+              //  Container(
+              //   padding: EdgeInsets.symmetric(horizontal: 9.w, vertical: 14.h),
+              //   decoration: BoxDecoration(
+              //     color: CustomColors.iconColor,
+              //     borderRadius: BorderRadius.circular(10.r),
+              //   ),
+              //   child: Row(
+              //     mainAxisSize: MainAxisSize.min,
+              //     children: [
+              //       SvgPicture.asset(
+              //         SvgAssets.stethoscope,
+              //         height: 17.h,
+              //         width: 17.w,
+              //         color: Colors.black,
+              //       ),
+              //       SizedBox(width: 6.w),
+              //       Text("Laser Treatments", style: CustomFonts.black14w500),
+              //     ],
+              //   ),
+              // );
             }),
           ),
         ],
@@ -509,8 +571,8 @@ class _MangeDoctorsInjectorsScreenState
                   ),
                 ],
               ),
-              Spacer(),
-              Text("Remove", style: CustomFonts.pinkunderlined20w600),
+              // Spacer(),
+              // Text("Remove", style: CustomFonts.pinkunderlined20w600),
             ],
           ),
         ],
