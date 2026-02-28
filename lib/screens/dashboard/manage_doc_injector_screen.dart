@@ -172,7 +172,7 @@ class _MangeDoctorsInjectorsScreenState
           SizedBox(height: 19.h),
           medicalInfo(context: context, selectedDoctor: selectedDoctor),
           SizedBox(height: 19.h),
-          calendarAndTimeOffTap(),
+      //    calendarAndTimeOffTap(),
           SizedBox(height: 20.h),
         ],
       ),
