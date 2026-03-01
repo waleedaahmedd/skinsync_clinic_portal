@@ -4,6 +4,8 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:skinsync_clinic_portal/models/responses/register_doctor_response.dart';
+import 'package:skinsync_clinic_portal/models/treatment_model.dart';
 import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 import 'package:skinsync_clinic_portal/utils/validators.dart';
@@ -18,8 +20,9 @@ import '../widgets/build_textfield.dart';
 import '../widgets/header__with_back_btn.dart';
 
 class AddDoctorInjectorScreen extends ConsumerStatefulWidget {
-  const AddDoctorInjectorScreen({super.key});
+  const AddDoctorInjectorScreen({super.key, this.doctor});
   static const String routeName = '/add-doctor-injector';
+  final Doctor? doctor;
 
   @override
   ConsumerState<AddDoctorInjectorScreen> createState() =>
@@ -33,11 +36,47 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
   final _phoneController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     ref.read(treatmentViewModelProvider.notifier).getTreatments();
+  //   });
+  // }
   @override
   void initState() {
     super.initState();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(treatmentViewModelProvider.notifier).getTreatments();
+
+      final doctor = widget.doctor;
+
+      if (doctor != null) {
+        _nameController.text = doctor.name ?? '';
+        _specializationController.text = doctor.specialization ?? '';
+        _emailController.text = doctor.email ?? '';
+        _phoneController.text = doctor.phone ?? '';
+
+        ref.read(doctorProvider.notifier).changeRole(doctor.role);
+
+        // ✅ Convert properly
+        final convertedTreatments =
+            doctor.treatments?.map((t) {
+              return TreatmentModel(
+                id: t.treatmentId,
+                name: t.treatmentName,
+                sideAreas: t.sideAreas?.map((s) {
+                  return SideAreaModel(id: s.sideAreaId, name: s.sideAreaName);
+                }).toList(),
+              );
+            }).toList() ??
+            [];
+
+        ref
+            .read(doctorProvider.notifier)
+            .setInitialTreatments(convertedTreatments);
+      }
     });
   }
 
@@ -87,6 +126,7 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
     final loading = ref.watch(
       treatmentViewModelProvider.select((state) => state.loading),
     );
+    final isEditing = widget.doctor != null;
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(24.w),
@@ -162,14 +202,18 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
                       final role = ref.watch(
                         doctorProvider.select((state) => state.role),
                       );
-                      return _buildDropdownField(
-                        items: DoctorRole.values,
-                        value: role,
-                        onChanged: (role) =>
-                            ref.read(doctorProvider.notifier).changeRole(role),
-                        label: 'Select Role',
-                        hintText: 'Select Role',
-                        builder: (role) => Text(role.name.capitalize),
+                      return IgnorePointer(
+                        ignoring: isEditing,
+                        child: _buildDropdownField(
+                          items: DoctorRole.values,
+                          value: role,
+                          onChanged: (role) => ref
+                              .read(doctorProvider.notifier)
+                              .changeRole(role),
+                          label: 'Select Role',
+                          hintText: 'Select Role',
+                          builder: (role) => Text(role.name.capitalize),
+                        ),
                       );
                     },
                   ),
@@ -179,6 +223,7 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
                     label: 'Name',
                     hintText: 'Name',
                     validator: Validators.empty,
+                    readOnly: isEditing,
                   ),
                   SizedBox(height: 16.h),
                   BuildTextField(
@@ -186,6 +231,7 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
                     label: 'Specialization',
                     hintText: 'Specialization',
                     validator: Validators.empty,
+                    readOnly: isEditing,
                   ),
                   SizedBox(height: 16.h),
                   BuildTextField(
@@ -193,6 +239,7 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
                     label: 'Email',
                     hintText: 'Email',
                     validator: Validators.email,
+                    readOnly: isEditing,
                   ),
                   SizedBox(height: 16.h),
                   BuildTextField(
@@ -201,6 +248,7 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
                     controller: _phoneController,
                     keyboardType: TextInputType.phone,
                     validator: Validators.phone,
+                    readOnly: isEditing,
                   ),
                   SizedBox(height: 16.h),
                   _buildTreatmentChips(),
@@ -321,20 +369,29 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
               if (!_formKey.currentState!.validate()) {
                 return;
               }
-              ref
-                  .read(doctorProvider.notifier)
-                  .registerDoctor(
-                    name: _nameController.text.trim(),
-                    email: _emailController.text.trim(),
-                    phone: _phoneController.text.trim(),
-                    specialization: _specializationController.text.trim(),
-                  );
+              if (widget.doctor != null) {
+                ref
+                    .read(doctorProvider.notifier)
+                    .updateDoctorTreatment(clinicUserId: widget.doctor!.id!);
+              } else {
+                ref
+                    .read(doctorProvider.notifier)
+                    .registerDoctor(
+                      name: _nameController.text.trim(),
+                      email: _emailController.text.trim(),
+                      phone: _phoneController.text.trim(),
+                      specialization: _specializationController.text.trim(),
+                    );
+              }
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.black,
               // padding: EdgeInsets.symmetric(vertical: 20.h),
             ),
-            child: Text('Create', style: CustomFonts.white14w500),
+            child: Text(
+              widget.doctor == null ? 'Create' : 'Update',
+              style: CustomFonts.white14w500,
+            ),
           ),
         ),
         SizedBox(width: 16.w),

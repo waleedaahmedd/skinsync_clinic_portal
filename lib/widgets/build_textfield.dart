@@ -12,7 +12,8 @@ class BuildTextField extends StatelessWidget {
   final TextInputType? keyboardType;
   final Function(String?)? onChanged;
   final Widget? prefixIcon;
-
+  final bool readOnly;
+  final bool enabled;
 
   const BuildTextField({
     super.key,
@@ -24,6 +25,8 @@ class BuildTextField extends StatelessWidget {
     this.keyboardType,
     this.onChanged,
     this.prefixIcon,
+    this.readOnly = false,
+    this.enabled = true,
   });
 
   @override
@@ -36,12 +39,14 @@ class BuildTextField extends StatelessWidget {
         TextFormField(
           controller: controller,
           maxLines: maxLines,
+          readOnly: readOnly,
+          enabled: enabled,
           style: TextStyle(fontSize: 14.sp, color: Colors.black87),
           keyboardType: keyboardType,
           validator: validator,
           onChanged: onChanged,
           decoration: InputDecoration(
-            prefixIcon:prefixIcon,
+            prefixIcon: prefixIcon,
             hintText: hintText,
             hintStyle: TextStyle(fontSize: 14.sp, color: Colors.grey[400]),
             filled: true,

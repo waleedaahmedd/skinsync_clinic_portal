@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skinsync_clinic_portal/models/requests/register_doctor_request.dart';
+import 'package:skinsync_clinic_portal/models/requests/update_doctors_treament_request.dart';
 import 'package:skinsync_clinic_portal/models/treatment_model.dart';
 import 'package:skinsync_clinic_portal/services/locator.dart';
 
@@ -20,18 +21,25 @@ class DoctorViewModel extends BaseViewModel<DoctorState> {
     state = state.copyWith(role: role);
   }
 
+  void setInitialTreatments(List<TreatmentModel> treatments) {
+    state = state.copyWith(treatments: treatments);
+  }
+
   void toggleSelectedTreatment(TreatmentModel treatment) {
-    final contains = state.treatments.any((t) => t.id == treatment.id);
-    if (contains) {
-      final newList = List.of(state.treatments);
-      newList.removeWhere((t) => t.id == treatment.id);
+    // If treatment with same id exists, update/replace it instead of removing.
+    final index = state.treatments.indexWhere((t) => t.id == treatment.id);
+    if (index != -1) {
+      final newList = List<TreatmentModel>.from(state.treatments);
+      newList[index] = treatment;
       state = state.copyWith(treatments: newList);
-    } else {
-      if (treatment.id == null) {
-        return;
-      }
-      state = state.copyWith(treatments: [treatment, ...state.treatments]);
+      return;
     }
+
+    // Otherwise, add as a new treatment.
+    if (treatment.id == null) {
+      return;
+    }
+    state = state.copyWith(treatments: [treatment, ...state.treatments]);
   }
 
   Future<void> registerDoctor({
@@ -72,6 +80,30 @@ class DoctorViewModel extends BaseViewModel<DoctorState> {
         selectedDoctor: doctors.firstOrNull,
       );
     }, showLoading: false);
+  }
+
+  Future<void> updateDoctorTreatment({required int clinicUserId}) async {
+    return await runSafely(() async {
+      if (state.treatments.isEmpty) {
+        throw Exception('Add treatments first!');
+      }
+
+      state = state.copyWith(loading: true);
+
+      final request = UpdateDoctorRequest(
+        clinicUserId: clinicUserId,
+        treatments: state.treatments.map((t) {
+          return UpdateTreatmentRequest(
+            treatmentId: t.id!,
+            treatmentsSubSecId: t.sideAreas?.map((s) => s.id!).toList() ?? [],
+          );
+        }).toList(),
+      );
+
+      await locator<DoctorService>().updateDoctorTreatment(request: request);
+
+      state = state.copyWith(loading: false, success: true);
+    });
   }
 
   void setSelectedDoctor(Doctor doctor) {

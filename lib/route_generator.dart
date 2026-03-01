@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:skinsync_clinic_portal/models/responses/register_doctor_response.dart';
 import 'package:skinsync_clinic_portal/screens/about_screen.dart';
 import 'package:skinsync_clinic_portal/screens/business_info_screen.dart';
 import 'package:skinsync_clinic_portal/screens/change_password_screen.dart';
@@ -121,7 +122,10 @@ class RouteGenerator {
       GoRoute(
         path: AddDoctorInjectorScreen.routeName,
         name: AddDoctorInjectorScreen.routeName,
-        builder: (_, _) => AddDoctorInjectorScreen(),
+        builder: (_, state) {
+          final doctor = state.extra as Doctor?;
+          return AddDoctorInjectorScreen(doctor: doctor,);
+        },
       ),
       GoRoute(
         name: CreateTreatmentScreen.routeName,

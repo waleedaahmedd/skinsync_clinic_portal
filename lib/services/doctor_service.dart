@@ -1,4 +1,5 @@
 import 'package:skinsync_clinic_portal/models/requests/register_doctor_request.dart';
+import 'package:skinsync_clinic_portal/models/requests/update_doctors_treament_request.dart';
 import 'package:skinsync_clinic_portal/models/responses/get_doctors_response.dart';
 import 'package:skinsync_clinic_portal/repositories/doctor_repository.dart';
 import 'package:skinsync_clinic_portal/services/api_base_helper.dart';
@@ -33,5 +34,19 @@ class DoctorService extends DoctorRepository {
         ?.where((doctor) => doctor.clinicId == user?.clinicId)
         .toList();
     return clinicDoctors ?? [];
+  }
+
+  @override
+  Future<void> updateDoctorTreatment({
+    required UpdateDoctorRequest request,
+  }) async {
+    final response = await locator<ApiBaseHelper>().patch(
+      Endpoint.updateDoctorTreatment, // your patch endpoint
+      body: request.toJson(),
+    );
+
+    if (response['is_success'] != true) {
+      throw Exception(response['message']);
+    }
   }
 }

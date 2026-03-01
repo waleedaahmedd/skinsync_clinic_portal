@@ -423,7 +423,11 @@ class _PatientManagementScreenState extends State<PatientManagementScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
 
         children: [
-          Text(title, style: CustomFonts.grey16w400,overflow: TextOverflow.ellipsis),
+          Text(
+            title,
+            style: CustomFonts.grey16w400,
+            overflow: TextOverflow.ellipsis,
+          ),
           SizedBox(height: 10.h),
           Text.rich(
             overflow: TextOverflow.ellipsis,

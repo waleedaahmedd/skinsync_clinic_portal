@@ -172,7 +172,7 @@ class _MangeDoctorsInjectorsScreenState
           SizedBox(height: 19.h),
           medicalInfo(context: context, selectedDoctor: selectedDoctor),
           SizedBox(height: 19.h),
-      //    calendarAndTimeOffTap(),
+          //    calendarAndTimeOffTap(),
           SizedBox(height: 20.h),
         ],
       ),
@@ -571,8 +571,28 @@ class _MangeDoctorsInjectorsScreenState
                   ),
                 ],
               ),
-              // Spacer(),
-              // Text("Remove", style: CustomFonts.pinkunderlined20w600),
+              Spacer(),
+              GestureDetector(
+                onTap: () {
+                  context.push(
+                    AddDoctorInjectorScreen.routeName,
+                    extra: selectedDoctor,
+                  );
+                },
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.edit,
+                      color: CustomColors.purpleColor,
+                      size: 20.sp,
+                    ),
+                    SizedBox(width: 5.w),
+                    Text("Edit", style: CustomFonts.pinkunderlined20w600),
+                  ],
+                ),
+              ),
+
+              //    Text("Edit", style: CustomFonts.pinkunderlined20w600),
             ],
           ),
         ],
