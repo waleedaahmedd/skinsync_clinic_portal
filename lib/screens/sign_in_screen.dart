@@ -384,7 +384,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               },
               child: Container(
                 width: 215.w,
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 14.h),
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
                 decoration: BoxDecoration(
                   color: Colors.black,
                   borderRadius: BorderRadius.all(Radius.circular(30.r)),
@@ -496,7 +496,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               },
               child: Container(
                 width: 215.w,
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 14.h),
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
                 decoration: BoxDecoration(
                   color: Colors.black,
                   borderRadius: BorderRadius.all(Radius.circular(30.r)),
@@ -703,7 +703,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               },
               child: Container(
                 width: 215.w,
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 14.h),
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
                 decoration: BoxDecoration(
                   color: Colors.black,
                   borderRadius: BorderRadius.all(Radius.circular(30.r)),
@@ -888,7 +888,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               },
               child: Container(
                 width: 215.w,
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 14.h),
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
                 decoration: BoxDecoration(
                   color: Colors.black,
                   borderRadius: BorderRadius.all(Radius.circular(30.r)),
