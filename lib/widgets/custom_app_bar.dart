@@ -1,9 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 
+import '../screens/dashboard/home_screen.dart';
+import '../screens/sign_in_screen.dart';
+import '../services/locator.dart';
+import '../services/storage_service.dart';
 import '../utils/assets.dart';
 import '../utils/responsive.dart';
 
@@ -48,19 +53,46 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               ? Row(
                   children: [
                     SizedBox(width: 20.w),
-                    Text(
-                      'Scarlet Fox',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14.sp,
+                    Text('Scarlet Fox', style: CustomFonts.black16w600),
+                    SizedBox(width: 20.w),
+                    PopupMenuButton(
+                      offset: Offset(0, 40.h),
+                      icon: Icon(
+                        Icons.arrow_drop_down_circle_outlined,
+                        size: 18.sp,
                         color: CustomColors.blackColor,
                       ),
-                    ),
-                    SizedBox(width: 20.w),
-                    Icon(
-                      Icons.arrow_drop_down_circle_outlined,
-                      size: 18.sp,
-                      color: CustomColors.blackColor,
+                      itemBuilder: (context) => [
+                        PopupMenuItem(
+                          height: 40.h,
+                          onTap: () async {
+                            final _secureStorage =
+                                locator<SecureStorageService>();
+                            await _secureStorage.clearToken();
+                            if (!context.mounted) return;
+                            context.goNamed(SignInScreen.routeName);
+                          },
+
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.logout_rounded,
+                                color: Colors.red,
+                                size: 18.sp,
+                              ),
+                              SizedBox(width: 8.w),
+                              Text(
+                                'Logout',
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 )
@@ -84,8 +116,36 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 child: Image.asset(PngAssets.person, width: 44.r, height: 44.r),
               ),
         SizedBox(width: 5.w),
-        Text("Scarlet Fox", style: CustomFonts.black22w600,),
+        Text("Scarlet Fox", style: CustomFonts.black22w600),
         SizedBox(width: 40.w),
+        PopupMenuButton(
+          offset: Offset(0, 40.h),
+          icon: Icon(
+            Icons.arrow_drop_down_circle_outlined,
+            size: 18.sp,
+            color: CustomColors.blackColor,
+          ),
+          itemBuilder: (context) => [
+            PopupMenuItem(
+              height: 40.h,
+              onTap: () {},
+              child: Row(
+                children: [
+                  Icon(Icons.logout_rounded, color: Colors.red, size: 18.sp),
+                  SizedBox(width: 8.w),
+                  Text(
+                    'Logout',
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }

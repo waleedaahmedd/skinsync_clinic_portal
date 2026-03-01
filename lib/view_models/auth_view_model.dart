@@ -1,6 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:skinsync_clinic_portal/models/requests/reset_password_request.dart';
+import 'package:skinsync_clinic_portal/models/requests/verify_otp_request.dart';
 import 'package:skinsync_clinic_portal/models/user_model.dart';
-
+import '../models/requests/change_password_request.dart';
+import '../models/requests/forget_password_request.dart';
 import '../models/requests/login_request_model.dart';
 import '../repositories/auth_repository.dart';
 import '../services/locator.dart';
@@ -17,6 +22,13 @@ class AuthViewModel extends BaseViewModel<AuthState> {
   final AuthRepository _authRepository = locator<AuthRepository>();
   final SecureStorageService _storageServices = SecureStorageService();
 
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final TextEditingController currentPasswordController =
+      TextEditingController();
+  final TextEditingController newPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+
   Future<void> initialize() async {
     final token = _storageServices.token;
     if (token != null && token.isNotEmpty) {
@@ -24,14 +36,95 @@ class AuthViewModel extends BaseViewModel<AuthState> {
     }
   }
 
+  void toggleObscureCurrent() =>
+      state = state.copyWith(obscureCurrent: !state.obscureCurrent);
+
+  void toggleObscureNew() =>
+      state = state.copyWith(obscureNew: !state.obscureNew);
+
+  void toggleObscureConfirm() =>
+      state = state.copyWith(obscureConfirm: !state.obscureConfirm);
+
+  void resetPasswordChanged() => state = state.copyWith(passwordChanged: false);
+
+  void clearPasswordFields() {
+    currentPasswordController.clear();
+    newPasswordController.clear();
+    confirmPasswordController.clear();
+  }
+
   Future<bool> login({required LoginRequestModel loginReq}) async {
     return await runSafely<bool?>(showLoading: true, () async {
           final response = await _authRepository.login(req: loginReq);
           state = state.copyWith(user: response.user);
+          return true;
+        }) ??
+        false;
+  }
+
+  Future<bool> changePassword() async {
+    return await runSafely<bool?>(showLoading: true, () async {
+          final req = ChangePasswordRequestModel(
+            currentPassword: currentPasswordController.text.trim(),
+            newPassword: confirmPasswordController.text.trim(),
+          );
+          await _authRepository.changePassword(req: req);
+          state = state.copyWith(passwordChanged: true);
+          clearPasswordFields();
 
           return true;
         }) ??
         false;
+  }
+
+  Future<bool> forgetPassword({required String email}) async {
+    return await runSafely<bool?>(showLoading: true, () async {
+          final req = ForgetPasswordRequest(email: email);
+          final response = await _authRepository.forgetPassword(req: req);
+          EasyLoading.showSuccess(response.message);
+          state = state.copyWith(passwordChanged: true);
+          clearPasswordFields();
+
+          return true;
+        }) ??
+        false;
+  }
+
+  Future<bool> verifyOtp({required String email, required String otp}) async {
+    return await runSafely<bool?>(showLoading: true, () async {
+          final response = await _authRepository.verifyOtp(
+            req: VerifyOtpRequest(email: email, otp: otp),
+          );
+          state = state.copyWith(resetToken: response.resetToken);
+          return true;
+        }) ??
+        false;
+  }
+
+  Future<bool> createNewPassword({
+    required String email,
+    required String newPassword,
+  }) async {
+    return await runSafely<bool?>(showLoading: true, () async {
+          final req = ResetPasswordRequest(
+            email: email,
+            resetToken: state.resetToken,
+            newPassword: newPassword,
+          );
+          final response = await _authRepository.resetPassword(req: req);
+          EasyLoading.showSuccess(response.message);
+          state = state.copyWith(passwordChanged: true);
+          clearPasswordFields();
+
+          return true;
+        }) ??
+        false;
+  }
+
+  void disposeControllers() {
+    currentPasswordController.dispose();
+    newPasswordController.dispose();
+    confirmPasswordController.dispose();
   }
 }
 
@@ -40,12 +133,22 @@ class AuthState {
   final bool isAuthenticated;
   final UserModel? user;
   final String? error;
+  final bool passwordChanged;
+  final bool obscureCurrent;
+  final bool obscureNew;
+  final bool obscureConfirm;
+  final String resetToken;
 
   AuthState({
     this.loading = false,
     this.isAuthenticated = false,
     this.error,
     this.user,
+    this.passwordChanged = false,
+    this.obscureCurrent = true,
+    this.obscureNew = true,
+    this.obscureConfirm = true,
+    this.resetToken = '',
   });
 
   AuthState copyWith({
@@ -53,12 +156,22 @@ class AuthState {
     bool? isAuthenticated,
     String? error,
     UserModel? user,
+    String? resetToken,
+    bool? passwordChanged,
+    bool? obscureCurrent,
+    bool? obscureNew,
+    bool? obscureConfirm,
   }) {
     return AuthState(
       loading: loading ?? this.loading,
       isAuthenticated: isAuthenticated ?? this.isAuthenticated,
       user: user ?? this.user,
       error: error,
+      passwordChanged: passwordChanged ?? this.passwordChanged,
+      obscureCurrent: obscureCurrent ?? this.obscureCurrent,
+      obscureNew: obscureNew ?? this.obscureNew,
+      obscureConfirm: obscureConfirm ?? this.obscureConfirm,
+      resetToken: resetToken ?? this.resetToken,
     );
   }
 }
