@@ -18,6 +18,10 @@ enum Endpoint {
   getAdminTreatments('treatments/masters'),
   getAdminTreatmentsSideAreas('clinic/side-areas/treatment/{treatmentId}'),
   addClinicTreatment('clinic/side-areas/bulk'),
+  changePassword('clinic/change-password'),
+  forgetPassword('clinic/forgot-password'),
+  resetPassword('clinic/reset-password'),
+  verifyOtp('clinic/verify-reset-otp'),
   deleteTreatment('clinic/treatments/{treatment_id}'),
   updateDoctorTreatment('clinic/doctors/treatments');
 
@@ -42,3 +46,5 @@ enum BaseUrls {
 
   const BaseUrls(this.url);
 }
+
+enum AuthScreen { login, forgetPassword, verifyOtp, createNewPassword }

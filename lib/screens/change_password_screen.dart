@@ -1,39 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../utils/custom_fonts.dart';
 import '../utils/responsive.dart';
+import '../utils/validators.dart';
+import '../view_models/auth_view_model.dart';
 import '../widgets/header__with_back_btn.dart';
 
-class ChangePasswordScreen extends StatefulWidget {
+class ChangePasswordScreen extends ConsumerWidget {
   const ChangePasswordScreen({super.key});
   static const String routeName = '/change-password';
 
-  @override
-  State<ChangePasswordScreen> createState() => _ChangePasswordScreenState();
-}
+  void _onUpdatePassword(BuildContext context, WidgetRef ref) async {
+    final viewModel = ref.read(authViewModelProvider.notifier);
+    if (!viewModel.formKey.currentState!.validate()) return;
+    final success = await viewModel.changePassword();
+    if (!context.mounted) return;
 
-class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
-  final TextEditingController _currentPasswordController =
-      TextEditingController();
-  final TextEditingController _newPasswordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
-
-  bool _obscureCurrentPassword = true;
-  bool _obscureNewPassword = true;
-  bool _obscureConfirmPassword = true;
-
-  @override
-  void dispose() {
-    _currentPasswordController.dispose();
-    _newPasswordController.dispose();
-    _confirmPasswordController.dispose();
-    super.dispose();
+    if (success) {
+      viewModel.resetPasswordChanged();
+      EasyLoading.showSuccess('Password updated successfully');
+      Navigator.pop(context);
+    } else {
+      final error = ref.read(authViewModelProvider).error;
+      EasyLoading.showSuccess('Error :$error');
+    }
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authViewModelProvider);
+    final viewModel = ref.read(authViewModelProvider.notifier);
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -44,11 +44,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header with back button
               BuildHeader(title: 'Password & Security'),
               SizedBox(height: 24.h),
-              // Main Card Container
-              _buildCardContainer(),
+              _buildCardContainer(context, ref, authState, viewModel),
             ],
           ),
         ),
@@ -56,7 +54,12 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     );
   }
 
-  Widget _buildCardContainer() {
+  Widget _buildCardContainer(
+    BuildContext context,
+    WidgetRef ref,
+    AuthState authState,
+    AuthViewModel viewModel,
+  ) {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(24.w),
@@ -65,57 +68,54 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         borderRadius: BorderRadius.circular(12.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Change Password Header
-          _buildChangePasswordHeader(),
-          SizedBox(height: 24.h),
-          // Current Password Field
-          _buildPasswordField(
-            label: 'Current Password',
-            controller: _currentPasswordController,
-            obscureText: _obscureCurrentPassword,
-            onToggleVisibility: () {
-              setState(() {
-                _obscureCurrentPassword = !_obscureCurrentPassword;
-              });
-            },
-          ),
-          SizedBox(height: 20.h),
-          // New Password Field
-          _buildPasswordField(
-            label: 'New Password',
-            controller: _newPasswordController,
-            obscureText: _obscureNewPassword,
-            onToggleVisibility: () {
-              setState(() {
-                _obscureNewPassword = !_obscureNewPassword;
-              });
-            },
-          ),
-          SizedBox(height: 20.h),
-          // Confirm New Password Field
-          _buildPasswordField(
-            label: 'Confirm New Password',
-            controller: _confirmPasswordController,
-            obscureText: _obscureConfirmPassword,
-            onToggleVisibility: () {
-              setState(() {
-                _obscureConfirmPassword = !_obscureConfirmPassword;
-              });
-            },
-          ),
-          SizedBox(height: 32.h),
-          // Buttons Row
-          _buildButtonsRow(),
-        ],
+      child: Form(
+        key: viewModel.formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildChangePasswordHeader(),
+            SizedBox(height: 24.h),
+            _buildPasswordField(
+              label: 'Current Password',
+              controller: viewModel.currentPasswordController,
+              obscureText: authState.obscureCurrent,
+              onToggle: viewModel.toggleObscureCurrent,
+              validator: Validators.password,
+            ),
+            SizedBox(height: 20.h),
+            _buildPasswordField(
+              label: 'New Password',
+              controller: viewModel.newPasswordController,
+              obscureText: authState.obscureNew,
+              onToggle: viewModel.toggleObscureNew,
+              validator: Validators.password,
+            ),
+            SizedBox(height: 20.h),
+            _buildPasswordField(
+              label: 'Confirm New Password',
+              controller: viewModel.confirmPasswordController,
+              obscureText: authState.obscureConfirm,
+              onToggle: viewModel.toggleObscureConfirm,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please confirm your new password';
+                }
+                if (value != viewModel.newPasswordController.text) {
+                  return 'Passwords do not match';
+                }
+                return null;
+              },
+            ),
+            SizedBox(height: 32.h),
+            _buildButtonsRow(context, ref, authState.loading),
+          ],
+        ),
       ),
     );
   }
@@ -123,7 +123,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   Widget _buildChangePasswordHeader() {
     return Row(
       children: [
-        // Purple Circle Icon
         Container(
           width: 44.w,
           height: 44.w,
@@ -140,7 +139,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           ),
         ),
         SizedBox(width: 14.w),
-        // Text Column
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -162,7 +160,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     required String label,
     required TextEditingController controller,
     required bool obscureText,
-    required VoidCallback onToggleVisibility,
+    required VoidCallback onToggle,
+    required String? Function(String?) validator,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -172,6 +171,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         TextFormField(
           controller: controller,
           obscureText: obscureText,
+          validator: validator,
           style: TextStyle(fontSize: 14.sp, color: Colors.black87),
           decoration: InputDecoration(
             filled: true,
@@ -192,8 +192,16 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               borderRadius: BorderRadius.circular(8.r),
               borderSide: BorderSide(color: Colors.grey[400]!, width: 1),
             ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.r),
+              borderSide: const BorderSide(color: Colors.red, width: 1),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.r),
+              borderSide: const BorderSide(color: Colors.red, width: 1),
+            ),
             suffixIcon: GestureDetector(
-              onTap: onToggleVisibility,
+              onTap: onToggle,
               child: Icon(
                 obscureText
                     ? Icons.visibility_off_outlined
@@ -208,56 +216,35 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     );
   }
 
-  Widget _buildButtonsRow() {
+  Widget _buildButtonsRow(BuildContext context, WidgetRef ref, bool isLoading) {
     return Row(
       children: [
-        // Update Password Button
         Expanded(
           child: ElevatedButton(
-            onPressed: () {
-              // Validate passwords
-              if (_newPasswordController.text !=
-                  _confirmPasswordController.text) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Passwords do not match!'),
-                    backgroundColor: Colors.red,
-                  ),
-                );
-                return;
-              }
-
-              // Handle update password
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Password updated successfully!'),
-                  backgroundColor: Colors.green,
-                ),
-              );
-            },
+            onPressed: isLoading ? null : () => _onUpdatePassword(context, ref),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.black,
-              foregroundColor: Colors.white,
-              padding: EdgeInsets.symmetric(vertical: 20.h),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.r),
               ),
               elevation: 0,
             ),
-            child: Text('Update Password', style: CustomFonts.white18w500),
+            child: isLoading
+                ? SizedBox(
+                    height: 20.h,
+                    width: 20.h,
+                    child: const CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.white,
+                    ),
+                  )
+                : Text('Update Password', style: CustomFonts.white18w500),
           ),
         ),
         SizedBox(width: 16.w),
-        // Cancel Button
         Expanded(
           child: OutlinedButton(
-            onPressed: () {
-              // Handle cancel
-              Navigator.pop(context);
-            },
+            onPressed: isLoading ? null : () => Navigator.pop(context),
             style: OutlinedButton.styleFrom(
-              foregroundColor: Colors.black,
-              padding: EdgeInsets.symmetric(vertical: 20.h),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.r),
               ),
