@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 import 'package:skinsync_clinic_portal/utils/extentions.dart';
+
 import '../../models/requests/add_treatment_req_model.dart';
 import '../../models/treatment_model.dart';
 import '../../view_models/treatment_view_model.dart';
@@ -317,7 +318,6 @@ class _AddTreatmentDialogState extends ConsumerState<AddTreatmentDialog> {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.black,
-                        padding: EdgeInsets.symmetric(vertical: 20.h),
                       ),
                       child: Text('Create', style: CustomFonts.white14w500),
                     ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skinsync_clinic_portal/utils/responsive.dart';
+
 import 'analytics_card_widget.dart';
 
 class AnalyticsGridWidget extends StatelessWidget {
@@ -17,21 +18,21 @@ class AnalyticsGridWidget extends StatelessWidget {
               icon: Icons.calendar_today_outlined,
               iconColor: Color(0xFF7DD3D3),
               bgColor: Color(0xFFE8F6F6),
-              value: "101",
+              value: "0",
               label: "Completed Appointments",
             ),
             AnalyticsCardWidget(
               icon: Icons.schedule_outlined,
               iconColor: Color(0xFFE89FD5),
               bgColor: Color(0xFFFCEFF9),
-              value: "101",
+              value: "0",
               label: "Pending Appointments",
             ),
             AnalyticsCardWidget(
               icon: Icons.cancel_outlined,
               iconColor: Color(0xFFFF9B9B),
               bgColor: Color(0xFFFFEDED),
-              value: "101",
+              value: "0",
               label: "Cancelled Appointments",
             ),
           ],
@@ -44,14 +45,14 @@ class AnalyticsGridWidget extends StatelessWidget {
               icon: Icons.medical_services_outlined,
               iconColor: Color(0xFF7DD3D3),
               bgColor: Color(0xFFE8F6F6),
-              value: "1000",
+              value: "0",
               label: "Total Treatments",
             ),
             AnalyticsCardWidget(
               icon: Icons.star_outline,
               iconColor: Color(0xFFFFB366),
               bgColor: Color(0xFFFFF3E8),
-              value: "4.5",
+              value: "0.0",
               label: "Ratings",
             ),
           ],
