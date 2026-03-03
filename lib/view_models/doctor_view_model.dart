@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skinsync_clinic_portal/models/requests/register_doctor_request.dart';
 import 'package:skinsync_clinic_portal/models/requests/update_doctors_treament_request.dart';
@@ -55,6 +57,9 @@ class DoctorViewModel extends BaseViewModel<DoctorState> {
       if (state.treatments.isEmpty) {
         throw Exception('Add treatments first!');
       }
+      if (state.availability.isEmpty) {
+        throw Exception('Add slots first!');
+      }
       state = state.copyWith(loading: true);
       await locator<DoctorService>().register(
         request: RegisterDoctorRequest(
@@ -64,6 +69,7 @@ class DoctorViewModel extends BaseViewModel<DoctorState> {
           specialization: specialization,
           contactInfo: ContactInfo(email: email, phone: phone),
           treatments: state.treatments,
+          availability: state.availability,
         ),
       );
       state = state.copyWith(loading: false, success: true);
@@ -114,6 +120,20 @@ class DoctorViewModel extends BaseViewModel<DoctorState> {
     state = state.copyWithNull(treatments: [], role: null);
   }
 
+  void setAvailability(Availability? availability) {
+    if (availability == null) {
+      log('No availability');
+      return;
+    }
+    state = state.copyWith(availability: [availability, ...state.availability]);
+  }
+
+  void deleteAvailability(Availability availability) {
+    final newList = List.of(state.availability);
+    newList.remove(availability);
+    state = state.copyWith(availability: newList);
+  }
+
   @override
   void onError(String message) {
     state = state.copyWith(loading: false);
@@ -128,6 +148,7 @@ class DoctorState {
   final List<Doctor> doctors;
   final Doctor? selectedDoctor;
   final bool success;
+  final List<Availability> availability;
 
   const DoctorState({
     this.role,
@@ -136,6 +157,7 @@ class DoctorState {
     this.doctors = const [],
     this.selectedDoctor,
     this.success = false,
+    this.availability = const [],
   });
 
   DoctorState copyWith({
@@ -145,6 +167,7 @@ class DoctorState {
     List<Doctor>? doctors,
     Doctor? selectedDoctor,
     bool? success,
+    List<Availability>? availability,
   }) {
     return DoctorState(
       loading: loading ?? this.loading,
@@ -153,6 +176,7 @@ class DoctorState {
       doctors: doctors ?? this.doctors,
       selectedDoctor: selectedDoctor ?? this.selectedDoctor,
       success: success ?? false,
+      availability: availability ?? this.availability,
     );
   }
 

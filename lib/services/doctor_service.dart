@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:skinsync_clinic_portal/models/requests/register_doctor_request.dart';
 import 'package:skinsync_clinic_portal/models/requests/update_doctors_treament_request.dart';
 import 'package:skinsync_clinic_portal/models/responses/get_doctors_response.dart';
@@ -16,6 +18,7 @@ class DoctorService extends DoctorRepository {
       Endpoint.createDoctor,
       body: request.toJson(),
     );
+    log('RESPONSE: $response');
     final model = RegisterDoctorResponse.fromJson(response);
     if (!model.isSuccess) {
       throw Exception(model.message);

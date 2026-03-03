@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import '../../utils/enums.dart';
 import '../treatment_model.dart';
 import 'base_request.dart';
@@ -9,6 +11,7 @@ class RegisterDoctorRequest extends BaseRequest {
   final String specialization;
   final ContactInfo contactInfo;
   final List<TreatmentModel> treatments;
+  final List<Availability> availability;
 
   RegisterDoctorRequest({
     required this.role,
@@ -17,6 +20,7 @@ class RegisterDoctorRequest extends BaseRequest {
     required this.specialization,
     required this.contactInfo,
     required this.treatments,
+    required this.availability,
   });
 
   @override
@@ -28,6 +32,7 @@ class RegisterDoctorRequest extends BaseRequest {
       'specialization': specialization,
       'contact_info': contactInfo.toJson(),
       'treatments': treatments.map((t) => t.toRequest()).toList(),
+      'availability': availability.map((a) => a.toJson()).toList(),
     };
   }
 }
@@ -40,5 +45,25 @@ class ContactInfo {
 
   Map<String, dynamic> toJson() {
     return {'email': email, 'phone': phone};
+  }
+}
+
+class Availability {
+  final TimeOfDay startTime;
+  final TimeOfDay endTime;
+  final List<String> days;
+
+  const Availability({
+    required this.startTime,
+    required this.endTime,
+    required this.days,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'start_time': '${startTime.hour}:${startTime.minute}',
+      'end_time': '${endTime.hour}:${endTime.minute}',
+      'days': days,
+    };
   }
 }

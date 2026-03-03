@@ -4,6 +4,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:skinsync_clinic_portal/models/requests/register_doctor_request.dart';
 import 'package:skinsync_clinic_portal/models/responses/register_doctor_response.dart';
 import 'package:skinsync_clinic_portal/models/treatment_model.dart';
 import 'package:skinsync_clinic_portal/utils/color_constant.dart';
@@ -176,11 +177,14 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
                       ),
                       SizedBox(width: 10.w),
                       ElevatedButton.icon(
-                        onPressed: () {
-                          showDialog(
+                        onPressed: () async {
+                          final availability = await showDialog<Availability>(
                             context: context,
                             builder: (context) => const AddSlotDialog(),
                           );
+                          ref
+                              .read(doctorProvider.notifier)
+                              .setAvailability(availability);
                         },
 
                         style: ElevatedButton.styleFrom(
@@ -252,6 +256,8 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
                   ),
                   SizedBox(height: 16.h),
                   _buildTreatmentChips(),
+                  SizedBox(height: 16.h),
+                  _buildAvailability(),
                   SizedBox(height: 32.h),
                   _buildButtonsRow(),
                 ],
@@ -352,6 +358,79 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
                         }).toList(),
                       ),
                     ),
+                ],
+              ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildAvailability() {
+    return Consumer(
+      builder: (_, ref, _) {
+        final availability = ref.watch(
+          doctorProvider.select((state) => state.availability),
+        );
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          spacing: 10.h,
+          children: [
+            if (availability.isNotEmpty)
+              Text('Availability', style: CustomFonts.black14w600),
+            for (final availability in availability)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    spacing: 10.w,
+                    children: [
+                      ChoiceChip(
+                        label: Text(
+                          '${availability.startTime.format(context)} - ${availability.endTime.format(context)}',
+                        ),
+                        selected: true,
+                        selectedColor: Colors.black,
+                        showCheckmark: false,
+                        checkmarkColor: Colors.white,
+                        labelStyle: TextStyle(
+                          color: CustomColors.whiteColor,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        onSelected: (selected) {},
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          ref
+                              .read(doctorProvider.notifier)
+                              .deleteAvailability(availability);
+                        },
+                        icon: Icon(Icons.delete, color: Colors.red),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 10.h),
+                    child: Wrap(
+                      spacing: 8.w,
+                      runSpacing: 8.h,
+                      children: availability.days.map((day) {
+                        return ChoiceChip(
+                          label: Text(day),
+                          selected: false,
+                          selectedColor: Colors.blue,
+                          checkmarkColor: Colors.white,
+                          labelStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 13.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          onSelected: (_) {},
+                        );
+                      }).toList(),
+                    ),
+                  ),
                 ],
               ),
           ],

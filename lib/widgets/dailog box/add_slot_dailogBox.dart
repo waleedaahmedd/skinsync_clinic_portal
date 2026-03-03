@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
+import 'package:skinsync_clinic_portal/models/requests/register_doctor_request.dart';
 import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
+import 'package:skinsync_clinic_portal/view_models/doctor_view_model.dart';
 
 class AddSlotDialog extends StatefulWidget {
   const AddSlotDialog({super.key});
@@ -30,25 +35,40 @@ class _AddSlotDialogState extends State<AddSlotDialog> {
       context: context,
       initialTime: TimeOfDay.now(),
     );
-
-    if (picked != null) {
-      setState(() {
-        startTime = picked;
-      });
+    if (picked == null) {
+      return;
     }
+    if (endTime != null) {
+      if (picked.isAfter(endTime!)) {
+        EasyLoading.showError('Start time should be before end time');
+        return;
+      }
+    }
+    setState(() {
+      startTime = picked;
+    });
   }
 
   Future<void> pickEndTime() async {
+    if (startTime == null) {
+      EasyLoading.showError('Select start time first!');
+      return;
+    }
     final picked = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
     );
-
-    if (picked != null) {
-      setState(() {
-        endTime = picked;
-      });
+    if (picked == null) {
+      return;
     }
+    if (picked.isBefore(startTime!)) {
+      EasyLoading.showError('End time should be after start time');
+      return;
+    }
+
+    setState(() {
+      endTime = picked;
+    });
   }
 
   String formatTime(TimeOfDay? time) {
@@ -64,7 +84,7 @@ class _AddSlotDialogState extends State<AddSlotDialog> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       child: Container(
         width: MediaQuery.of(context).size.width > 600
-            ? 400
+            ? 600.w
             : MediaQuery.of(context).size.width * 0.9,
         padding: EdgeInsets.all(20.w),
         decoration: BoxDecoration(
@@ -203,11 +223,51 @@ class _AddSlotDialogState extends State<AddSlotDialog> {
                   child: const Text("Cancel"),
                 ),
                 SizedBox(width: 10.w),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
+                Consumer(
+                  builder: (_, ref, _) {
+                    return ElevatedButton(
+                      onPressed: () {
+                        if (startTime == null || endTime == null) {
+                          EasyLoading.showError('Select start and end time!');
+                          return;
+                        }
+                        final format = DateFormat('hh:mm a');
+                        final startDate = format.parse(
+                          startTime!.format(context),
+                        );
+                        final endDate = format.parse(endTime!.format(context));
+                        final duration = endDate.difference(startDate);
+                        if (duration.inHours < 1) {
+                          EasyLoading.showError(
+                            'Duration must be greater than 1 hour!',
+                          );
+                          return;
+                        }
+                        if (selectedDays.isEmpty) {
+                          EasyLoading.showError('Select at least one day!');
+                          return;
+                        }
+                        final state = ref.read(doctorProvider);
+                        for (final a in state.availability) {
+                          for (final day in a.days) {
+                            if (selectedDays.contains(day)) {
+                              EasyLoading.showError(
+                                '$day is already selected!',
+                              );
+                              return;
+                            }
+                          }
+                        }
+                        final availability = Availability(
+                          startTime: startTime!,
+                          endTime: endTime!,
+                          days: selectedDays,
+                        );
+                        Navigator.pop(context, availability);
+                      },
+                      child: Text("Save"),
+                    );
                   },
-                  child: Text("Save"),
                 ),
               ],
             ),
