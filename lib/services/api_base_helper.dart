@@ -4,6 +4,8 @@ import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:http/http.dart' as http;
+import 'package:skinsync_clinic_portal/models/responses/refresh_token_response.dart';
+import 'package:skinsync_clinic_portal/services/locator.dart';
 import 'package:skinsync_clinic_portal/services/storage_service.dart';
 
 import '../utils/enums.dart';
@@ -48,7 +50,9 @@ class ApiBaseHelper {
         '${baseUrl.url}$urlPath',
       ).replace(queryParameters: queryParams);
       log('URL: $uri');
-      final response = await _client.get(uri, headers: _headers());
+      final headers = await _headers();
+      log('HEADERS: $headers');
+      final response = await _client.get(uri, headers: headers);
       log('RESPONSE: ${response.body}');
 
       return _processResponse(response);
@@ -61,7 +65,7 @@ class ApiBaseHelper {
       log('REQUEST: $body');
       final response = await _client.post(
         Uri.parse('${baseUrl.url}${endpoint.path}'),
-        headers: _headers(),
+        headers: await _headers(),
         body: jsonEncode(body),
       );
       return _processResponse(response);
@@ -72,7 +76,7 @@ class ApiBaseHelper {
     return _safeRequest(() async {
       final response = await _client.put(
         Uri.parse('${baseUrl.url}${endpoint.path}'),
-        headers: _headers(),
+        headers: await _headers(),
         body: jsonEncode(body),
       );
       return _processResponse(response);
@@ -83,7 +87,7 @@ class ApiBaseHelper {
     return _safeRequest(() async {
       final response = await _client.patch(
         Uri.parse('${baseUrl.url}${endpoint.path}'),
-        headers: _headers(),
+        headers: await _headers(),
         body: jsonEncode(body),
       );
       return _processResponse(response);
@@ -104,19 +108,20 @@ class ApiBaseHelper {
         '${baseUrl.url}$urlPath',
       ).replace(queryParameters: queryParams);
       log('URL: $uri');
-      final response = await _client.delete(uri, headers: _headers());
+      final response = await _client.delete(uri, headers: await _headers());
       return _processResponse(response);
     });
   }
 
   // ---------------- HELPERS ----------------
 
-  Map<String, String> _headers() {
+  Future<Map<String, String>> _headers() async {
+    final token = await _storage.getToken();
     return {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       // if (_storage.token != null)
-      'Authorization': 'Bearer ${_storage.token}',
+      'Authorization': 'Bearer $token',
     };
   }
 
@@ -135,19 +140,40 @@ class ApiBaseHelper {
     }
     final refreshExpiry = await _storage.getRefreshTokenExpiry();
     if (refreshExpiry?.isBefore(now) ?? true) {
-      throw UnauthorizedException('Refresh token not found');
+      _storage.clearToken();
+      return;
     }
     final refreshToken = await _storage.getRefreshToken();
     if (refreshToken == null) {
       _storage.clearToken();
-      throw UnauthorizedException('Refresh token not found');
+      return;
     }
+    log('EXPIRY: $expiry');
+    log('REFRESH EXPIRY: $refreshExpiry');
     final uri = Uri.parse('${baseUrl.url}${Endpoint.refreshToken.path}');
     log('URL: $uri');
     final request = {'refresh_token': refreshToken};
     log('REQUEST: $request');
-    final response = await _client.post(uri, body: request);
-    final data = _processResponse(response);
+    final json = await http.post(uri, body: jsonEncode(request));
+    log('RESPONSE: ${json.body}');
+    final response = RefreshTokenResponse.fromJson(_processResponse(json));
+    if (!response.isSuccess) {
+      throw Exception(response.message);
+    }
+    final secureStorage = locator<SecureStorageService>();
+    await secureStorage.saveToken(response.data!.accessToken!);
+    await secureStorage.saveRefreshToken(response.data!.refreshToken!);
+    await secureStorage.saveAccessTokenExpiry(
+      DateTime.fromMillisecondsSinceEpoch(
+        response.data!.accessExpiresAt! * 1000,
+      ),
+    );
+    await secureStorage.saveRefreshTokenExpiry(
+      DateTime.fromMillisecondsSinceEpoch(
+        response.data!.refreshExpiresAt! * 1000,
+      ),
+    );
+    log('TOKEN REFRESHED');
   }
 
   dynamic _processResponse(http.Response response) {
@@ -161,7 +187,7 @@ class ApiBaseHelper {
 
       case 401:
       case 403:
-        _storage.clearToken();
+        // _storage.clearToken();
         throw UnauthorizedException(_message(response));
 
       case 404:

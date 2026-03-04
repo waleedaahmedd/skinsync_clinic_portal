@@ -8,12 +8,6 @@ import '../utils/colored_print.dart';
 import '../utils/enums.dart';
 
 class SecureStorageService {
-  static final SecureStorageService _instance =
-      SecureStorageService._internal();
-  factory SecureStorageService() => _instance;
-
-  SecureStorageService._internal();
-
   static const _tokenKey = SharedPreferencesKeys.accessTokenKey;
   static const _userKey = SharedPreferencesKeys.userKey;
   static const _refreshTokenKey = SharedPreferencesKeys.refreshTokenKey;
@@ -46,6 +40,10 @@ class SecureStorageService {
     ColoredPrint.green("Token Saved");
     ColoredPrint.green(token);
     _authStateController.add(true);
+  }
+
+  Future<String?> getToken() async {
+    return await _storage.read(key: _tokenKey.name);
   }
 
   Future<void> clearToken() async {

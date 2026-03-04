@@ -15,7 +15,7 @@ enum DoctorRole { doctor, injector }
 
 enum Endpoint {
   login('clinic/login'),
-  refreshToken('auth/refresh'),
+  refreshToken('clinic/auth/refresh'),
   getClinicTreatments('clinic/treatments'),
   createDoctor('clinic/doctors/register'),
   getDoctors('doctors'),
