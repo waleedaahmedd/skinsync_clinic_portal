@@ -227,7 +227,6 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
                     label: 'Name',
                     hintText: 'Name',
                     validator: Validators.empty,
-                    readOnly: isEditing,
                   ),
                   SizedBox(height: 16.h),
                   BuildTextField(
@@ -235,7 +234,6 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
                     label: 'Specialization',
                     hintText: 'Specialization',
                     validator: Validators.empty,
-                    readOnly: isEditing,
                   ),
                   SizedBox(height: 16.h),
                   BuildTextField(
@@ -252,7 +250,6 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
                     controller: _phoneController,
                     keyboardType: TextInputType.phone,
                     validator: Validators.phone,
-                    readOnly: isEditing,
                   ),
                   SizedBox(height: 16.h),
                   _buildTreatmentChips(),
@@ -451,7 +448,12 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
               if (widget.doctor != null) {
                 ref
                     .read(doctorProvider.notifier)
-                    .updateDoctorTreatment(clinicUserId: widget.doctor!.id!);
+                    .updateDoctorTreatment(
+                      clinicUserId: widget.doctor!.id!,
+                      name: _nameController.text.trim(),
+                      phone: _phoneController.text.trim(),
+                      specialization: _specializationController.text.trim(),
+                    );
               } else {
                 ref
                     .read(doctorProvider.notifier)

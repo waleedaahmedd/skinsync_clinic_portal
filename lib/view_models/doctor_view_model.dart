@@ -88,16 +88,28 @@ class DoctorViewModel extends BaseViewModel<DoctorState> {
     }, showLoading: false);
   }
 
-  Future<void> updateDoctorTreatment({required int clinicUserId}) async {
+  Future<void> updateDoctorTreatment({
+    required int clinicUserId,
+    required String name,
+    required String phone,
+    required String specialization,
+  }) async {
     return await runSafely(() async {
       if (state.treatments.isEmpty) {
         throw Exception('Add treatments first!');
       }
-
+      if (state.availability.isEmpty) {
+        throw Exception('Add at least one slot!');
+      }
       state = state.copyWith(loading: true);
 
       final request = UpdateDoctorRequest(
         clinicUserId: clinicUserId,
+        name: name,
+        image: 'https://randomuser.me/api/portraits/men/73.jpg',
+        phone: phone,
+        specialization: specialization,
+        availability: state.availability,
         treatments: state.treatments.map((t) {
           return UpdateTreatmentRequest(
             treatmentId: t.id!,
