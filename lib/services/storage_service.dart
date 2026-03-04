@@ -16,6 +16,11 @@ class SecureStorageService {
 
   static const _tokenKey = SharedPreferencesKeys.accessTokenKey;
   static const _userKey = SharedPreferencesKeys.userKey;
+  static const _refreshTokenKey = SharedPreferencesKeys.refreshTokenKey;
+  static const _accessTokenExpiryKey =
+      SharedPreferencesKeys.accessTokenExpiryKey;
+  static const _refreshTokenExpiryKey =
+      SharedPreferencesKeys.refreshTokenExpiryKey;
 
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
 
@@ -63,6 +68,44 @@ class SecureStorageService {
       return null;
     }
     return UserModel.fromJson(jsonDecode(userJson));
+  }
+
+  Future<void> saveRefreshToken(String refreshToken) async {
+    await _storage.write(key: _refreshTokenKey.name, value: refreshToken);
+  }
+
+  Future<String?> getRefreshToken() async {
+    return await _storage.read(key: _refreshTokenKey.name);
+  }
+
+  Future<void> saveAccessTokenExpiry(DateTime expiryDate) async {
+    await _storage.write(
+      key: _accessTokenExpiryKey.name,
+      value: expiryDate.toIso8601String(),
+    );
+  }
+
+  Future<DateTime?> getAccessTokenExpiry() async {
+    final expiryDate = await _storage.read(key: _accessTokenExpiryKey.name);
+    if (expiryDate == null) {
+      return null;
+    }
+    return DateTime.tryParse(expiryDate);
+  }
+
+  Future<void> saveRefreshTokenExpiry(DateTime date) async {
+    await _storage.write(
+      key: _refreshTokenExpiryKey.name,
+      value: date.toIso8601String(),
+    );
+  }
+
+  Future<DateTime?> getRefreshTokenExpiry() async {
+    final expiryDate = await _storage.read(key: _refreshTokenExpiryKey.name);
+    if (expiryDate == null) {
+      return null;
+    }
+    return DateTime.tryParse(expiryDate);
   }
 
   void dispose() {

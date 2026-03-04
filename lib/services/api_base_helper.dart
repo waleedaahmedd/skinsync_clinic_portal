@@ -20,6 +20,7 @@ class ApiBaseHelper {
 
   Future<T> _safeRequest<T>(Future<T> Function() request) async {
     await _checkInternet();
+    await _refreshToken();
     try {
       return await request();
     } on SocketException {
@@ -124,6 +125,29 @@ class ApiBaseHelper {
     if (result.any((result) => result == ConnectivityResult.none)) {
       throw const NoInternetException();
     }
+  }
+
+  Future<void> _refreshToken() async {
+    final expiry = await _storage.getAccessTokenExpiry();
+    final now = DateTime.now();
+    if (expiry?.isAfter(now) ?? false) {
+      return;
+    }
+    final refreshExpiry = await _storage.getRefreshTokenExpiry();
+    if (refreshExpiry?.isBefore(now) ?? true) {
+      throw UnauthorizedException('Refresh token not found');
+    }
+    final refreshToken = await _storage.getRefreshToken();
+    if (refreshToken == null) {
+      _storage.clearToken();
+      throw UnauthorizedException('Refresh token not found');
+    }
+    final uri = Uri.parse('${baseUrl.url}${Endpoint.refreshToken.path}');
+    log('URL: $uri');
+    final request = {'refresh_token': refreshToken};
+    log('REQUEST: $request');
+    final response = await _client.post(uri, body: request);
+    final data = _processResponse(response);
   }
 
   dynamic _processResponse(http.Response response) {

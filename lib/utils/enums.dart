@@ -1,6 +1,9 @@
 enum SharedPreferencesKeys {
   themeModeKey("theme-mode"),
   accessTokenKey("access-token"),
+  refreshTokenKey('refresh-token'),
+  accessTokenExpiryKey('access-token-expiry'),
+  refreshTokenExpiryKey('refresh-token-expiry'),
   userKey('user-key');
 
   const SharedPreferencesKeys(this.keyText);
@@ -12,6 +15,7 @@ enum DoctorRole { doctor, injector }
 
 enum Endpoint {
   login('clinic/login'),
+  refreshToken('auth/refresh'),
   getClinicTreatments('clinic/treatments'),
   createDoctor('clinic/doctors/register'),
   getDoctors('doctors'),
