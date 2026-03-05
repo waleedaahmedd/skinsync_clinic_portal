@@ -88,16 +88,28 @@ class DoctorViewModel extends BaseViewModel<DoctorState> {
     }, showLoading: false);
   }
 
-  Future<void> updateDoctorTreatment({required int clinicUserId}) async {
+  Future<void> updateDoctorTreatment({
+    required int clinicUserId,
+    required String name,
+    required String specialization,
+    required String phone,
+  }) async {
     return await runSafely(() async {
       if (state.treatments.isEmpty) {
         throw Exception('Add treatments first!');
+      }
+      if (state.availability.isEmpty) {
+        throw Exception('Add at least one slot!');
       }
 
       state = state.copyWith(loading: true);
 
       final request = UpdateDoctorRequest(
         clinicUserId: clinicUserId,
+        name: name,
+        specialization: specialization,
+        phone: phone,
+        availability: state.availability,
         treatments: state.treatments.map((t) {
           return UpdateTreatmentRequest(
             treatmentId: t.id!,
@@ -118,6 +130,13 @@ class DoctorViewModel extends BaseViewModel<DoctorState> {
 
   void clearData() {
     state = state.copyWithNull(treatments: [], role: null);
+  }
+
+  void setInitialAvailability(List<Availability>? availability) {
+    if (availability == null) {
+      return;
+    }
+    state = state.copyWith(availability: availability);
   }
 
   void setAvailability(Availability? availability) {

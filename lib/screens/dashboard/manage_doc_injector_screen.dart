@@ -12,6 +12,7 @@ import 'package:skinsync_clinic_portal/widgets/empty_widget.dart';
 import 'package:skinsync_clinic_portal/widgets/patient_selection_tile.dart';
 
 import '../../../utils/assets.dart';
+import '../../models/requests/register_doctor_request.dart';
 import '../../models/responses/register_doctor_response.dart';
 import '../../view_models/doctor_view_model.dart';
 import '../add_doctor_injector_screen.dart';
@@ -529,6 +530,48 @@ class _MangeDoctorsInjectorsScreenState
               // );
             }),
           ),
+          if (selectedDoctor.availability?.isNotEmpty ?? false) ...{
+            SizedBox(height: 20.h),
+            Text("Availability", style: CustomFonts.black22w600),
+            SizedBox(height: 20.h),
+            Container(
+              padding: EdgeInsets.all(16.w),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.r),
+                color: Colors.white,
+                border: Border.all(color: Colors.grey.shade300),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 10.h,
+                children: [
+                  for (Availability availability
+                      in selectedDoctor.availability ?? [])
+                    for (final day in availability.days)
+                      Row(
+                        spacing: 20.w,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 9.w,
+                              vertical: 12.h,
+                            ),
+                            decoration: BoxDecoration(
+                              color: CustomColors.iconColor,
+                              borderRadius: BorderRadius.circular(15.r),
+                            ),
+                            child: Text(day, style: CustomFonts.black14w500),
+                          ),
+                          Text(
+                            '${availability.startTime.format(context)} to ${availability.endTime.format(context)}',
+                            style: CustomFonts.black14w600,
+                          ),
+                        ],
+                      ),
+                ],
+              ),
+            ),
+          },
         ],
       ),
     );

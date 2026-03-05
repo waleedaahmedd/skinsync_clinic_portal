@@ -27,7 +27,7 @@ enum Endpoint {
   resetPassword('clinic/reset-password'),
   verifyOtp('clinic/verify-reset-otp'),
   deleteTreatment('clinic/treatments/{treatment_id}'),
-  updateDoctorTreatment('clinic/doctors/treatments');
+  updateDoctorTreatment('clinic/doctors');
 
   final String path;
   const Endpoint(this.path);

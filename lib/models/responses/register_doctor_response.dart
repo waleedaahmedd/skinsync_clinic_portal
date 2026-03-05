@@ -1,6 +1,7 @@
 import 'package:skinsync_clinic_portal/models/responses/base_response_model.dart';
 
 import '../../utils/enums.dart';
+import '../requests/register_doctor_request.dart';
 
 class RegisterDoctorResponse extends BaseApiResponseModel<Doctor> {
   const RegisterDoctorResponse({
@@ -29,8 +30,9 @@ class Doctor {
   final String? specialization;
   final String? phone;
   final List<Treatment>? treatments;
+  final List<Availability>? availability;
 
-  Doctor({
+  const Doctor({
     this.id,
     this.clinicId,
     this.email,
@@ -38,10 +40,11 @@ class Doctor {
     this.role,
     this.password,
     this.status,
-      this.image,
+    this.image,
     this.specialization,
     this.phone,
     this.treatments,
+    this.availability,
   });
 
   factory Doctor.fromJson(Map<String, dynamic> json) => Doctor(
@@ -52,28 +55,28 @@ class Doctor {
     role: json["role"] != null ? DoctorRole.values.byName(json["role"]) : null,
     password: json["password"],
     status: json["status"],
-     image: json["image"],
-      specialization: json["specialization"],
-      phone: json["phone"],
-      treatments: json["treatments"] == null
-          ? []
-          : List<Treatment>.from(
-              (json["treatments"] as List)
-                  .map((x) => Treatment.fromJson(x)),
-            ),
-    );
-  
+    image: json["image"],
+    specialization: json["specialization"],
+    phone: json["phone"],
+    treatments: json["treatments"] == null
+        ? []
+        : List<Treatment>.from(
+            (json["treatments"] as List).map((x) => Treatment.fromJson(x)),
+          ),
+    availability: json['availability'] != null
+        ? List<Availability>.from(
+            (json['availability'] as List).map((x) => Availability.fromJson(x)),
+          )
+        : null,
+  );
 }
+
 class Treatment {
   final int? treatmentId;
   final String? treatmentName;
   final List<SideArea>? sideAreas;
 
-  Treatment({
-    this.treatmentId,
-    this.treatmentName,
-    this.sideAreas,
-  });
+  Treatment({this.treatmentId, this.treatmentName, this.sideAreas});
 
   factory Treatment.fromJson(Map<String, dynamic> json) {
     return Treatment(
@@ -82,20 +85,17 @@ class Treatment {
       sideAreas: json["side_areas"] == null
           ? []
           : List<SideArea>.from(
-              (json["side_areas"] as List)
-                  .map((x) => SideArea.fromJson(x)),
+              (json["side_areas"] as List).map((x) => SideArea.fromJson(x)),
             ),
     );
   }
 }
+
 class SideArea {
   final int? sideAreaId;
   final String? sideAreaName;
 
-  SideArea({
-    this.sideAreaId,
-    this.sideAreaName,
-  });
+  SideArea({this.sideAreaId, this.sideAreaName});
 
   factory SideArea.fromJson(Map<String, dynamic> json) {
     return SideArea(

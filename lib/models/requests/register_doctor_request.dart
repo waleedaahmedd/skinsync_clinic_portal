@@ -66,4 +66,20 @@ class Availability {
       'days': days,
     };
   }
+
+  factory Availability.fromJson(Map<String, dynamic> json) {
+    return Availability(
+      startTime: _getTimeOfDayFromString(json['start_time']),
+      endTime: _getTimeOfDayFromString(json['end_time']),
+      days: List<String>.from(json['days']),
+    );
+  }
+
+  static TimeOfDay _getTimeOfDayFromString(String time) {
+    final splitted = time.split(':');
+    return TimeOfDay(
+      hour: int.parse(splitted[0]),
+      minute: int.parse(splitted[1]),
+    );
+  }
 }
