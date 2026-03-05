@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skinsync_clinic_portal/screens/sign_in_screen.dart';
 
+import '../services/locator.dart';
 import '../services/storage_service.dart';
 import '../utils/assets.dart';
 import '../utils/color_constant.dart';
@@ -33,7 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
       await Future.delayed(Duration(milliseconds: _duration - 800));
 
       if (mounted) {
-        if (SecureStorageService().isLoggedIn) {
+        if (locator<SecureStorageService>().isLoggedIn) {
           context.goNamed(HomeScreen.routeName);
         } else {
           context.goNamed(SignInScreen.routeName);
