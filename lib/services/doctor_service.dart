@@ -33,10 +33,14 @@ class DoctorService extends DoctorRepository {
       throw Exception(model.message);
     }
     final user = await locator<SecureStorageService>().getUser();
-    final clinicDoctors = model.data
-        ?.where((doctor) => doctor.clinicId == user?.clinicId)
-        .toList();
-    return clinicDoctors ?? [];
+    late List<Doctor> doctors;
+    for (final clinic in model.data ?? <ClinicData>[]) {
+      if (clinic.clinicId == user?.clinicId) {
+        doctors = clinic.doctors ?? [];
+        break;
+      }
+    }
+    return doctors;
   }
 
   @override
