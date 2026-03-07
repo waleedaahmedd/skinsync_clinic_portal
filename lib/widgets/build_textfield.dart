@@ -10,7 +10,7 @@ class BuildTextField extends StatelessWidget {
   final int maxLines;
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
-  final Function(String?)? onChanged;
+  final void Function(String)? onChanged;
   final Widget? prefixIcon;
   final bool readOnly;
   final bool enabled;

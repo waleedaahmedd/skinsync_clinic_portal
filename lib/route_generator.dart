@@ -3,6 +3,7 @@ import 'package:skinsync_clinic_portal/models/responses/register_doctor_response
 import 'package:skinsync_clinic_portal/screens/about_screen.dart';
 import 'package:skinsync_clinic_portal/screens/business_info_screen.dart';
 import 'package:skinsync_clinic_portal/screens/change_password_screen.dart';
+import 'package:skinsync_clinic_portal/screens/dashboard/inventory_screen.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/manage_doc_injector_screen.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/mange_staff_screen.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/patient_management_detail.dart';
@@ -87,6 +88,11 @@ class RouteGenerator {
             builder: (_, _) => ManageStaffScreen(),
           ),
           GoRoute(
+            name: InventoryScreen.routeName,
+            path: InventoryScreen.routeName,
+            builder: (_, _) => InventoryScreen(),
+          ),
+          GoRoute(
             name: MangeDoctorsInjectorsScreen.routeName,
             path: MangeDoctorsInjectorsScreen.routeName,
             builder: (_, _) => MangeDoctorsInjectorsScreen(),
@@ -124,7 +130,7 @@ class RouteGenerator {
         name: AddDoctorInjectorScreen.routeName,
         builder: (_, state) {
           final doctor = state.extra as Doctor?;
-          return AddDoctorInjectorScreen(doctor: doctor,);
+          return AddDoctorInjectorScreen(doctor: doctor);
         },
       ),
       GoRoute(

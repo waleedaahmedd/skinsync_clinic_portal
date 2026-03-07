@@ -3,15 +3,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/appointment_screen.dart';
+import 'package:skinsync_clinic_portal/screens/dashboard/inventory_screen.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/payment_and_wallet_screen.dart';
 import 'package:skinsync_clinic_portal/utils/responsive.dart';
 
 import '../../utils/assets.dart';
 import '../../utils/color_constant.dart';
 import '../../widgets/custom_app_bar.dart';
+import 'home_screen.dart';
 import 'manage_doc_injector_screen.dart';
 import 'mange_staff_screen.dart';
-import 'home_screen.dart';
 import 'patient_ai_management.dart';
 import 'patient_management.dart';
 import 'profile_screen.dart';
@@ -108,6 +109,12 @@ class Dashboard extends StatelessWidget {
                       ),
                       _buildRailItem(
                         context: context,
+                        title: 'Inventory',
+                        chipIcon: Icons.inventory,
+                        routeName: InventoryScreen.routeName,
+                      ),
+                      _buildRailItem(
+                        context: context,
                         title: 'Staff',
                         chipIcon: Iconsax.user_octagon,
                         routeName: ManageStaffScreen.routeName,
@@ -160,7 +167,11 @@ class Dashboard extends StatelessWidget {
               : CustomColors.textGreyColor,
         ),
       ),
-      icon: Icon(chipIcon,size: 20.r,color: isSelected? CustomColors.purpleColor:CustomColors.blueColor,),
+      icon: Icon(
+        chipIcon,
+        size: 20.r,
+        color: isSelected ? CustomColors.purpleColor : CustomColors.blueColor,
+      ),
       // icon: SvgPicture.asset(
       //   icon,
       //   width: 20.w,
