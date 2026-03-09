@@ -131,6 +131,9 @@ class CustomFonts {
     color: CustomColors.blackColor,
     fontFamily: 'Degular',
   );
+  static TextStyle black14w700 = black14w600.copyWith(
+    fontWeight: FontWeight.w600,
+  );
   static TextStyle black15w600 = TextStyle(
     height: 0,
     fontSize: 15.sp,

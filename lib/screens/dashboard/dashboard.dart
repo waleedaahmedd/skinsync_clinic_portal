@@ -5,6 +5,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/appointment_screen.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/inventory_screen.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/payment_and_wallet_screen.dart';
+import 'package:skinsync_clinic_portal/screens/dashboard/roles_screen.dart';
 import 'package:skinsync_clinic_portal/utils/responsive.dart';
 
 import '../../utils/assets.dart';
@@ -112,6 +113,12 @@ class Dashboard extends StatelessWidget {
                         title: 'Inventory',
                         chipIcon: Icons.inventory,
                         routeName: InventoryScreen.routeName,
+                      ),
+                      _buildRailItem(
+                        context: context,
+                        title: 'Roles',
+                        chipIcon: Icons.person_outline,
+                        routeName: RolesScreen.routeName,
                       ),
                       _buildRailItem(
                         context: context,

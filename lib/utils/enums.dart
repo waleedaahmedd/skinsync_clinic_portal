@@ -13,6 +13,8 @@ enum SharedPreferencesKeys {
 
 enum DoctorRole { doctor, injector }
 
+enum Role { doctor, injector, user }
+
 enum Endpoint {
   login('clinic/login'),
   refreshToken('clinic/auth/refresh'),
