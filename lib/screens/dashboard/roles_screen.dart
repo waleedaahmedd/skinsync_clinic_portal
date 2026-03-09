@@ -3,6 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 import 'package:skinsync_clinic_portal/utils/enums.dart';
+import 'package:skinsync_clinic_portal/widgets/dailog%20box/add_custom_role_dialog.dart';
+
+import '../../models/dummy/roles.dart';
 
 class RolesScreen extends StatefulWidget {
   static const String routeName = '/roles';
@@ -14,9 +17,6 @@ class RolesScreen extends StatefulWidget {
 
 class _RolesScreenState extends State<RolesScreen> {
   late List<String> allRoles;
-
-  final List<String> modules = ['Doctors', 'Staff', 'Clinics', 'Inventory'];
-  final List<String> permissionsList = ['Create', 'Update', 'Delete'];
 
   late Map<String, Map<String, Map<String, bool>>> rolePermissions;
 
@@ -41,50 +41,19 @@ class _RolesScreenState extends State<RolesScreen> {
     }
   }
 
-  void _addCustomRole(String name) {
+  void _addCustomRole(String name, Map<String, Map<String, bool>> permissions) {
     if (name.isEmpty || allRoles.contains(name.toLowerCase())) return;
     setState(() {
       String newRole = name.toLowerCase();
       allRoles.add(newRole);
-      rolePermissions[newRole] = {
-        for (var module in modules)
-          module: {for (var permission in permissionsList) permission: false},
-      };
+      rolePermissions[newRole] = permissions;
     });
   }
 
   void _showAddRoleDialog() {
-    final TextEditingController controller = TextEditingController();
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text("Add Custom Role", style: CustomFonts.black18w600),
-        content: TextField(
-          controller: controller,
-          decoration: InputDecoration(
-            hintText: "Enter role name",
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text("Cancel", style: CustomFonts.grey14w400),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              _addCustomRole(controller.text.trim());
-              Navigator.pop(context);
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: CustomColors.blueColor,
-            ),
-            child: const Text("Add"),
-          ),
-        ],
-      ),
+      builder: (context) => AddCustomRoleDialog(onAddRole: _addCustomRole),
     );
   }
 
@@ -149,8 +118,8 @@ class _RolesScreenState extends State<RolesScreen> {
                         side: BorderSide.none,
                       ),
                       leading: CircleAvatar(
-                        backgroundColor: CustomColors.blueColor.withOpacity(
-                          0.1,
+                        backgroundColor: CustomColors.blueColor.withValues(
+                          alpha: 0.1,
                         ),
                         child: Icon(
                           Icons.person_outline,
