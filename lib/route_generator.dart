@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:go_router/go_router.dart';
 import 'package:skinsync_clinic_portal/models/responses/register_doctor_response.dart';
 import 'package:skinsync_clinic_portal/screens/about_screen.dart';
@@ -37,10 +39,9 @@ class RouteGenerator {
   static final GoRouter router = GoRouter(
     navigatorKey: navigatorKey,
     redirect: (context, state) async {
-      if (state.name == null) {
-        return null;
-      }
-      if (_authRoutes.contains(state.name!)) {
+      final route = state.uri.toString();
+      log('PAGE: ${state.uri}');
+      if (_authRoutes.contains(route)) {
         return null;
       }
       final token = await locator<SecureStorageService>().getToken();
