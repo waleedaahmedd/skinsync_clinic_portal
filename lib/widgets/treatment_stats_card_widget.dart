@@ -41,7 +41,7 @@ class TreatmentStatsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-       width: navigatorKey.currentContext!.isLandscape ? 350.r : 1.sw,
+      width: navigatorKey.currentContext!.isLandscape ? 350.r : 1.sw,
       // margin: EdgeInsets.only(right: 16.w),
       padding: EdgeInsets.symmetric(vertical: 25.h, horizontal: 28.w),
       decoration: BoxDecoration(
@@ -49,7 +49,7 @@ class TreatmentStatsCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(24.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
+            color: Colors.black.withValues(alpha: 0.08),
             blurRadius: 20,
             offset: const Offset(0, 4),
           ),
@@ -72,7 +72,7 @@ class TreatmentStatsCard extends StatelessWidget {
                     child: CircularProgressIndicator(
                       value: progress,
                       strokeWidth: 14.r,
-                      backgroundColor: Colors.white.withOpacity(0.4),
+                      backgroundColor: Colors.white.withValues(alpha: 0.4),
                       valueColor: const AlwaysStoppedAnimation<Color>(
                         Color(0xffEEA1F0),
                       ),
@@ -115,7 +115,7 @@ class TreatmentStatsCard extends StatelessWidget {
                           child: Text(
                             percentage,
                             style: TextStyle(
-                              fontSize:20.sp,
+                              fontSize: 20.sp,
                               fontWeight: FontWeight.w600,
                               color: Colors.black87,
                               //height: 0.9,

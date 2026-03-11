@@ -16,7 +16,7 @@ class AppointmentTileWidget extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: CustomColors.lightBlueColor.withOpacity(0.3),
+              color: CustomColors.lightBlueColor.withValues(alpha: 0.3),
             ),
             padding: EdgeInsets.all(12.w),
             margin: EdgeInsets.symmetric(horizontal: 14.w),

@@ -365,7 +365,7 @@ class HomeScreen extends StatelessWidget {
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w400,
-              color: Colors.black.withOpacity(0.7),
+              color: Colors.black.withValues(alpha: 0.7),
             ),
           ),
         ],

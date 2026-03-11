@@ -105,7 +105,7 @@ class _AppointmentsCalendarState extends State<AppointmentsCalendar> {
           margin: EdgeInsets.only(right: 24.w),
           decoration: BoxDecoration(
             border: Border.all(color: AppTheme.primaryColor, width: 0.5),
-            color: AppTheme.primaryColor.withOpacity(0.3),
+            color: AppTheme.primaryColor.withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(12),
           ),
           padding: EdgeInsets.symmetric(horizontal: 19, vertical: 9),

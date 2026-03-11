@@ -51,13 +51,13 @@ abstract class CustomColors {
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
     colors: [
-      Color(0xffFFFFFF).withOpacity(0.0), // fully transparent
-      Color(0xffFFFFFF).withOpacity(0.8),
-      Color(0xff88E3FB).withOpacity(0.3),
-      Color(0xff88E3FB).withOpacity(0.5),
-      Color(0xff88E3FB).withOpacity(0.5),
-      Color(0xffFFFFFF).withOpacity(0.6),
-      Color(0xffFFFFFF).withOpacity(1.0),
+      Color(0xffFFFFFF).withValues(alpha: 0.0), // fully transparent
+      Color(0xffFFFFFF).withValues(alpha: 0.8),
+      Color(0xff88E3FB).withValues(alpha: 0.3),
+      Color(0xff88E3FB).withValues(alpha: 0.5),
+      Color(0xff88E3FB).withValues(alpha: 0.5),
+      Color(0xffFFFFFF).withValues(alpha: 0.6),
+      Color(0xffFFFFFF).withValues(alpha: 1.0),
     ],
   );
 }

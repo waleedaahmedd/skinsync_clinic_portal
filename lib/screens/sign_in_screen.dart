@@ -8,6 +8,7 @@ import 'package:pinput/pinput.dart';
 import 'package:skinsync_clinic_portal/models/requests/login_request_model.dart';
 import 'package:skinsync_clinic_portal/utils/responsive.dart';
 import 'package:skinsync_clinic_portal/utils/validators.dart';
+
 import '../utils/assets.dart';
 import '../utils/color_constant.dart';
 import '../utils/enums.dart';
@@ -739,7 +740,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
         borderRadius: BorderRadius.all(Radius.circular(12.r)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.15),
+            color: Colors.black.withValues(alpha: 0.15),
             blurRadius: 8,
             offset: Offset(0, 4),
           ),

@@ -1,7 +1,7 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 
 import '../utils/responsive.dart';
@@ -88,7 +88,7 @@ class _CreateTreatmentScreenState extends State<CreateTreatmentScreen> {
         borderRadius: BorderRadius.circular(12.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -234,7 +234,7 @@ class _CreateTreatmentScreenState extends State<CreateTreatmentScreen> {
                 borderRadius: BorderRadius.circular(8.r),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: Colors.black.withValues(alpha: 0.1),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),

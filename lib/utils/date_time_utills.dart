@@ -1,3 +1,11 @@
+import 'package:intl/intl.dart';
+
+extension DateTimeUtils on DateTime {
+  String get formattedDateTime {
+    return DateFormat('MMM dd, yyyy - hh:mm a').format(this);
+  }
+}
+
 List<Map<String, String>> getNextNDays(int n) {
   final now = DateTime.now();
   final List<Map<String, String>> dates = [];

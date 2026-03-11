@@ -201,7 +201,7 @@ class ProfileScreen extends StatelessWidget {
             "john@example.com",
             style: TextStyle(
               fontSize: 13.sp,
-              color: Colors.black.withOpacity(0.7),
+              color: Colors.black.withValues(alpha: 0.7),
             ),
           ),
         ],

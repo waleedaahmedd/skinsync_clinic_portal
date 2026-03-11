@@ -57,12 +57,12 @@
 //           child: Container(
 //             padding: const EdgeInsets.all(40),
 //             decoration: BoxDecoration(
-//               color: Colors.white.withOpacity(0.08),
+//               color: Colors.white.withValues(alpha:0.08),
 //               borderRadius: BorderRadius.circular(24),
-//               border: Border.all(color: Colors.white.withOpacity(0.15)),
+//               border: Border.all(color: Colors.white.withValues(alpha:0.15)),
 //               boxShadow: [
 //                 BoxShadow(
-//                   color: CustomColors.drakPurpleColor.withOpacity(0.25),
+//                   color: CustomColors.drakPurpleColor.withValues(alpha:0.25),
 //                   blurRadius: 30,
 //                   offset: const Offset(0, 20),
 //                 ),
@@ -88,7 +88,7 @@
 //                   textAlign: TextAlign.center,
 //                   style: TextStyle(
 //                     fontSize: 16,
-//                     color: Colors.white.withOpacity(0.85),
+//                     color: Colors.white.withValues(alpha:0.85),
 //                   ),
 //                 ),
 //                 const SizedBox(height: 28),
@@ -98,7 +98,7 @@
 //                     vertical: 10,
 //                   ),
 //                   decoration: BoxDecoration(
-//                     color: Colors.white.withOpacity(0.12),
+//                     color: Colors.white.withValues(alpha:0.12),
 //                     borderRadius: BorderRadius.circular(20),
 //                   ),
 //                   child: const Text(

@@ -23,7 +23,9 @@ class AppointmentHorizontalTileWidget extends StatelessWidget {
           color: selected ? AppTheme.primaryColor : AppTheme.borderColor,
           width: 0.5,
         ),
-        color: selected ? AppTheme.primaryColor.withOpacity(0.3) : Colors.white,
+        color: selected
+            ? AppTheme.primaryColor.withValues(alpha: 0.3)
+            : Colors.white,
         borderRadius: BorderRadius.circular(20),
       ),
       padding: EdgeInsets.symmetric(horizontal: 12),
