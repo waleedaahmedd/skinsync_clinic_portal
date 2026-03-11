@@ -14,6 +14,7 @@ import 'package:skinsync_clinic_portal/screens/dashboard/treatment_screen.dart';
 import 'package:skinsync_clinic_portal/screens/notification_screen.dart';
 import 'package:skinsync_clinic_portal/screens/sign_in_screen.dart';
 import 'package:skinsync_clinic_portal/screens/signup_screen.dart';
+import 'package:skinsync_clinic_portal/services/storage_service.dart';
 
 import 'app_init.dart';
 import 'screens/add_doctor_injector_screen.dart';
@@ -25,10 +26,29 @@ import 'screens/dashboard/patient_ai_management.dart';
 import 'screens/dashboard/patient_management.dart';
 import 'screens/dashboard/payment_and_wallet_screen.dart';
 import 'screens/splash_screen.dart';
+import 'services/locator.dart';
 
 class RouteGenerator {
+  static final List<String> _authRoutes = [
+    SplashScreen.routeName,
+    SignInScreen.routeName,
+    SignUpScreen.routeName,
+  ];
   static final GoRouter router = GoRouter(
     navigatorKey: navigatorKey,
+    redirect: (context, state) async {
+      if (state.name == null) {
+        return null;
+      }
+      if (_authRoutes.contains(state.name!)) {
+        return null;
+      }
+      final token = await locator<SecureStorageService>().getToken();
+      if (token == null) {
+        return SignInScreen.routeName;
+      }
+      return null;
+    },
     initialLocation: SplashScreen.routeName,
     routes: [
       GoRoute(
@@ -46,12 +66,6 @@ class RouteGenerator {
         path: SignUpScreen.routeName,
         builder: (_, _) => SignUpScreen(),
       ),
-
-      // GoRoute(
-      //   name: MangeStaffScreen.routeName,
-      //   path: MangeStaffScreen.routeName,
-      //   builder: (_, _) => MangeStaffScreen(),
-      // ),
       ShellRoute(
         builder: (_, _, child) {
           return Dashboard(child: child);
@@ -126,11 +140,6 @@ class RouteGenerator {
           ),
         ],
       ),
-      // GoRoute(
-      //   name: AddTreatmentScreen.routeName,
-      //   path: AddTreatmentScreen.routeName,
-      //   builder: (_, _) => AddTreatmentScreen(),
-      // ),
       GoRoute(
         path: AddDoctorInjectorScreen.routeName,
         name: AddDoctorInjectorScreen.routeName,
@@ -149,11 +158,6 @@ class RouteGenerator {
         path: BusinessInformationScreen.routeName,
         builder: (_, _) => BusinessInformationScreen(),
       ),
-      // GoRoute(
-      //   name: UpdateTreatmentScreen.routeName,
-      //   path: UpdateTreatmentScreen.routeName,
-      //   builder: (_, _) => UpdateTreatmentScreen(),
-      // ),
       GoRoute(
         name: ChangePasswordScreen.routeName,
         path: ChangePasswordScreen.routeName,
