@@ -44,8 +44,8 @@ class _AddCustomRoleDialogState extends State<AddCustomRoleDialog> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       child: SizedBox(
         width: context.isLandscape ? 600.w : double.infinity,
-        child: SingleChildScrollView(
-          padding: EdgeInsets.all(24.w),
+        child: Padding(
+         padding: EdgeInsets.all(24.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -87,17 +87,19 @@ class _AddCustomRoleDialogState extends State<AddCustomRoleDialog> {
               SizedBox(height: 30.h),
               Text("Assign Permissions", style: CustomFonts.black14w500),
               SizedBox(height: 16.h),
-
-              ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: feature.length,
-                itemBuilder: (context,index){
-                return Padding(
-                  padding:  EdgeInsets.only(bottom:  10.h),
-                  child: _buildFeatureContainer(feature: feature[index]),
-                );
-              }),
+          
+              Expanded(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                 // physics: NeverScrollableScrollPhysics(),
+                  itemCount: feature.length,
+                  itemBuilder: (context,index){
+                  return Padding(
+                    padding:  EdgeInsets.only(bottom:  10.h),
+                    child: _buildFeatureContainer(feature: feature[index]),
+                  );
+                }),
+              ),
               //  modules[1].actions!((sideArea) {
                         //   return ChoiceChip(
                         //     label: Text(sideArea.name ?? 'N/A'),
