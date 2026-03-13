@@ -29,7 +29,9 @@ enum Endpoint {
   resetPassword('clinic/reset-password'),
   verifyOtp('clinic/verify-reset-otp'),
   deleteTreatment('clinic/treatments/{treatment_id}'),
-  updateDoctorTreatment('clinic/doctors');
+  updateDoctorTreatment('clinic/doctors'),
+  getFeature("clinic/features"),
+  createRoles("clinic/roles");
 
   final String path;
   const Endpoint(this.path);
