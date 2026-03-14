@@ -31,7 +31,7 @@ enum Endpoint {
   deleteTreatment('clinic/treatments/{treatment_id}'),
   updateDoctorTreatment('clinic/doctors'),
   getFeature("clinic/features"),
-  createRoles("clinic/roles");
+  roles("clinic/roles");
 
   final String path;
   const Endpoint(this.path);

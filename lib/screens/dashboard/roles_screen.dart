@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:skinsync_clinic_portal/models/responses/get_feature_response.dart';
+import 'package:skinsync_clinic_portal/models/responses/get_roles_response.dart';
 import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
-import 'package:skinsync_clinic_portal/utils/enums.dart';
+
+import 'package:skinsync_clinic_portal/view_models/role_view_model.dart';
 import 'package:skinsync_clinic_portal/widgets/dailog%20box/add_custom_role_dialog.dart';
 
-import '../../models/dummy/roles.dart';
-
-class RolesScreen extends StatefulWidget {
+class RolesScreen extends ConsumerStatefulWidget {
   static const String routeName = '/roles';
   const RolesScreen({super.key});
 
   @override
-  State<RolesScreen> createState() => _RolesScreenState();
+  ConsumerState<RolesScreen> createState() => _RolesScreenState();
 }
 
-class _RolesScreenState extends State<RolesScreen> {
+class _RolesScreenState extends ConsumerState<RolesScreen> {
   late List<String> allRoles;
 
   late Map<String, Map<String, Map<String, bool>>> rolePermissions;
@@ -23,38 +25,13 @@ class _RolesScreenState extends State<RolesScreen> {
   @override
   void initState() {
     super.initState();
-    allRoles = Role.values.map((e) => e.name).toList();
-
-    rolePermissions = {
-      for (var role in allRoles)
-        role: {
-          for (var module in modules)
-            module: {for (var permission in permissionsList) permission: false},
-        },
-    };
-
-    // Initialize some defaults for the Doctor role
-    for (var module in modules) {
-      rolePermissions[Role.doctor.name]![module]!['Create'] = true;
-      rolePermissions[Role.doctor.name]![module]!['Update'] = true;
-      rolePermissions[Role.doctor.name]![module]!['Delete'] = true;
-    }
-  }
-
-  void _addCustomRole(String name, Map<String, Map<String, bool>> permissions) {
-    if (name.isEmpty || allRoles.contains(name.toLowerCase())) return;
-    setState(() {
-      String newRole = name.toLowerCase();
-      allRoles.add(newRole);
-      rolePermissions[newRole] = permissions;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(roleProvider.notifier).getRole();
     });
   }
 
   void _showAddRoleDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AddCustomRoleDialog(onAddRole: _addCustomRole),
-    );
+    showDialog(context: context, builder: (context) => AddCustomRoleDialog());
   }
 
   @override
@@ -98,190 +75,202 @@ class _RolesScreenState extends State<RolesScreen> {
             SizedBox(height: 14.h),
             Divider(color: Colors.grey.shade300),
             SizedBox(height: 20.h),
-            Expanded(
-              child: ListView.separated(
-                itemCount: allRoles.length,
-                separatorBuilder: (context, index) => SizedBox(height: 16.h),
-                itemBuilder: (context, index) {
-                  final role = allRoles[index];
-                  return Card(
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.r),
-                      side: BorderSide(color: Colors.grey.shade200),
-                    ),
-                    clipBehavior: Clip.antiAlias,
-                    child: ExpansionTile(
-                      backgroundColor: Colors.white,
-                      collapsedBackgroundColor: Colors.white,
-                      shape: const RoundedRectangleBorder(
-                        side: BorderSide.none,
-                      ),
-                      leading: CircleAvatar(
-                        backgroundColor: CustomColors.blueColor.withValues(
-                          alpha: 0.1,
+            Consumer(
+              builder: (context, ref, _) {
+                final loading = ref.watch(roleProvider).loading;
+                if (loading) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                return Expanded(
+                  child: ListView.separated(
+                    itemCount: ref.watch(roleProvider).roles.length,
+                    separatorBuilder: (context, index) =>
+                        SizedBox(height: 16.h),
+                    itemBuilder: (context, index) {
+                      final role = ref.watch(roleProvider).roles[index];
+                      final selectedRole = ref.watch(roleProvider).selectedRole;
+                      final isExpanded = selectedRole?.roleId == role.roleId;
+                      
+                      return Card(
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                          side: BorderSide(color: Colors.grey.shade200),
                         ),
-                        child: Icon(
-                          Icons.person_outline,
-                          color: CustomColors.blueColor,
-                          size: 20.sp,
-                        ),
-                      ),
-                      title: Text(
-                        role.toUpperCase(),
-                        style: CustomFonts.black18w600,
-                      ),
-                      subtitle: Text(
-                        "Configure permissions for this role",
-                        style: CustomFonts.grey14w400,
-                      ),
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.all(20.w),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Permission Matrix",
-                                    style: CustomFonts.black16w700,
-                                  ),
-                                  ElevatedButton.icon(
-                                    onPressed: () {
-                                      ScaffoldMessenger.of(
-                                        context,
-                                      ).showSnackBar(
-                                        SnackBar(
-                                          content: Text(
-                                            'Permissions updated for ${role.toUpperCase()}',
+                        clipBehavior: Clip.antiAlias,
+                        child: ExpansionTile(
+                          onExpansionChanged: (value) {
+                            final vm = ref.read(roleProvider.notifier);
+
+                            if (value) {
+                              // Opening this tile - set it as selectedRole
+                              // If another tile was open, it will be closed automatically
+                              // and its onExpansionChanged(false) will be called first
+                              vm.setSelectedRole(role);
+                            } else {
+                              // Closing this tile - clear selectedRole
+                              vm.setSelectedRole(null);
+                              vm.clear();
+                            }
+                          },
+                          backgroundColor: Colors.white,
+                          collapsedBackgroundColor: Colors.white,
+                          shape: const RoundedRectangleBorder(
+                            side: BorderSide.none,
+                          ),
+                          leading: CircleAvatar(
+                            backgroundColor: CustomColors.blueColor.withValues(
+                              alpha: 0.1,
+                            ),
+                            child: Icon(
+                              Icons.person_outline,
+                              color: CustomColors.blueColor,
+                              size: 20.sp,
+                            ),
+                          ),
+                          title: Text(
+                            role.roleName?.toUpperCase() ?? "N/A",
+                            style: CustomFonts.black18w600,
+                          ),
+                          subtitle: Text(
+                            "Configure permissions for this role",
+                            style: CustomFonts.grey14w400,
+                          ),
+                          children: [
+                            if (selectedRole != null && isExpanded)
+                              Padding(
+                                padding: EdgeInsets.all(20.w),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Permission Matrix",
+                                          style: CustomFonts.black16w700,
+                                        ),
+                                        ElevatedButton.icon(
+                                          onPressed: () {},
+                                          icon: const Icon(
+                                            Icons.save_outlined,
+                                            size: 16,
                                           ),
-                                          backgroundColor:
-                                              CustomColors.blueColor,
+                                          label: Text(
+                                            "Save",
+                                            style: CustomFonts.white14w500,
+                                          ),
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                                CustomColors.blackColor,
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 16.w,
+                                              vertical: 8.h,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 16.h),
+                                    ListView.builder(
+                                      shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemCount: selectedRole.features!.length,
+                                      itemBuilder: (context, featureIndex) {
+                                        final feature =
+                                            selectedRole.features![featureIndex];
+                                      return Padding(
+                                        padding: EdgeInsets.only(bottom: 10.h),
+                                        child: Container(
+                                          width: double.infinity,
+                                          padding: EdgeInsets.all(10.w),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: CustomColors.borderColor,
+                                            ),
+                                            borderRadius: BorderRadius.circular(
+                                              12.r,
+                                            ),
+                                            color: Colors.white,
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                feature.featureTitle ?? "N/A",
+                                                style: CustomFonts.black16w600,
+                                              ),
+                                              SizedBox(height: 10.h),
+                                              Wrap(
+                                                spacing: 8.w,
+                                                runSpacing: 8.h,
+                                                children: List.generate(
+                                                  feature.permissions!.length,
+                                                  (permissionIndex) {
+                                                    final permissions = feature
+                                                        .permissions![permissionIndex];
+                                                    final select = feature
+                                                        .activePermissionIds!
+                                                        .contains(
+                                                          permissions
+                                                              .permissionId,
+                                                        );
+
+                                                    return ChoiceChip(
+                                                      label: Text(
+                                                        permissions
+                                                                .permissionTitle ??
+                                                            "N/A",
+                                                      ),
+                                                      selected: select,
+                                                      selectedColor:
+                                                          Colors.black,
+                                                      checkmarkColor:
+                                                          Colors.white,
+                                                      labelStyle: TextStyle(
+                                                        color: select
+                                                            ? Colors.white
+                                                            : Colors.black,
+                                                        fontSize: 13.sp,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                      onSelected: (value) {
+                                                        if (permissions.permissionId != null) {
+                                                          ref.read(roleProvider.notifier).toggleRolePermission(
+                                                            featureIndex: featureIndex,
+                                                            permissionId: permissions.permissionId!,
+                                                            selected: value,
+                                                          );
+                                                        }
+                                                      },
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       );
                                     },
-                                    icon: const Icon(
-                                      Icons.save_outlined,
-                                      size: 16,
-                                    ),
-                                    label: Text(
-                                      "Save",
-                                      style: CustomFonts.white14w500,
-                                    ),
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: CustomColors.blackColor,
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 16.w,
-                                        vertical: 8.h,
-                                      ),
-                                    ),
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 16.h),
-                              Table(
-                                columnWidths: const {
-                                  0: FlexColumnWidth(2.5),
-                                  1: FlexColumnWidth(1),
-                                  2: FlexColumnWidth(1),
-                                  3: FlexColumnWidth(1),
-                                },
-                                children: [
-                                  // Table Header
-                                  TableRow(
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey.shade50,
-                                      border: Border(
-                                        bottom: BorderSide(
-                                          color: Colors.grey.shade300,
-                                          width: 1,
-                                        ),
-                                      ),
-                                    ),
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(
-                                          vertical: 12.h,
-                                          horizontal: 8.w,
-                                        ),
-                                        child: Text(
-                                          "Module",
-                                          style: CustomFonts.black14w700,
-                                        ),
-                                      ),
-                                      for (var permission in permissionsList)
-                                        Padding(
-                                          padding: EdgeInsets.symmetric(
-                                            vertical: 12.h,
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              permission,
-                                              style: CustomFonts.black14w700,
-                                            ),
-                                          ),
-                                        ),
-                                    ],
-                                  ),
-                                  // Table Rows
-                                  for (var module in modules)
-                                    TableRow(
-                                      decoration: BoxDecoration(
-                                        border: Border(
-                                          bottom: BorderSide(
-                                            color: Colors.grey.shade100,
-                                          ),
-                                        ),
-                                      ),
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.symmetric(
-                                            vertical: 16.h,
-                                            horizontal: 8.w,
-                                          ),
-                                          child: Text(
-                                            module,
-                                            style: CustomFonts.black14w600,
-                                          ),
-                                        ),
-                                        for (var permission in permissionsList)
-                                          Center(
-                                            child: Checkbox(
-                                              activeColor:
-                                                  CustomColors.blueColor,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(4.r),
-                                              ),
-                                              value:
-                                                  rolePermissions[role]![module]![permission],
-                                              onChanged: (val) {
-                                                setState(() {
-                                                  rolePermissions[role]![module]![permission] =
-                                                      val ?? false;
-                                                });
-                                              },
-                                            ),
-                                          ),
-                                      ],
-                                    ),
-                                ],
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  );
-                },
-              ),
+                      );
+                    },
+                  ),
+                );
+              },
             ),
           ],
         ),
       ),
     );
   }
+
 }

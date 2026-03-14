@@ -1,4 +1,5 @@
 import 'package:skinsync_clinic_portal/models/responses/base_response_model.dart';
+import 'package:skinsync_clinic_portal/models/responses/get_roles_response.dart';
 
 class GetFeatureResponse extends BaseApiResponseModel<List<Feature>> {
   GetFeatureResponse({
@@ -36,14 +37,3 @@ class Feature {
   }
 }
 
-class Permissions {
-  String? permissionId;
-  String? permissionTitle;
-
-  Permissions({this.permissionId, this.permissionTitle});
-
-  Permissions.fromJson(Map<String, dynamic> json) {
-    permissionId = json['permission_id'];
-    permissionTitle = json['permission_title'];
-  }
-}

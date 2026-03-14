@@ -11,8 +11,8 @@ import '../../utils/custom_fonts.dart';
 import '../../utils/responsive.dart';
 
 class AddCustomRoleDialog extends ConsumerStatefulWidget {
-  final void Function(String, Map<String, Map<String, bool>>) onAddRole;
-  const AddCustomRoleDialog({super.key, required this.onAddRole});
+  
+  const AddCustomRoleDialog({super.key,});
 
   @override
   ConsumerState<AddCustomRoleDialog> createState() =>
@@ -204,8 +204,7 @@ class _AddCustomRoleDialogState extends ConsumerState<AddCustomRoleDialog> {
     required WidgetRef ref,
   }) {
     final vm = ref.read(roleProvider.notifier);
-    final state = ref.watch(roleProvider);
-
+   
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(10.w),

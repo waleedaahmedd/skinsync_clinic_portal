@@ -1,8 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skinsync_clinic_portal/models/requests/create_role_request_model.dart';
 import 'package:skinsync_clinic_portal/models/responses/get_feature_response.dart';
+import 'package:skinsync_clinic_portal/models/responses/get_roles_response.dart';
 import 'package:skinsync_clinic_portal/services/locator.dart';
 import 'package:skinsync_clinic_portal/services/role_service.dart';
+
 import 'package:skinsync_clinic_portal/view_models/base_view_model.dart';
 
 final roleProvider = NotifierProvider.autoDispose(() => RoleViewModel._());
@@ -26,6 +28,14 @@ class RoleViewModel extends BaseViewModel<RoleState> {
     }, showLoading: false);
   }
 
+  Future<void> getRole() async {
+    return await runSafely(() async {
+      state = state.copyWith(loading: true);
+      final roles = await locator<RoleService>().fetchRole();
+      state = state.copyWith(loading: false, roles: roles.data);
+    }, showLoading: false);
+  }
+
   Future<bool?> createRole(String roleName) async {
     final request = CreateRoleRequest(
       roleName: roleName,
@@ -33,7 +43,7 @@ class RoleViewModel extends BaseViewModel<RoleState> {
         return RoleFeatureRequest(
           featureId: feature.featureId!,
           permissionIds: feature.permissions!
-              .map((p) => int.parse(p.permissionId!))
+              .map((p) => p.permissionId!)
               .toList(),
         );
       }).toList(),
@@ -98,7 +108,56 @@ class RoleViewModel extends BaseViewModel<RoleState> {
     state = state.copyWith(selectedFeatures: updated);
   }
 
-  /// Clear all selections
+  void setSelectedRole(Roles? role) {
+    if (role == null) {
+      state = state.copyWith(selectedRole: null);
+      return;
+    }
+    
+    // Create a deep copy of the role to avoid modifying the original
+    final copiedRole = Roles(
+      roleId: role.roleId,
+      roleName: role.roleName,
+      features: role.features?.map((feature) {
+        return Features(
+          featureId: feature.featureId,
+          featureTitle: feature.featureTitle,
+          activePermissionIds: feature.activePermissionIds != null
+              ? List<int>.from(feature.activePermissionIds!)
+              : null,
+          permissions: feature.permissions,
+        );
+      }).toList(),
+    );
+    
+    state = state.copyWith(selectedRole: copiedRole);
+  }
+
+  void toggleRolePermission({
+    required int featureIndex,
+    required int permissionId,
+    required bool selected,
+  }) {
+    if (state.selectedRole == null) return;
+    
+    final role = state.selectedRole!;
+    if (role.features == null || featureIndex >= role.features!.length) return;
+    
+    final feature = role.features![featureIndex];
+    feature.activePermissionIds ??= [];
+    
+    if (selected) {
+      if (!feature.activePermissionIds!.contains(permissionId)) {
+        feature.activePermissionIds!.add(permissionId);
+      }
+    } else {
+      feature.activePermissionIds!.remove(permissionId);
+    }
+    
+    // Update the selectedRole in state
+    state = state.copyWith(selectedRole: role);
+  }
+
   void clear() {
     state = state.copyWith(selectedFeatures: []);
   }
@@ -115,14 +174,18 @@ class RoleState {
   final bool createRoleLoading;
   final List<Feature> features;
   final List<Feature> selectedFeatures;
+  final List<Roles> roles;
   final bool success;
+  final Roles? selectedRole;
 
   const RoleState({
     this.loading = false,
     this.selectedFeatures = const [],
     this.features = const [],
+    this.roles = const [],
     this.createRoleLoading = false,
     this.success = false,
+    this.selectedRole,
   });
 
   RoleState copyWith({
@@ -130,14 +193,18 @@ class RoleState {
     bool? createRoleLoading,
     List<Feature>? features,
     List<Feature>? selectedFeatures,
+    List<Roles>? roles,
     bool? success,
+    Roles? selectedRole,
   }) {
     return RoleState(
       loading: loading ?? this.loading,
       createRoleLoading: createRoleLoading ?? this.createRoleLoading,
       selectedFeatures: selectedFeatures ?? this.selectedFeatures,
+      roles: roles ?? this.roles,
       success: success ?? false,
       features: features ?? this.features,
+      selectedRole: selectedRole ?? this.selectedRole,
     );
   }
 
@@ -146,14 +213,18 @@ class RoleState {
     bool? createRoleLoading,
     List<Feature>? selectedFeatures,
     List<Feature>? features,
+    List<Roles>? roles,
     bool? success,
+    Roles? selectedRole,
   }) {
     return RoleState(
       loading: loading ?? this.loading,
       createRoleLoading: createRoleLoading ?? this.createRoleLoading,
       selectedFeatures: selectedFeatures ?? this.selectedFeatures,
       features: features ?? this.features,
+      roles: roles ?? this.roles,
       success: success ?? false,
+      selectedRole: selectedRole ?? selectedRole,
     );
   }
 }
