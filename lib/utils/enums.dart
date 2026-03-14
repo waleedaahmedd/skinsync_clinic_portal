@@ -31,7 +31,9 @@ enum Endpoint {
   deleteTreatment('clinic/treatments/{treatment_id}'),
   updateDoctorTreatment('clinic/doctors'),
   getFeature("clinic/features"),
-  roles("clinic/roles");
+  roles("clinic/roles"),
+  catalog('clinic/products/catalog'),
+  addInventory('clinic/products');
 
   final String path;
   const Endpoint(this.path);
@@ -56,3 +58,5 @@ enum BaseUrls {
 }
 
 enum AuthScreen { login, forgetPassword, verifyOtp, createNewPassword }
+
+enum DiscountType { per, flat }

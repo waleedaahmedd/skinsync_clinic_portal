@@ -13,17 +13,21 @@ class InventoryHistory {
 class InventoryItem {
   final String name;
   int quantity;
-  final double price;
+  final double originalPrice;
+  final double discount;
+  final String discountType;
+  final double discountedPrice;
   final String image;
-  final String description;
   final List<InventoryHistory> history;
 
   InventoryItem({
     required this.name,
     required this.quantity,
-    required this.price,
+    required this.originalPrice,
+    required this.discount,
+    required this.discountType,
+    required this.discountedPrice,
     required this.image,
-    required this.description,
     this.history = const [],
   });
 
@@ -31,22 +35,12 @@ class InventoryItem {
     return InventoryItem(
       name: name,
       quantity: quantity,
-      price: price,
+      originalPrice: originalPrice,
+      discount: discount,
+      discountType: discountType,
+      discountedPrice: discountedPrice,
       image: image,
-      description: description,
       history: history ?? this.history,
     );
   }
-}
-
-class Product {
-  final String name;
-  final double defaultPrice;
-  final String image;
-
-  Product({
-    required this.name,
-    required this.defaultPrice,
-    required this.image,
-  });
 }

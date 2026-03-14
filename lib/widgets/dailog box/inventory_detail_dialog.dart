@@ -52,7 +52,7 @@ class InventoryDetailDialog extends StatelessWidget {
                       Text(item.name, style: CustomFonts.black22w600),
                       SizedBox(height: 12.h),
                       Text(
-                        '\$${item.price.toStringAsFixed(2)} per unit',
+                        '\$${item.originalPrice.toStringAsFixed(2)} per unit',
                         style: CustomFonts.black16w600.copyWith(
                           color: CustomColors.purpleColor,
                         ),
@@ -79,10 +79,6 @@ class InventoryDetailDialog extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 24.h),
-            Text("Description", style: CustomFonts.black18w600),
-            SizedBox(height: 8.h),
-            Text(item.description, style: CustomFonts.grey14w400),
             SizedBox(height: 30.h),
             Text("Inventory History", style: CustomFonts.black18w600),
             SizedBox(height: 16.h),

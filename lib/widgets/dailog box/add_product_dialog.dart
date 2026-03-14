@@ -1,44 +1,61 @@
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:skinsync_clinic_portal/models/responses/catalog_response.dart';
+import 'package:skinsync_clinic_portal/utils/enums.dart';
+import 'package:skinsync_clinic_portal/utils/validators.dart';
+import 'package:skinsync_clinic_portal/view_models/inventory_view_model.dart';
 
 import '../../models/dummy/inventory.dart';
 import '../../utils/custom_fonts.dart';
 import '../../utils/responsive.dart';
 import '../build_textfield.dart';
+import '../custom_dropdown_widget.dart';
 
-class AddProductDialog extends StatefulWidget {
-  final List<Product> products;
+class AddProductDialog extends ConsumerStatefulWidget {
   final Function(InventoryItem) onProductAdded;
 
-  const AddProductDialog({
-    super.key,
-    required this.products,
-    required this.onProductAdded,
-  });
+  const AddProductDialog({super.key, required this.onProductAdded});
 
   @override
-  State<AddProductDialog> createState() => _AddProductDialogState();
+  ConsumerState<AddProductDialog> createState() => _AddProductDialogState();
 }
 
-class _AddProductDialogState extends State<AddProductDialog> {
-  Product? _selectedProduct;
+class _AddProductDialogState extends ConsumerState<AddProductDialog> {
+  CatalogItem? _selectedProduct;
   final TextEditingController _quantityController = TextEditingController(
     text: '1',
   );
   final TextEditingController _priceController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _discountController = TextEditingController(
+    text: '0',
+  );
+  final TextEditingController _discountedPriceController =
+      TextEditingController();
   final TextEditingController _searchController = TextEditingController();
 
   int _quantity = 1;
+  DiscountType _discountType = DiscountType.per;
+  final _formKey = GlobalKey<FormState>();
 
-  @override
-  void dispose() {
-    _quantityController.dispose();
-    _priceController.dispose();
-    _descriptionController.dispose();
-    _searchController.dispose();
-    super.dispose();
+  void _onAddToInventory() {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+    if (_selectedProduct == null) {
+      EasyLoading.showError('Please select a product!');
+    }
+    ref
+        .read(inventoryProvider.notifier)
+        .addInventoryItem(
+          productId: _selectedProduct!.id!,
+          quantity: _quantity,
+          originalPrice: _priceController.text,
+          discount: _discountController.text,
+          discountType: _discountType,
+          discountedPrice: _discountedPriceController.text,
+        );
   }
 
   void _increment() {
@@ -57,10 +74,42 @@ class _AddProductDialogState extends State<AddProductDialog> {
     }
   }
 
+  void _calculateDiscountedPrice() {
+    double originalPrice = double.tryParse(_priceController.text) ?? 0.0;
+    double discount = double.tryParse(_discountController.text) ?? 0.0;
+    double discountedPrice = originalPrice;
+
+    if (_discountType == DiscountType.per) {
+      discountedPrice = originalPrice - (originalPrice * discount / 100);
+    } else {
+      discountedPrice = originalPrice - discount;
+    }
+
+    if (discountedPrice < 0) discountedPrice = 0;
+
+    _discountedPriceController.text = discountedPrice.toStringAsFixed(2);
+  }
+
+  void _listener(InventoryState? prev, InventoryState next) {
+    if (next.inventoryAdded) {
+      Navigator.pop(context);
+    }
+  }
+
+  @override
+  void dispose() {
+    _quantityController.dispose();
+    _priceController.dispose();
+    _discountController.dispose();
+    _discountedPriceController.dispose();
+    _searchController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    ref.listen(inventoryProvider, _listener);
     final bool isLandscape = context.isLandscape;
-
     return Dialog(
       backgroundColor: Colors.transparent,
       insetPadding: EdgeInsets.symmetric(
@@ -75,222 +124,198 @@ class _AddProductDialogState extends State<AddProductDialog> {
           borderRadius: BorderRadius.circular(24.r),
         ),
         child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Add Inventory Item", style: CustomFonts.black22w600),
-                  GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: Container(
-                      padding: EdgeInsets.all(4.r),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.grey.shade300),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Add Inventory Item", style: CustomFonts.black22w600),
+                    GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: Container(
+                        padding: EdgeInsets.all(4.r),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.grey.shade300),
+                        ),
+                        child: Icon(
+                          Icons.close,
+                          size: 20.r,
+                          color: Colors.black,
+                        ),
                       ),
-                      child: Icon(Icons.close, size: 20.r, color: Colors.black),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 24.h),
+                  ],
+                ),
+                SizedBox(height: 24.h),
 
-              Text("Product", style: CustomFonts.black14w500),
-              SizedBox(height: 10.h),
-              DropdownButtonFormField2<Product>(
-                isExpanded: true,
-                decoration: InputDecoration(
-                  fillColor: Colors.white,
-                  filled: true,
-                  contentPadding: EdgeInsets.symmetric(vertical: 16.h),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    borderSide: BorderSide(color: Colors.grey[300]!),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    borderSide: BorderSide(color: Colors.grey[300]!),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    borderSide: BorderSide(color: Colors.grey[400]!),
-                  ),
-                ),
-                hint: Text(
-                  'Select Product',
-                  style: CustomFonts.grey14w400.copyWith(fontSize: 14.sp),
-                ),
-                items: widget.products
-                    .map(
-                      (item) => DropdownMenuItem<Product>(
-                        value: item,
-                        child: Text(
-                          item.name,
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            color: Colors.black87,
-                          ),
-                        ),
+                Text("Product", style: CustomFonts.black14w500),
+                SizedBox(height: 10.h),
+                Consumer(
+                  builder: (_, ref, _) {
+                    final catalog = ref.read(
+                      inventoryProvider.select((s) => s.catalog),
+                    );
+                    return CustomDropdown<CatalogItem>(
+                      builder: (catalogItem) => Text(
+                        catalogItem.name ?? 'N/A',
+                        style: CustomFonts.black14w500,
                       ),
-                    )
-                    .toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _selectedProduct = value;
-                    if (value != null) {
-                      _priceController.text = value.defaultPrice.toString();
-                    }
-                  });
-                },
-                buttonStyleData: const ButtonStyleData(
-                  padding: EdgeInsets.only(right: 8),
-                ),
-                iconStyleData: IconStyleData(
-                  icon: Icon(
-                    Icons.keyboard_arrow_down,
-                    color: Colors.black45,
-                    size: 24.r,
-                  ),
-                ),
-                dropdownStyleData: DropdownStyleData(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15.r),
-                    color: Colors.white,
-                  ),
-                  elevation: 8,
-                ),
-                menuItemStyleData: const MenuItemStyleData(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                ),
-                dropdownSearchData: DropdownSearchData(
-                  searchController: _searchController,
-                  searchInnerWidgetHeight: 50.h,
-                  searchInnerWidget: Container(
-                    height: 50.h,
-                    padding: EdgeInsets.only(
-                      top: 8.h,
-                      bottom: 4.h,
-                      right: 8.w,
-                      left: 8.w,
-                    ),
-                    child: TextFormField(
-                      expands: true,
-                      maxLines: null,
-                      controller: _searchController,
-                      decoration: InputDecoration(
-                        isDense: true,
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 10.w,
-                          vertical: 8.h,
-                        ),
-                        hintText: 'Search for an item...',
-                        hintStyle: TextStyle(fontSize: 12.sp),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                      ),
-                    ),
-                  ),
-                  searchMatchFn: (item, searchValue) {
-                    return item.value!.name.toLowerCase().contains(
-                      searchValue.toLowerCase(),
+                      hint: 'Select Product',
+                      value: _selectedProduct,
+                      items: catalog,
+                      onChanged: (newCatalog) {
+                        setState(() {
+                          _selectedProduct = newCatalog;
+                        });
+                      },
                     );
                   },
                 ),
-                onMenuStateChange: (isOpen) {
-                  if (!isOpen) _searchController.clear();
-                },
-              ),
-
-              SizedBox(height: 20.h),
-              Text("Quantity", style: CustomFonts.black14w500),
-              SizedBox(height: 10.h),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  _buildQtyBtn(Icons.remove, _decrement),
-                  SizedBox(width: 15.w),
-                  Expanded(
-                    child: TextFormField(
-                      controller: _quantityController,
-                      textAlign: TextAlign.center,
-                      keyboardType: TextInputType.number,
-                      onChanged: (val) {
-                        _quantity = int.tryParse(val) ?? 1;
-                      },
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(vertical: 14.h),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.r),
-                          borderSide: BorderSide(color: Colors.grey[300]!),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.r),
-                          borderSide: BorderSide(color: Colors.grey[300]!),
+                SizedBox(height: 20.h),
+                Text("Quantity", style: CustomFonts.black14w500),
+                SizedBox(height: 10.h),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    _buildQtyBtn(Icons.remove, _decrement),
+                    SizedBox(width: 15.w),
+                    Expanded(
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Quantity is required!';
+                          }
+                          final quantity = int.tryParse(value);
+                          if (quantity == null || quantity <= 0) {
+                            return 'Invalid quantity!';
+                          }
+                          return null;
+                        },
+                        controller: _quantityController,
+                        textAlign: TextAlign.center,
+                        keyboardType: TextInputType.number,
+                        onChanged: (val) {
+                          _quantity = int.tryParse(val) ?? 1;
+                        },
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(vertical: 14.h),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.r),
+                            borderSide: BorderSide(color: Colors.grey[300]!),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.r),
+                            borderSide: BorderSide(color: Colors.grey[300]!),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(width: 15.w),
-                  _buildQtyBtn(Icons.add, _increment),
-                ],
-              ),
-
-              SizedBox(height: 20.h),
-              BuildTextField(
-                label: 'Price',
-                controller: _priceController,
-                hintText: 'Enter price',
-                keyboardType: const TextInputType.numberWithOptions(
-                  decimal: true,
+                    SizedBox(width: 15.w),
+                    _buildQtyBtn(Icons.add, _increment),
+                  ],
                 ),
-              ),
 
-              SizedBox(height: 20.h),
-              BuildTextField(
-                label: 'Description',
-                controller: _descriptionController,
-                hintText: 'Enter product description',
-                maxLines: 3,
-              ),
+                SizedBox(height: 20.h),
+                BuildTextField(
+                  label: 'Original Price',
+                  controller: _priceController,
+                  validator: Validators.empty,
+                  hintText: 'Enter original price',
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
+                  onChanged: (_) => _calculateDiscountedPrice(),
+                ),
 
-              SizedBox(height: 32.h),
-              SizedBox(
-                width: double.infinity,
-                height: 50.h,
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (_selectedProduct != null) {
-                      final item = InventoryItem(
-                        name: _selectedProduct!.name,
-                        quantity: _quantity,
-                        price:
-                            double.tryParse(_priceController.text) ??
-                            _selectedProduct!.defaultPrice,
-                        image: _selectedProduct!.image,
-                        description: _descriptionController.text,
-                      );
-                      widget.onProductAdded(item);
-                      Navigator.pop(context);
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.r),
+                SizedBox(height: 20.h),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: BuildTextField(
+                        label: 'Discount',
+                        controller: _discountController,
+                        hintText: 'Enter discount',
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
+                        onChanged: (_) => _calculateDiscountedPrice(),
+                      ),
                     ),
-                    elevation: 0,
-                  ),
-                  child: Text(
-                    "Add to Inventory",
-                    style: CustomFonts.white14w500,
+                    SizedBox(width: 15.w),
+                    Expanded(
+                      flex: 2,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Type", style: CustomFonts.black14w500),
+                          SizedBox(height: 10.h),
+                          CustomDropdown<DiscountType>(
+                            builder: (type) => Text(switch (type) {
+                              DiscountType.per => 'Percentage',
+                              DiscountType.flat => 'Flat',
+                            }, style: CustomFonts.black14w500),
+                            hint: 'Select Type',
+                            value: _discountType,
+                            items: DiscountType.values,
+                            onChanged: (val) {
+                              if (val != null) {
+                                setState(() {
+                                  _discountType = val;
+                                  _calculateDiscountedPrice();
+                                });
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+
+                SizedBox(height: 20.h),
+                BuildTextField(
+                  label: 'Discounted Price',
+                  validator: (value) {
+                    final discountValue = num.tryParse(
+                      _discountController.text,
+                    );
+                    if (discountValue == null || discountValue <= 0) {
+                      return null;
+                    }
+                    return Validators.empty(value);
+                  },
+                  controller: _discountedPriceController,
+                  hintText: '0.00',
+                  readOnly: true,
+                ),
+
+                SizedBox(height: 32.h),
+                SizedBox(
+                  width: double.infinity,
+                  height: 50.h,
+                  child: ElevatedButton(
+                    onPressed: _onAddToInventory,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      elevation: 0,
+                    ),
+                    child: Text(
+                      "Add to Inventory",
+                      style: CustomFonts.white14w500,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

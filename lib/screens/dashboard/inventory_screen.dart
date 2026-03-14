@@ -1,397 +1,358 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:skinsync_clinic_portal/utils/assets.dart';
 import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 import 'package:skinsync_clinic_portal/utils/responsive.dart';
+import 'package:skinsync_clinic_portal/view_models/inventory_view_model.dart';
 import 'package:skinsync_clinic_portal/widgets/build_textfield.dart';
 import 'package:skinsync_clinic_portal/widgets/dailog%20box/inventory_detail_dialog.dart';
 
 import '../../models/dummy/inventory.dart';
 import '../../widgets/dailog box/add_product_dialog.dart';
 
-class InventoryScreen extends StatefulWidget {
+class InventoryScreen extends ConsumerStatefulWidget {
   static const String routeName = '/inventory_screen';
   const InventoryScreen({super.key});
 
   @override
-  State<InventoryScreen> createState() => _InventoryScreenState();
+  ConsumerState<InventoryScreen> createState() => _InventoryScreenState();
 }
 
-class _InventoryScreenState extends State<InventoryScreen> {
+class _InventoryScreenState extends ConsumerState<InventoryScreen> {
   final TextEditingController _searchController = TextEditingController();
 
-  final List<InventoryItem> _dummyInventory = [
-    InventoryItem(
-      name: 'Botox Vial',
-      quantity: 50,
-      price: 200.0,
-      image: PngAssets.treatmentImage,
-      description: 'Standard Botox vial for cosmetic procedures.',
-      history: [
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 15)),
-          quantity: 100,
-          isAdded: true,
-        ),
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 12)),
-          quantity: 20,
-          isAdded: false,
-        ),
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 8)),
-          quantity: 15,
-          isAdded: false,
-        ),
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 5)),
-          quantity: 60,
-          isAdded: true,
-        ),
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 2)),
-          quantity: 10,
-          isAdded: false,
-        ),
-      ],
-    ),
-    InventoryItem(
-      name: 'Dermal Filler',
-      quantity: 30,
-      price: 150.0,
-      image: PngAssets.treatmentImage,
-      description: 'High-quality dermal filler for volume restoration.',
-      history: [
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 20)),
-          quantity: 50,
-          isAdded: true,
-        ),
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 18)),
-          quantity: 5,
-          isAdded: false,
-        ),
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 15)),
-          quantity: 10,
-          isAdded: false,
-        ),
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 10)),
-          quantity: 40,
-          isAdded: true,
-        ),
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 3)),
-          quantity: 10,
-          isAdded: false,
-        ),
-      ],
-    ),
-    InventoryItem(
-      name: 'Syringes (100pk)',
-      quantity: 20,
-      price: 45.0,
-      image: PngAssets.treatmentImage,
-      description: 'Disposable sterile syringes, pack of 100.',
-      history: [
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 25)),
-          quantity: 50,
-          isAdded: true,
-        ),
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 22)),
-          quantity: 10,
-          isAdded: false,
-        ),
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 20)),
-          quantity: 15,
-          isAdded: false,
-        ),
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 18)),
-          quantity: 30,
-          isAdded: true,
-        ),
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 15)),
-          quantity: 20,
-          isAdded: true,
-        ),
-      ],
-    ),
-    InventoryItem(
-      name: 'Alcohol Swabs',
-      quantity: 100,
-      price: 10.0,
-      image: PngAssets.treatmentImage,
-      description: 'Pre-injection skin cleansing swabs.',
-      history: [
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 30)),
-          quantity: 200,
-          isAdded: true,
-        ),
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 25)),
-          quantity: 50,
-          isAdded: false,
-        ),
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 20)),
-          quantity: 100,
-          isAdded: true,
-        ),
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 15)),
-          quantity: 20,
-          isAdded: false,
-        ),
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 10)),
-          quantity: 30,
-          isAdded: false,
-        ),
-      ],
-    ),
-    InventoryItem(
-      name: 'Numbing Cream',
-      quantity: 15,
-      price: 35.0,
-      image: PngAssets.treatmentImage,
-      description: 'Topical anesthetic for skin procedures.',
-      history: [
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 14)),
-          quantity: 30,
-          isAdded: true,
-        ),
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 12)),
-          quantity: 10,
-          isAdded: false,
-        ),
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 10)),
-          quantity: 5,
-          isAdded: false,
-        ),
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 7)),
-          quantity: 20,
-          isAdded: true,
-        ),
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 1)),
-          quantity: 5,
-          isAdded: false,
-        ),
-      ],
-    ),
-    InventoryItem(
-      name: 'Gauze Pads',
-      quantity: 200,
-      price: 5.0,
-      image: PngAssets.treatmentImage,
-      description: 'Sterile cotton gauze pads.',
-      history: [
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 40)),
-          quantity: 500,
-          isAdded: true,
-        ),
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 35)),
-          quantity: 100,
-          isAdded: false,
-        ),
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 30)),
-          quantity: 250,
-          isAdded: true,
-        ),
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 15)),
-          quantity: 50,
-          isAdded: false,
-        ),
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 5)),
-          quantity: 50,
-          isAdded: false,
-        ),
-      ],
-    ),
-    InventoryItem(
-      name: 'Cooling Gel',
-      quantity: 12,
-      price: 25.0,
-      image: PngAssets.treatmentImage,
-      description: 'Post-treatment soothing cooling gel.',
-      history: [
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 20)),
-          quantity: 20,
-          isAdded: true,
-        ),
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 18)),
-          quantity: 5,
-          isAdded: false,
-        ),
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 15)),
-          quantity: 10,
-          isAdded: true,
-        ),
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 12)),
-          quantity: 15,
-          isAdded: true,
-        ),
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 4)),
-          quantity: 3,
-          isAdded: false,
-        ),
-      ],
-    ),
-    InventoryItem(
-      name: 'Latex Gloves',
-      quantity: 500,
-      price: 15.0,
-      image: PngAssets.treatmentImage,
-      description: 'Powder-free latex examination gloves.',
-      history: [
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 50)),
-          quantity: 1000,
-          isAdded: true,
-        ),
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 45)),
-          quantity: 200,
-          isAdded: false,
-        ),
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 40)),
-          quantity: 600,
-          isAdded: true,
-        ),
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 20)),
-          quantity: 100,
-          isAdded: false,
-        ),
-        InventoryHistory(
-          date: DateTime.now().subtract(const Duration(days: 10)),
-          quantity: 100,
-          isAdded: false,
-        ),
-      ],
-    ),
-  ];
-
-  final List<Product> _availableProducts = [
-    Product(
-      name: 'Hyaluronic Serum',
-      defaultPrice: 45.0,
-      image: PngAssets.treatmentImage,
-    ),
-    Product(
-      name: 'Retinol Cream',
-      defaultPrice: 60.0,
-      image: PngAssets.treatmentImage,
-    ),
-    Product(
-      name: 'Vitamin C Booster',
-      defaultPrice: 55.0,
-      image: PngAssets.treatmentImage,
-    ),
-    Product(
-      name: 'Sunscreen SPF 50',
-      defaultPrice: 30.0,
-      image: PngAssets.treatmentImage,
-    ),
-    Product(
-      name: 'Cleansing Foam',
-      defaultPrice: 25.0,
-      image: PngAssets.treatmentImage,
-    ),
-    Product(
-      name: 'Face Moisturizer',
-      defaultPrice: 40.0,
-      image: PngAssets.treatmentImage,
-    ),
-    Product(
-      name: 'Anti-Aging Mask',
-      defaultPrice: 35.0,
-      image: PngAssets.treatmentImage,
-    ),
-    Product(
-      name: 'Eye Repair Cream',
-      defaultPrice: 50.0,
-      image: PngAssets.treatmentImage,
-    ),
-  ];
+  // final List<InventoryItem> _dummyInventory = [
+  //   InventoryItem(
+  //     name: 'Botox Vial',
+  //     quantity: 50,
+  //     price: 200.0,
+  //     image: PngAssets.treatmentImage,
+  //     description: 'Standard Botox vial for cosmetic procedures.',
+  //     history: [
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 15)),
+  //         quantity: 100,
+  //         isAdded: true,
+  //       ),
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 12)),
+  //         quantity: 20,
+  //         isAdded: false,
+  //       ),
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 8)),
+  //         quantity: 15,
+  //         isAdded: false,
+  //       ),
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 5)),
+  //         quantity: 60,
+  //         isAdded: true,
+  //       ),
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 2)),
+  //         quantity: 10,
+  //         isAdded: false,
+  //       ),
+  //     ],
+  //   ),
+  //   InventoryItem(
+  //     name: 'Dermal Filler',
+  //     quantity: 30,
+  //     price: 150.0,
+  //     image: PngAssets.treatmentImage,
+  //     description: 'High-quality dermal filler for volume restoration.',
+  //     history: [
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 20)),
+  //         quantity: 50,
+  //         isAdded: true,
+  //       ),
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 18)),
+  //         quantity: 5,
+  //         isAdded: false,
+  //       ),
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 15)),
+  //         quantity: 10,
+  //         isAdded: false,
+  //       ),
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 10)),
+  //         quantity: 40,
+  //         isAdded: true,
+  //       ),
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 3)),
+  //         quantity: 10,
+  //         isAdded: false,
+  //       ),
+  //     ],
+  //   ),
+  //   InventoryItem(
+  //     name: 'Syringes (100pk)',
+  //     quantity: 20,
+  //     price: 45.0,
+  //     image: PngAssets.treatmentImage,
+  //     description: 'Disposable sterile syringes, pack of 100.',
+  //     history: [
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 25)),
+  //         quantity: 50,
+  //         isAdded: true,
+  //       ),
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 22)),
+  //         quantity: 10,
+  //         isAdded: false,
+  //       ),
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 20)),
+  //         quantity: 15,
+  //         isAdded: false,
+  //       ),
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 18)),
+  //         quantity: 30,
+  //         isAdded: true,
+  //       ),
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 15)),
+  //         quantity: 20,
+  //         isAdded: true,
+  //       ),
+  //     ],
+  //   ),
+  //   InventoryItem(
+  //     name: 'Alcohol Swabs',
+  //     quantity: 100,
+  //     price: 10.0,
+  //     image: PngAssets.treatmentImage,
+  //     description: 'Pre-injection skin cleansing swabs.',
+  //     history: [
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 30)),
+  //         quantity: 200,
+  //         isAdded: true,
+  //       ),
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 25)),
+  //         quantity: 50,
+  //         isAdded: false,
+  //       ),
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 20)),
+  //         quantity: 100,
+  //         isAdded: true,
+  //       ),
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 15)),
+  //         quantity: 20,
+  //         isAdded: false,
+  //       ),
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 10)),
+  //         quantity: 30,
+  //         isAdded: false,
+  //       ),
+  //     ],
+  //   ),
+  //   InventoryItem(
+  //     name: 'Numbing Cream',
+  //     quantity: 15,
+  //     price: 35.0,
+  //     image: PngAssets.treatmentImage,
+  //     description: 'Topical anesthetic for skin procedures.',
+  //     history: [
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 14)),
+  //         quantity: 30,
+  //         isAdded: true,
+  //       ),
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 12)),
+  //         quantity: 10,
+  //         isAdded: false,
+  //       ),
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 10)),
+  //         quantity: 5,
+  //         isAdded: false,
+  //       ),
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 7)),
+  //         quantity: 20,
+  //         isAdded: true,
+  //       ),
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 1)),
+  //         quantity: 5,
+  //         isAdded: false,
+  //       ),
+  //     ],
+  //   ),
+  //   InventoryItem(
+  //     name: 'Gauze Pads',
+  //     quantity: 200,
+  //     price: 5.0,
+  //     image: PngAssets.treatmentImage,
+  //     description: 'Sterile cotton gauze pads.',
+  //     history: [
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 40)),
+  //         quantity: 500,
+  //         isAdded: true,
+  //       ),
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 35)),
+  //         quantity: 100,
+  //         isAdded: false,
+  //       ),
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 30)),
+  //         quantity: 250,
+  //         isAdded: true,
+  //       ),
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 15)),
+  //         quantity: 50,
+  //         isAdded: false,
+  //       ),
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 5)),
+  //         quantity: 50,
+  //         isAdded: false,
+  //       ),
+  //     ],
+  //   ),
+  //   InventoryItem(
+  //     name: 'Cooling Gel',
+  //     quantity: 12,
+  //     price: 25.0,
+  //     image: PngAssets.treatmentImage,
+  //     description: 'Post-treatment soothing cooling gel.',
+  //     history: [
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 20)),
+  //         quantity: 20,
+  //         isAdded: true,
+  //       ),
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 18)),
+  //         quantity: 5,
+  //         isAdded: false,
+  //       ),
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 15)),
+  //         quantity: 10,
+  //         isAdded: true,
+  //       ),
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 12)),
+  //         quantity: 15,
+  //         isAdded: true,
+  //       ),
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 4)),
+  //         quantity: 3,
+  //         isAdded: false,
+  //       ),
+  //     ],
+  //   ),
+  //   InventoryItem(
+  //     name: 'Latex Gloves',
+  //     quantity: 500,
+  //     price: 15.0,
+  //     image: PngAssets.treatmentImage,
+  //     description: 'Powder-free latex examination gloves.',
+  //     history: [
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 50)),
+  //         quantity: 1000,
+  //         isAdded: true,
+  //       ),
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 45)),
+  //         quantity: 200,
+  //         isAdded: false,
+  //       ),
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 40)),
+  //         quantity: 600,
+  //         isAdded: true,
+  //       ),
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 20)),
+  //         quantity: 100,
+  //         isAdded: false,
+  //       ),
+  //       InventoryHistory(
+  //         date: DateTime.now().subtract(const Duration(days: 10)),
+  //         quantity: 100,
+  //         isAdded: false,
+  //       ),
+  //     ],
+  //   ),
+  // ];
 
   List<InventoryItem> _filteredItems = [];
 
   @override
   void initState() {
     super.initState();
-    _filteredItems = List.from(_dummyInventory);
+    // _filteredItems = List.from(_dummyInventory);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(inventoryProvider.notifier).getCatalog();
+    });
   }
 
   void _filterInventory(String? query) {
-    if (query == null) return;
-    setState(() {
-      _filteredItems = _dummyInventory
-          .where(
-            (item) => item.name.toLowerCase().contains(query.toLowerCase()),
-          )
-          .toList();
-    });
+    // if (query == null) return;
+    // setState(() {
+    //   _filteredItems = _dummyInventory
+    //       .where(
+    //         (item) => item.name.toLowerCase().contains(query.toLowerCase()),
+    //       )
+    //       .toList();
+    // });
   }
 
   void _addItemToInventory(InventoryItem newItem) {
-    setState(() {
-      final existingIndex = _dummyInventory.indexWhere(
-        (item) => item.name == newItem.name,
-      );
-      if (existingIndex != -1) {
-        _dummyInventory[existingIndex].quantity += newItem.quantity;
-        _dummyInventory[existingIndex] = _dummyInventory[existingIndex]
-            .copyWith(
-              history: [
-                ..._dummyInventory[existingIndex].history,
-                InventoryHistory(
-                  date: DateTime.now(),
-                  quantity: newItem.quantity,
-                  isAdded: true,
-                ),
-              ],
-            );
-      } else {
-        // New item history
-        newItem = newItem.copyWith(
-          history: [
-            InventoryHistory(
-              date: DateTime.now(),
-              quantity: newItem.quantity,
-              isAdded: true,
-            ),
-          ],
-        );
-        _dummyInventory.add(newItem);
-      }
-      _filterInventory(_searchController.text);
-    });
+    // setState(() {
+    //   final existingIndex = _dummyInventory.indexWhere(
+    //     (item) => item.name == newItem.name,
+    //   );
+    //   if (existingIndex != -1) {
+    //     _dummyInventory[existingIndex].quantity += newItem.quantity;
+    //     _dummyInventory[existingIndex] = _dummyInventory[existingIndex]
+    //         .copyWith(
+    //           history: [
+    //             ..._dummyInventory[existingIndex].history,
+    //             InventoryHistory(
+    //               date: DateTime.now(),
+    //               quantity: newItem.quantity,
+    //               isAdded: true,
+    //             ),
+    //           ],
+    //         );
+    //   } else {
+    //     // New item history
+    //     newItem = newItem.copyWith(
+    //       history: [
+    //         InventoryHistory(
+    //           date: DateTime.now(),
+    //           quantity: newItem.quantity,
+    //           isAdded: true,
+    //         ),
+    //       ],
+    //     );
+    //     _dummyInventory.add(newItem);
+    //   }
+    //   _filterInventory(_searchController.text);
+    // });
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -407,7 +368,6 @@ class _InventoryScreenState extends State<InventoryScreen> {
       context: context,
       builder: (context) {
         return AddProductDialog(
-          products: _availableProducts,
           onProductAdded: (item) {
             _addItemToInventory(item);
           },
@@ -427,6 +387,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final _ = ref.watch(inventoryProvider);
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Padding(
@@ -582,12 +543,12 @@ class _InventoryScreenState extends State<InventoryScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      '\$${item.price.toStringAsFixed(2)}',
-                      style: CustomFonts.black14w600.copyWith(
-                        color: CustomColors.purpleColor,
-                      ),
-                    ),
+                    // Text(
+                    //   '\$${item.price.toStringAsFixed(2)}',
+                    //   style: CustomFonts.black14w600.copyWith(
+                    //     color: CustomColors.purpleColor,
+                    //   ),
+                    // ),
                     Text(
                       'per unit',
                       style: CustomFonts.grey14w500.copyWith(fontSize: 12.sp),
