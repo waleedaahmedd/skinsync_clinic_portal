@@ -7,16 +7,13 @@ import 'package:skinsync_clinic_portal/utils/enums.dart';
 import 'package:skinsync_clinic_portal/utils/validators.dart';
 import 'package:skinsync_clinic_portal/view_models/inventory_view_model.dart';
 
-import '../../models/dummy/inventory.dart';
 import '../../utils/custom_fonts.dart';
 import '../../utils/responsive.dart';
 import '../build_textfield.dart';
 import '../custom_dropdown_widget.dart';
 
 class AddProductDialog extends ConsumerStatefulWidget {
-  final Function(InventoryItem) onProductAdded;
-
-  const AddProductDialog({super.key, required this.onProductAdded});
+  const AddProductDialog({super.key});
 
   @override
   ConsumerState<AddProductDialog> createState() => _AddProductDialogState();
@@ -299,19 +296,29 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                 SizedBox(
                   width: double.infinity,
                   height: 50.h,
-                  child: ElevatedButton(
-                    onPressed: _onAddToInventory,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      elevation: 0,
-                    ),
-                    child: Text(
-                      "Add to Inventory",
-                      style: CustomFonts.white14w500,
-                    ),
+                  child: Consumer(
+                    builder: (_, ref, _) {
+                      final loading = ref.watch(
+                        inventoryProvider.select((s) => s.addProductLoading),
+                      );
+                      if (loading) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                      return ElevatedButton(
+                        onPressed: _onAddToInventory,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                          elevation: 0,
+                        ),
+                        child: Text(
+                          "Add to Inventory",
+                          style: CustomFonts.white14w500,
+                        ),
+                      );
+                    },
                   ),
                 ),
               ],

@@ -1,15 +1,15 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:skinsync_clinic_portal/models/responses/clinic_products_response.dart';
 import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 import 'package:skinsync_clinic_portal/utils/responsive.dart';
 import 'package:skinsync_clinic_portal/view_models/inventory_view_model.dart';
 import 'package:skinsync_clinic_portal/widgets/build_textfield.dart';
-import 'package:skinsync_clinic_portal/widgets/dailog%20box/inventory_detail_dialog.dart';
 
-import '../../models/dummy/inventory.dart';
 import '../../widgets/dailog box/add_product_dialog.dart';
 
 class InventoryScreen extends ConsumerStatefulWidget {
@@ -23,371 +23,34 @@ class InventoryScreen extends ConsumerStatefulWidget {
 class _InventoryScreenState extends ConsumerState<InventoryScreen> {
   final TextEditingController _searchController = TextEditingController();
 
-  // final List<InventoryItem> _dummyInventory = [
-  //   InventoryItem(
-  //     name: 'Botox Vial',
-  //     quantity: 50,
-  //     price: 200.0,
-  //     image: PngAssets.treatmentImage,
-  //     description: 'Standard Botox vial for cosmetic procedures.',
-  //     history: [
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 15)),
-  //         quantity: 100,
-  //         isAdded: true,
-  //       ),
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 12)),
-  //         quantity: 20,
-  //         isAdded: false,
-  //       ),
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 8)),
-  //         quantity: 15,
-  //         isAdded: false,
-  //       ),
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 5)),
-  //         quantity: 60,
-  //         isAdded: true,
-  //       ),
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 2)),
-  //         quantity: 10,
-  //         isAdded: false,
-  //       ),
-  //     ],
-  //   ),
-  //   InventoryItem(
-  //     name: 'Dermal Filler',
-  //     quantity: 30,
-  //     price: 150.0,
-  //     image: PngAssets.treatmentImage,
-  //     description: 'High-quality dermal filler for volume restoration.',
-  //     history: [
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 20)),
-  //         quantity: 50,
-  //         isAdded: true,
-  //       ),
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 18)),
-  //         quantity: 5,
-  //         isAdded: false,
-  //       ),
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 15)),
-  //         quantity: 10,
-  //         isAdded: false,
-  //       ),
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 10)),
-  //         quantity: 40,
-  //         isAdded: true,
-  //       ),
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 3)),
-  //         quantity: 10,
-  //         isAdded: false,
-  //       ),
-  //     ],
-  //   ),
-  //   InventoryItem(
-  //     name: 'Syringes (100pk)',
-  //     quantity: 20,
-  //     price: 45.0,
-  //     image: PngAssets.treatmentImage,
-  //     description: 'Disposable sterile syringes, pack of 100.',
-  //     history: [
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 25)),
-  //         quantity: 50,
-  //         isAdded: true,
-  //       ),
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 22)),
-  //         quantity: 10,
-  //         isAdded: false,
-  //       ),
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 20)),
-  //         quantity: 15,
-  //         isAdded: false,
-  //       ),
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 18)),
-  //         quantity: 30,
-  //         isAdded: true,
-  //       ),
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 15)),
-  //         quantity: 20,
-  //         isAdded: true,
-  //       ),
-  //     ],
-  //   ),
-  //   InventoryItem(
-  //     name: 'Alcohol Swabs',
-  //     quantity: 100,
-  //     price: 10.0,
-  //     image: PngAssets.treatmentImage,
-  //     description: 'Pre-injection skin cleansing swabs.',
-  //     history: [
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 30)),
-  //         quantity: 200,
-  //         isAdded: true,
-  //       ),
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 25)),
-  //         quantity: 50,
-  //         isAdded: false,
-  //       ),
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 20)),
-  //         quantity: 100,
-  //         isAdded: true,
-  //       ),
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 15)),
-  //         quantity: 20,
-  //         isAdded: false,
-  //       ),
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 10)),
-  //         quantity: 30,
-  //         isAdded: false,
-  //       ),
-  //     ],
-  //   ),
-  //   InventoryItem(
-  //     name: 'Numbing Cream',
-  //     quantity: 15,
-  //     price: 35.0,
-  //     image: PngAssets.treatmentImage,
-  //     description: 'Topical anesthetic for skin procedures.',
-  //     history: [
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 14)),
-  //         quantity: 30,
-  //         isAdded: true,
-  //       ),
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 12)),
-  //         quantity: 10,
-  //         isAdded: false,
-  //       ),
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 10)),
-  //         quantity: 5,
-  //         isAdded: false,
-  //       ),
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 7)),
-  //         quantity: 20,
-  //         isAdded: true,
-  //       ),
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 1)),
-  //         quantity: 5,
-  //         isAdded: false,
-  //       ),
-  //     ],
-  //   ),
-  //   InventoryItem(
-  //     name: 'Gauze Pads',
-  //     quantity: 200,
-  //     price: 5.0,
-  //     image: PngAssets.treatmentImage,
-  //     description: 'Sterile cotton gauze pads.',
-  //     history: [
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 40)),
-  //         quantity: 500,
-  //         isAdded: true,
-  //       ),
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 35)),
-  //         quantity: 100,
-  //         isAdded: false,
-  //       ),
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 30)),
-  //         quantity: 250,
-  //         isAdded: true,
-  //       ),
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 15)),
-  //         quantity: 50,
-  //         isAdded: false,
-  //       ),
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 5)),
-  //         quantity: 50,
-  //         isAdded: false,
-  //       ),
-  //     ],
-  //   ),
-  //   InventoryItem(
-  //     name: 'Cooling Gel',
-  //     quantity: 12,
-  //     price: 25.0,
-  //     image: PngAssets.treatmentImage,
-  //     description: 'Post-treatment soothing cooling gel.',
-  //     history: [
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 20)),
-  //         quantity: 20,
-  //         isAdded: true,
-  //       ),
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 18)),
-  //         quantity: 5,
-  //         isAdded: false,
-  //       ),
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 15)),
-  //         quantity: 10,
-  //         isAdded: true,
-  //       ),
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 12)),
-  //         quantity: 15,
-  //         isAdded: true,
-  //       ),
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 4)),
-  //         quantity: 3,
-  //         isAdded: false,
-  //       ),
-  //     ],
-  //   ),
-  //   InventoryItem(
-  //     name: 'Latex Gloves',
-  //     quantity: 500,
-  //     price: 15.0,
-  //     image: PngAssets.treatmentImage,
-  //     description: 'Powder-free latex examination gloves.',
-  //     history: [
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 50)),
-  //         quantity: 1000,
-  //         isAdded: true,
-  //       ),
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 45)),
-  //         quantity: 200,
-  //         isAdded: false,
-  //       ),
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 40)),
-  //         quantity: 600,
-  //         isAdded: true,
-  //       ),
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 20)),
-  //         quantity: 100,
-  //         isAdded: false,
-  //       ),
-  //       InventoryHistory(
-  //         date: DateTime.now().subtract(const Duration(days: 10)),
-  //         quantity: 100,
-  //         isAdded: false,
-  //       ),
-  //     ],
-  //   ),
-  // ];
-
-  List<InventoryItem> _filteredItems = [];
-
   @override
   void initState() {
     super.initState();
-    // _filteredItems = List.from(_dummyInventory);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(inventoryProvider.notifier).getCatalog();
+      ref.read(inventoryProvider.notifier).getData();
     });
-  }
-
-  void _filterInventory(String? query) {
-    // if (query == null) return;
-    // setState(() {
-    //   _filteredItems = _dummyInventory
-    //       .where(
-    //         (item) => item.name.toLowerCase().contains(query.toLowerCase()),
-    //       )
-    //       .toList();
-    // });
-  }
-
-  void _addItemToInventory(InventoryItem newItem) {
-    // setState(() {
-    //   final existingIndex = _dummyInventory.indexWhere(
-    //     (item) => item.name == newItem.name,
-    //   );
-    //   if (existingIndex != -1) {
-    //     _dummyInventory[existingIndex].quantity += newItem.quantity;
-    //     _dummyInventory[existingIndex] = _dummyInventory[existingIndex]
-    //         .copyWith(
-    //           history: [
-    //             ..._dummyInventory[existingIndex].history,
-    //             InventoryHistory(
-    //               date: DateTime.now(),
-    //               quantity: newItem.quantity,
-    //               isAdded: true,
-    //             ),
-    //           ],
-    //         );
-    //   } else {
-    //     // New item history
-    //     newItem = newItem.copyWith(
-    //       history: [
-    //         InventoryHistory(
-    //           date: DateTime.now(),
-    //           quantity: newItem.quantity,
-    //           isAdded: true,
-    //         ),
-    //       ],
-    //     );
-    //     _dummyInventory.add(newItem);
-    //   }
-    //   _filterInventory(_searchController.text);
-    // });
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('${newItem.name} added to inventory'),
-        backgroundColor: CustomColors.blueColor,
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
   }
 
   void _showAddProductDialog() {
     showDialog(
       context: context,
       builder: (context) {
-        return AddProductDialog(
-          onProductAdded: (item) {
-            _addItemToInventory(item);
-          },
-        );
+        return AddProductDialog();
       },
     );
   }
 
-  void _showInventoryDetailDialog(InventoryItem item) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return InventoryDetailDialog(item: item);
-      },
-    );
-  }
+  // void _showInventoryDetailDialog(InventoryItem item) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return InventoryDetailDialog(item: item);
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
-    final _ = ref.watch(inventoryProvider);
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Padding(
@@ -442,32 +105,41 @@ class _InventoryScreenState extends ConsumerState<InventoryScreen> {
       controller: _searchController,
       hintText: 'Search by item name...',
       prefixIcon: Icon(Iconsax.search_normal, size: 20.r, color: Colors.grey),
-      onChanged: _filterInventory,
+      // onChanged: _filterInventory,
     );
   }
 
   Widget _buildInventoryGrid(BuildContext context) {
     int crossAxisCount = context.isLandscape ? 4 : 2;
     double childAspectRatio = context.isLandscape ? 1.1 : 0.7;
-
-    return GridView.builder(
-      itemCount: _filteredItems.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: crossAxisCount,
-        crossAxisSpacing: 20.w,
-        mainAxisSpacing: 20.h,
-        childAspectRatio: childAspectRatio,
-      ),
-      itemBuilder: (context, index) {
-        return GestureDetector(
-          onTap: () => _showInventoryDetailDialog(_filteredItems[index]),
-          child: _buildInventoryCard(_filteredItems[index]),
+    return Consumer(
+      builder: (_, ref, _) {
+        final data = ref.watch(
+          inventoryProvider.select((s) => (s.products, s.loading)),
+        );
+        if (data.$2) {
+          return Center(child: CircularProgressIndicator());
+        }
+        return GridView.builder(
+          itemCount: data.$1.length,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: crossAxisCount,
+            crossAxisSpacing: 20.w,
+            mainAxisSpacing: 20.h,
+            childAspectRatio: childAspectRatio,
+          ),
+          itemBuilder: (context, index) {
+            return GestureDetector(
+              // onTap: () => _showInventoryDetailDialog(_filteredItems[index]),
+              child: _buildInventoryCard(data.$1[index]),
+            );
+          },
         );
       },
     );
   }
 
-  Widget _buildInventoryCard(InventoryItem item) {
+  Widget _buildInventoryCard(ClinicProduct item) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -493,14 +165,20 @@ class _InventoryScreenState extends ConsumerState<InventoryScreen> {
               borderRadius: BorderRadius.vertical(top: Radius.circular(15.r)),
               child: Stack(
                 children: [
-                  Image.asset(
-                    item.image,
+                  CachedNetworkImage(
+                    imageUrl: item.image,
                     width: double.infinity,
                     fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => Container(
-                      color: const Color(0xFFE8E8E8),
-                      child: const Icon(Icons.broken_image, color: Colors.grey),
-                    ),
+                    errorWidget: (context, error, stackTrace) {
+                      return Container(
+                        color: const Color(0xFFE8E8E8),
+                        height: double.infinity,
+                        child: const Icon(
+                          Icons.broken_image,
+                          color: Colors.grey,
+                        ),
+                      );
+                    },
                   ),
                   Positioned(
                     top: 10.h,
@@ -515,9 +193,9 @@ class _InventoryScreenState extends ConsumerState<InventoryScreen> {
                         borderRadius: BorderRadius.circular(20.r),
                       ),
                       child: Text(
-                        'Qty: ${item.quantity}',
+                        'Qty: ${item.totalQuantity}',
                         style: CustomFonts.black12w600.copyWith(
-                          color: item.quantity < 20
+                          color: item.totalQuantity < 20
                               ? CustomColors.errorColor
                               : CustomColors.silverColor,
                         ),
@@ -543,12 +221,12 @@ class _InventoryScreenState extends ConsumerState<InventoryScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Text(
-                    //   '\$${item.price.toStringAsFixed(2)}',
-                    //   style: CustomFonts.black14w600.copyWith(
-                    //     color: CustomColors.purpleColor,
-                    //   ),
-                    // ),
+                    Text(
+                      '\$${200.toStringAsFixed(2)}',
+                      style: CustomFonts.black14w600.copyWith(
+                        color: CustomColors.purpleColor,
+                      ),
+                    ),
                     Text(
                       'per unit',
                       style: CustomFonts.grey14w500.copyWith(fontSize: 12.sp),

@@ -1,10 +1,10 @@
-import 'package:skinsync_clinic_portal/models/responses/add_inventory_response.dart';
-import 'package:skinsync_clinic_portal/services/locator.dart';
-import 'package:skinsync_clinic_portal/utils/enums.dart';
-
 import '../models/requests/add_inventory_request.dart';
+import '../models/responses/add_inventory_response.dart';
 import '../models/responses/catalog_response.dart';
+import '../models/responses/clinic_products_response.dart';
+import '../utils/enums.dart';
 import 'api_base_helper.dart';
+import 'locator.dart';
 
 class InventoryService {
   Future<List<CatalogItem>> getCatalog() async {
@@ -16,14 +16,24 @@ class InventoryService {
     return response.data!;
   }
 
-  Future<void> addInventoryItem(AddInventoryRequest request) async {
-    final json = await locator<ApiBaseHelper>().post(
-      Endpoint.addInventory,
-      body: request.toJson(),
-    );
-    final response = AddInventoryResponse.fromJson(json);
+  Future<List<ClinicProduct>> getClinicProducts() async {
+    final json = await locator<ApiBaseHelper>().get(Endpoint.clinicProducts);
+    final response = ClinicProductsResponse.fromJson(json);
     if (!response.isSuccess) {
       throw Exception(response.message);
     }
+    return response.data ?? [];
+  }
+
+  Future<ClinicProduct> addInventoryItem(AddInventoryRequest request) async {
+    final json = await locator<ApiBaseHelper>().post(
+      Endpoint.clinicProducts,
+      body: request.toJson(),
+    );
+    final response = AddInventoryResponse.fromJson(json);
+    if (!response.isSuccess || response.data == null) {
+      throw Exception(response.message);
+    }
+    return response.data!;
   }
 }

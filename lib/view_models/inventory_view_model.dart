@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skinsync_clinic_portal/models/requests/add_inventory_request.dart';
+import 'package:skinsync_clinic_portal/models/responses/clinic_products_response.dart';
 
 import '../models/responses/catalog_response.dart';
 import '../services/inventory_service.dart';
@@ -14,11 +15,18 @@ final inventoryProvider = NotifierProvider.autoDispose(
 class InventoryViewModel extends BaseViewModel<InventoryState> {
   InventoryViewModel() : super(InventoryState());
 
-  Future<void> getCatalog() async {
-    return await runSafely(() async {
+  Future<void> getData() async {
+    return await runSafely(showLoading: false, () async {
       state = state.copyWith(loading: true);
-      final catalog = await locator<InventoryService>().getCatalog();
-      state = state.copyWith(loading: false, catalog: catalog);
+      final result = await Future.wait([
+        locator<InventoryService>().getCatalog(),
+        locator<InventoryService>().getClinicProducts(),
+      ]);
+      state = state.copyWith(
+        loading: false,
+        catalog: result[0] as List<CatalogItem>,
+        products: result[1] as List<ClinicProduct>,
+      );
     });
   }
 
@@ -30,9 +38,9 @@ class InventoryViewModel extends BaseViewModel<InventoryState> {
     required DiscountType discountType,
     required String discountedPrice,
   }) async {
-    return await runSafely(() async {
-      state = state.copyWith(loading: true);
-      await locator<InventoryService>().addInventoryItem(
+    return await runSafely(showLoading: false, () async {
+      state = state.copyWith(addProductLoading: true);
+      final newProduct = await locator<InventoryService>().addInventoryItem(
         AddInventoryRequest(
           productId: productId,
           quantity: quantity,
@@ -42,30 +50,52 @@ class InventoryViewModel extends BaseViewModel<InventoryState> {
           discountedPrice: num.parse(discountedPrice),
         ),
       );
-      state = state.copyWith(loading: false, inventoryAdded: true);
+      state = state.copyWith(
+        loading: false,
+        addProductLoading: false,
+        products: [newProduct, ...state.products],
+        inventoryAdded: true,
+      );
     });
+  }
+
+  @override
+  void onError(String message) {
+    state = state.copyWith(
+      loading: false,
+      addProductLoading: false,
+      inventoryAdded: false,
+    );
+    super.onError(message);
   }
 }
 
 class InventoryState {
-  final bool loading;
+  final bool loading, addProductLoading;
   final List<CatalogItem> catalog;
+  final List<ClinicProduct> products;
   final bool inventoryAdded;
 
   const InventoryState({
     this.loading = false,
+    this.addProductLoading = false,
     this.catalog = const [],
+    this.products = const [],
     this.inventoryAdded = false,
   });
 
   InventoryState copyWith({
     bool? loading,
+    bool? addProductLoading,
     List<CatalogItem>? catalog,
+    List<ClinicProduct>? products,
     bool? inventoryAdded,
   }) {
     return InventoryState(
       loading: loading ?? this.loading,
+      addProductLoading: addProductLoading ?? this.addProductLoading,
       catalog: catalog ?? this.catalog,
+      products: products ?? this.products,
       inventoryAdded: inventoryAdded ?? false,
     );
   }
