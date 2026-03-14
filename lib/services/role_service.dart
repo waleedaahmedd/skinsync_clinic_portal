@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:skinsync_clinic_portal/models/requests/create_role_request_model.dart';
+import 'package:skinsync_clinic_portal/models/requests/update_role_request.dart';
 import 'package:skinsync_clinic_portal/models/responses/base_response_model.dart';
 import 'package:skinsync_clinic_portal/models/responses/get_feature_response.dart';
 import 'package:skinsync_clinic_portal/models/responses/get_roles_response.dart';
@@ -44,4 +45,26 @@ class RoleService extends RoleRepository {
     }
     return model;
   }
+
+
+  @override
+ Future<BaseApiResponseModel> updateRole({
+  required UpdateRoleRequest request,
+  required String roleId
+ }) async {
+   final response = await locator<ApiBaseHelper>().put(
+      Endpoint.roles,
+      
+      body: request.toJson(),
+       queryParams: {
+      "id": roleId,
+    },
+    );
+    log('RESPONSE: $response');
+    final model = BaseApiResponseModel.fromJson(response, (json) => json);
+    if (!model.isSuccess) {
+      throw Exception(model.message);
+    }
+    return model;
+ }
 }

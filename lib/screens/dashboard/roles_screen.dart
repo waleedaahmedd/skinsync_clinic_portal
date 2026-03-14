@@ -79,7 +79,7 @@ class _RolesScreenState extends ConsumerState<RolesScreen> {
               builder: (context, ref, _) {
                 final loading = ref.watch(roleProvider).loading;
                 if (loading) {
-                  return Center(child: CircularProgressIndicator());
+                  return Expanded(child: Center(child: CircularProgressIndicator()));
                 }
                 return Expanded(
                   child: ListView.separated(
@@ -103,12 +103,10 @@ class _RolesScreenState extends ConsumerState<RolesScreen> {
                             final vm = ref.read(roleProvider.notifier);
 
                             if (value) {
-                              // Opening this tile - set it as selectedRole
-                              // If another tile was open, it will be closed automatically
-                              // and its onExpansionChanged(false) will be called first
+                             
                               vm.setSelectedRole(role);
                             } else {
-                              // Closing this tile - clear selectedRole
+                              
                               vm.setSelectedRole(null);
                               vm.clear();
                             }
@@ -151,25 +149,48 @@ class _RolesScreenState extends ConsumerState<RolesScreen> {
                                           "Permission Matrix",
                                           style: CustomFonts.black16w700,
                                         ),
-                                        ElevatedButton.icon(
-                                          onPressed: () {},
-                                          icon: const Icon(
-                                            Icons.save_outlined,
-                                            size: 16,
-                                          ),
-                                          label: Text(
-                                            "Save",
-                                            style: CustomFonts.white14w500,
-                                          ),
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor:
-                                                CustomColors.blackColor,
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: 16.w,
-                                              vertical: 8.h,
-                                            ),
-                                          ),
-                                        ),
+                                        Consumer(
+                                          builder: (context,ref,_) {
+                                            final loading = ref.watch(roleProvider).updateRole;
+                                            return IgnorePointer(
+                                                ignoring: loading,
+                                              child: ElevatedButton.icon(
+                                                    onPressed: () {
+                                                      ref.read(roleProvider.notifier).updateRole().then((value){
+                                                        if(value == true){
+                                                          ref.read(roleProvider.notifier).getRole();
+                                                        }
+                                                      });
+                                                    },
+                                                    icon: const Icon(
+                                                      Icons.save_outlined,
+                                                      size: 16,
+                                                    ),
+                                                    label: loading? 
+                                                    SizedBox(
+                                                      height: 20.h,
+                                                      width: 20.w,
+                                                      child: CircularProgressIndicator(
+                                                        color:Colors.white ,
+                                                      ),
+                                                    )
+                                                    : Text(
+                                                      "Save",
+                                                      style: CustomFonts.white14w500,
+                                                    ),
+                                                    style: ElevatedButton.styleFrom(
+                                                      backgroundColor:
+                                                          CustomColors.blackColor,
+                                                      padding: EdgeInsets.symmetric(
+                                                        horizontal: 16.w,
+                                                        vertical: 8.h,
+                                                      ),
+                                                    ),
+                                                  ),
+                                            );
+                                          }
+                                        )
+                                        
                                       ],
                                     ),
                                     SizedBox(height: 16.h),

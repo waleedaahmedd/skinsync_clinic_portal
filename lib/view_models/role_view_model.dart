@@ -1,5 +1,10 @@
+import 'dart:developer';
+
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:http/http.dart';
 import 'package:skinsync_clinic_portal/models/requests/create_role_request_model.dart';
+import 'package:skinsync_clinic_portal/models/requests/update_role_request.dart';
 import 'package:skinsync_clinic_portal/models/responses/get_feature_response.dart';
 import 'package:skinsync_clinic_portal/models/responses/get_roles_response.dart';
 import 'package:skinsync_clinic_portal/services/locator.dart';
@@ -59,6 +64,35 @@ class RoleViewModel extends BaseViewModel<RoleState> {
     return true;
   }
 
+  Future<bool?> updateRole() async {
+    if (state.selectedRole == null) {
+      throw Exception('No role selected');
+    }
+
+    final selectedRole = state.selectedRole!;
+    final request = UpdateRoleRequest(
+      roleName: selectedRole.roleName ?? "",
+      features: (selectedRole.features ?? []).map((feature) {
+        return FeaturePermissionModel(
+          featureId: feature.featureId ?? 0,
+          permissionIds: feature.activePermissionIds ?? [],
+        );
+      }).toList(),
+    );
+
+    await runSafely(() async {
+      state = state.copyWith(updateRole: true);
+
+      final response = await locator<RoleService>().updateRole(
+        request: request,
+        roleId: selectedRole.roleId ?? "",
+      );
+      EasyLoading.showSuccess(response.message);
+      state = state.copyWith(updateRole: false, success: true);
+    });
+    return true;
+  }
+
   /// Toggle action selection
   void toggleAction({
     required Feature feature,
@@ -113,7 +147,11 @@ class RoleViewModel extends BaseViewModel<RoleState> {
       state = state.copyWith(selectedRole: null);
       return;
     }
-    
+    for (final feature in role.features ?? []) {
+      log(
+        'Feature ${feature.featureId} -> activePermissionIds: ${feature.activePermissionIds}',
+      );
+    }
     // Create a deep copy of the role to avoid modifying the original
     final copiedRole = Roles(
       roleId: role.roleId,
@@ -129,7 +167,11 @@ class RoleViewModel extends BaseViewModel<RoleState> {
         );
       }).toList(),
     );
-    
+    for (final feature in role.features ?? []) {
+      log(
+        'Feature ${feature.featureId} -> activePermissionIds: ${feature.activePermissionIds}',
+      );
+    }
     state = state.copyWith(selectedRole: copiedRole);
   }
 
@@ -139,13 +181,25 @@ class RoleViewModel extends BaseViewModel<RoleState> {
     required bool selected,
   }) {
     if (state.selectedRole == null) return;
-    
+
     final role = state.selectedRole!;
     if (role.features == null || featureIndex >= role.features!.length) return;
-    
+
     final feature = role.features![featureIndex];
     feature.activePermissionIds ??= [];
-    
+    log(
+      'BEFORE -> Feature ${feature.featureId}: ${feature.activePermissionIds}',
+      name: 'RoleToggle',
+    );
+
+    /// 🔥 ACTION
+    log(
+      selected
+          ? 'ADDING permission $permissionId'
+          : 'REMOVING permission $permissionId',
+      name: 'RoleToggle',
+    );
+
     if (selected) {
       if (!feature.activePermissionIds!.contains(permissionId)) {
         feature.activePermissionIds!.add(permissionId);
@@ -153,7 +207,17 @@ class RoleViewModel extends BaseViewModel<RoleState> {
     } else {
       feature.activePermissionIds!.remove(permissionId);
     }
-    
+    log('===== FULL ROLE STATE =====', name: 'RoleToggle');
+
+    for (final f in role.features ?? []) {
+      log(
+        'Feature ${f.featureId} -> ${f.activePermissionIds}',
+        name: 'RoleToggle',
+      );
+    }
+
+    log('===========================', name: 'RoleToggle');
+
     // Update the selectedRole in state
     state = state.copyWith(selectedRole: role);
   }
@@ -164,14 +228,20 @@ class RoleViewModel extends BaseViewModel<RoleState> {
 
   @override
   void onError(String message) {
-    state = state.copyWith(loading: false);
+    state = state.copyWith(
+      loading: false,
+      updateRole: false,
+      createRoleLoading: false,
+    );
     super.onError(message);
   }
 }
 
 class RoleState {
   final bool loading;
+  final bool updateRole;
   final bool createRoleLoading;
+
   final List<Feature> features;
   final List<Feature> selectedFeatures;
   final List<Roles> roles;
@@ -180,6 +250,7 @@ class RoleState {
 
   const RoleState({
     this.loading = false,
+    this.updateRole = false,
     this.selectedFeatures = const [],
     this.features = const [],
     this.roles = const [],
@@ -191,6 +262,7 @@ class RoleState {
   RoleState copyWith({
     bool? loading,
     bool? createRoleLoading,
+    bool? updateRole,
     List<Feature>? features,
     List<Feature>? selectedFeatures,
     List<Roles>? roles,
@@ -199,6 +271,7 @@ class RoleState {
   }) {
     return RoleState(
       loading: loading ?? this.loading,
+      updateRole: updateRole ?? this.updateRole,
       createRoleLoading: createRoleLoading ?? this.createRoleLoading,
       selectedFeatures: selectedFeatures ?? this.selectedFeatures,
       roles: roles ?? this.roles,
@@ -210,6 +283,7 @@ class RoleState {
 
   RoleState copyWithNull({
     bool? loading,
+    bool? updateRole,
     bool? createRoleLoading,
     List<Feature>? selectedFeatures,
     List<Feature>? features,
@@ -219,6 +293,7 @@ class RoleState {
   }) {
     return RoleState(
       loading: loading ?? this.loading,
+      updateRole: updateRole ?? this.updateRole,
       createRoleLoading: createRoleLoading ?? this.createRoleLoading,
       selectedFeatures: selectedFeatures ?? this.selectedFeatures,
       features: features ?? this.features,

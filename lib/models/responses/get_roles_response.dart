@@ -1,13 +1,13 @@
 import 'package:skinsync_clinic_portal/models/responses/base_response_model.dart';
 
-class GetRoleResponse extends  BaseApiResponseModel<List<Roles>>  {
-
-
-  GetRoleResponse({ super.data,
+class GetRoleResponse extends BaseApiResponseModel<List<Roles>> {
+  GetRoleResponse({
+    super.data,
     required super.isSuccess,
-    required super.message,});
+    required super.message,
+  });
 
-   factory GetRoleResponse.fromJson(Map<String, dynamic> json) =>
+  factory GetRoleResponse.fromJson(Map<String, dynamic> json) =>
       GetRoleResponse(
         isSuccess: json["is_success"],
         message: json["message"],
@@ -15,8 +15,6 @@ class GetRoleResponse extends  BaseApiResponseModel<List<Roles>>  {
             ? []
             : List<Roles>.from(json["roles"]!.map((x) => Roles.fromJson(x))),
       );
-
-
 }
 
 class Roles {
@@ -36,7 +34,6 @@ class Roles {
       });
     }
   }
-
 }
 
 class Features {
@@ -45,11 +42,12 @@ class Features {
   List<int>? activePermissionIds;
   List<Permissions>? permissions;
 
-  Features(
-      {this.featureId,
-      this.featureTitle,
-      this.activePermissionIds,
-      this.permissions});
+  Features({
+    this.featureId,
+    this.featureTitle,
+    this.activePermissionIds,
+    this.permissions,
+  });
 
   Features.fromJson(Map<String, dynamic> json) {
     featureId = json['feature_id'];
@@ -62,7 +60,6 @@ class Features {
       });
     }
   }
-
 }
 
 class Permissions {
@@ -75,6 +72,4 @@ class Permissions {
     permissionId = json['permission_id'];
     permissionTitle = json['permission_title'];
   }
-
- 
 }

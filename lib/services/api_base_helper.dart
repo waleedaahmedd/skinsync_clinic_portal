@@ -72,10 +72,22 @@ class ApiBaseHelper {
     });
   }
 
-  Future<dynamic> put(Endpoint endpoint, {Object? body}) {
+  Future<dynamic> put(
+    Endpoint endpoint, {
+    Object? body,
+    Map<String, String>? pathParams,
+    Map<String, String>? queryParams,
+  }) {
+    final urlPath = pathParams != null
+        ? endpoint.withParams(pathParams)
+        : endpoint.path;
+
+    final uri = Uri.parse(
+      '${baseUrl.url}$urlPath',
+    ).replace(queryParameters: queryParams);
     return _safeRequest(() async {
       final response = await _client.put(
-        Uri.parse('${baseUrl.url}${endpoint.path}'),
+        uri,
         headers: await _headers(),
         body: jsonEncode(body),
       );
