@@ -11,7 +11,7 @@ enum SharedPreferencesKeys {
   final String keyText;
 }
 
-enum DoctorRole { doctor, injector }
+enum DoctorRole { owner, doctor, injector }
 
 enum Role { doctor, injector, user }
 
