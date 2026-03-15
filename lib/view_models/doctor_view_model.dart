@@ -1,10 +1,12 @@
 import 'dart:developer';
 
+import 'package:camera/camera.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skinsync_clinic_portal/models/requests/register_doctor_request.dart';
 import 'package:skinsync_clinic_portal/models/requests/update_doctors_treament_request.dart';
 import 'package:skinsync_clinic_portal/models/treatment_model.dart';
 import 'package:skinsync_clinic_portal/services/locator.dart';
+import 'package:skinsync_clinic_portal/services/media_service.dart';
 
 import '../models/responses/register_doctor_response.dart';
 import '../services/doctor_service.dart';
@@ -49,6 +51,7 @@ class DoctorViewModel extends BaseViewModel<DoctorState> {
     required String specialization,
     required String email,
     required String phone,
+    XFile? image,
   }) async {
     return await runSafely(() async {
       if (state.role == null) {
@@ -61,11 +64,15 @@ class DoctorViewModel extends BaseViewModel<DoctorState> {
         throw Exception('Add slots first!');
       }
       state = state.copyWith(loading: true);
+      String? imageUrl;
+      if (image != null) {
+        imageUrl = await locator<MediaService>().uploadImage(email, image);
+      }
       await locator<DoctorService>().register(
         request: RegisterDoctorRequest(
           role: state.role!,
           name: name,
-          image: null,
+          image: imageUrl,
           specialization: specialization,
           contactInfo: ContactInfo(email: email, phone: phone),
           treatments: state.treatments,
@@ -89,10 +96,12 @@ class DoctorViewModel extends BaseViewModel<DoctorState> {
   }
 
   Future<void> updateDoctorTreatment({
+    required String email,
     required int clinicUserId,
     required String name,
     required String specialization,
     required String phone,
+    XFile? image,
   }) async {
     return await runSafely(() async {
       if (state.treatments.isEmpty) {
@@ -103,13 +112,17 @@ class DoctorViewModel extends BaseViewModel<DoctorState> {
       }
 
       state = state.copyWith(loading: true);
-
+      String? imageUrl;
+      if (image != null) {
+        imageUrl = await locator<MediaService>().uploadImage(email, image);
+      }
       final request = UpdateDoctorRequest(
         clinicUserId: clinicUserId,
         name: name,
         specialization: specialization,
         phone: phone,
         availability: state.availability,
+        image: imageUrl,
         treatments: state.treatments.map((t) {
           return UpdateTreatmentRequest(
             treatmentId: t.id!,

@@ -5,7 +5,6 @@ import 'package:skinsync_clinic_portal/models/requests/update_doctors_treament_r
 import 'package:skinsync_clinic_portal/models/responses/get_doctors_response.dart';
 import 'package:skinsync_clinic_portal/repositories/doctor_repository.dart';
 import 'package:skinsync_clinic_portal/services/api_base_helper.dart';
-import 'package:skinsync_clinic_portal/services/storage_service.dart';
 import 'package:skinsync_clinic_portal/utils/enums.dart';
 
 import '../models/responses/register_doctor_response.dart';
@@ -13,16 +12,17 @@ import 'locator.dart';
 
 class DoctorService extends DoctorRepository {
   @override
-  Future<void> register({required RegisterDoctorRequest request}) async {
+  Future<Doctor> register({required RegisterDoctorRequest request}) async {
     final response = await locator<ApiBaseHelper>().post(
       Endpoint.createDoctor,
       body: request.toJson(),
     );
     log('RESPONSE: $response');
     final model = RegisterDoctorResponse.fromJson(response);
-    if (!model.isSuccess) {
+    if (!model.isSuccess || model.data == null) {
       throw Exception(model.message);
     }
+    return model.data!;
   }
 
   @override
@@ -32,15 +32,7 @@ class DoctorService extends DoctorRepository {
     if (!model.isSuccess) {
       throw Exception(model.message);
     }
-    final user = await locator<SecureStorageService>().getUser();
-    late List<Doctor> doctors;
-    for (final clinic in model.data ?? <ClinicData>[]) {
-      if (clinic.clinicId == user?.clinicId) {
-        doctors = clinic.doctors ?? [];
-        break;
-      }
-    }
-    return doctors;
+    return model.data!;
   }
 
   @override

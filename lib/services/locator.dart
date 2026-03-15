@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:skinsync_clinic_portal/services/doctor_service.dart';
 import 'package:skinsync_clinic_portal/services/inventory_service.dart';
+import 'package:skinsync_clinic_portal/services/media_service.dart';
 import 'package:skinsync_clinic_portal/services/role_service.dart';
 
 import '../repositories/auth_repository.dart';
@@ -26,6 +27,7 @@ Future<void> initializeServices() async {
   final secureStorageService = SecureStorageService();
   await secureStorageService.init();
   locator.registerSingleton(secureStorageService);
+  locator.registerLazySingleton(() => MediaService());
   locator.registerLazySingleton(() => DoctorService());
   locator.registerLazySingleton(() => RoleService());
   locator.registerLazySingleton(() => InventoryService());

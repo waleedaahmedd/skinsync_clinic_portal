@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
@@ -33,14 +35,20 @@ class PatientSelectionTile extends StatelessWidget {
         children: [
           if (imageUrl != null)
             ClipOval(
-              child: Image.network(imageUrl!, height: 63.w, width: 63.w),
-              // child: Image.asset(PngAssets.person, height: 63.w, width: 63.w),
+              child: Image.network(
+                imageUrl!,
+                height: 63.w,
+                width: 63.w,
+                errorBuilder: (_, error, s) {
+                  if (imageUrl!.contains('alyssa')) {
+                    log('ERROR: $error');
+                  }
+                  return _buildPlaceholder();
+                },
+              ),
             )
           else
-            CircleAvatar(
-              radius: 63.w / 2,
-              child: Icon(Icons.person, size: 30.sp),
-            ),
+            _buildPlaceholder(),
           SizedBox(width: 15.w),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,6 +61,13 @@ class PatientSelectionTile extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  CircleAvatar _buildPlaceholder() {
+    return CircleAvatar(
+      radius: 63.w / 2,
+      child: Icon(Icons.person, size: 30.sp),
     );
   }
 }

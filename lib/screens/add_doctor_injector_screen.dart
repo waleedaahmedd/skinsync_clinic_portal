@@ -1,9 +1,11 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:skinsync_clinic_portal/models/requests/register_doctor_request.dart';
 import 'package:skinsync_clinic_portal/models/responses/register_doctor_response.dart';
 import 'package:skinsync_clinic_portal/models/treatment_model.dart';
@@ -35,15 +37,9 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
   final _specializationController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
+  final _imageNotifier = ValueNotifier<XFile?>(null);
   final _formKey = GlobalKey<FormState>();
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   WidgetsBinding.instance.addPostFrameCallback((_) {
-  //     ref.read(treatmentViewModelProvider.notifier).getTreatments();
-  //   });
-  // }
   @override
   void initState() {
     super.initState();
@@ -89,6 +85,17 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
       log('SUCCESS -> Popping');
       ref.read(doctorProvider.notifier).getDoctors();
       Navigator.pop(context);
+    }
+  }
+
+  Future<void> _onImageTap() async {
+    final image = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 50,
+    );
+    if (image != null) {
+      log('PATH: ${image.path}');
+      _imageNotifier.value = image;
     }
   }
 
@@ -150,7 +157,7 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
           : Form(
               key: _formKey,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Row(
                     children: [
@@ -204,15 +211,50 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
                     ],
                   ),
                   SizedBox(height: 24.h),
+                  Badge(
+                    offset: Offset(-10.w, 10.h),
+                    backgroundColor: Colors.transparent,
+                    label: IconButton(
+                      onPressed: _onImageTap,
+                      icon: Icon(Icons.edit, size: 20.sp),
+                    ),
+                    child: ValueListenableBuilder(
+                      valueListenable: _imageNotifier,
+                      builder: (_, image, _) {
+                        if (image == null) {
+                          return CircleAvatar(
+                            radius: 50.r,
+                            child: Icon(
+                              Icons.person_outline,
+                              size: 30.sp,
+                              color: CustomColors.whiteColor,
+                            ),
+                          );
+                        }
+                        return ClipRRect(
+                          borderRadius: BorderRadiusGeometry.circular(50.r),
+                          child: CachedNetworkImage(
+                            imageUrl: image.path,
+                            fit: BoxFit.cover,
+                            width: 100.r,
+                            height: 100.r,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+
                   Consumer(
                     builder: (_, ref, _) {
                       final role = ref.watch(
                         doctorProvider.select((state) => state.role),
                       );
+                      final list = List.of(DoctorRole.values);
+                      list.remove(DoctorRole.owner);
                       return IgnorePointer(
                         ignoring: isEditing,
                         child: _buildDropdownField(
-                          items: DoctorRole.values,
+                          items: list,
                           value: role,
                           onChanged: (role) => ref
                               .read(doctorProvider.notifier)
@@ -313,54 +355,57 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
         final treatments = ref.watch(
           doctorProvider.select((state) => state.treatments),
         );
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: 10.h,
-          children: [
-            if (treatments.isNotEmpty)
-              Text('Selected Treatments', style: CustomFonts.black14w600),
-            for (final treatment in treatments)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ChoiceChip(
-                    label: Text(treatment.name ?? 'N/A'),
-                    selected: true,
-                    selectedColor: Colors.black,
-                    showCheckmark: false,
-                    checkmarkColor: Colors.white,
-                    labelStyle: TextStyle(
-                      color: CustomColors.whiteColor,
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    onSelected: (selected) {},
-                  ),
-                  if (treatment.sideAreas!.isNotEmpty)
-                    Padding(
-                      padding: EdgeInsets.only(top: 10.h),
-                      child: Wrap(
-                        spacing: 8.w,
-                        runSpacing: 8.h,
-                        children: treatment.sideAreas!.map((sideArea) {
-                          return ChoiceChip(
-                            label: Text(sideArea.name ?? 'N/A'),
-                            selected: false,
-                            selectedColor: Colors.blue,
-                            checkmarkColor: Colors.white,
-                            labelStyle: TextStyle(
-                              color: Colors.black,
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            onSelected: (_) {},
-                          );
-                        }).toList(),
+        return Align(
+          alignment: .centerLeft,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 10.h,
+            children: [
+              if (treatments.isNotEmpty)
+                Text('Selected Treatments', style: CustomFonts.black14w600),
+              for (final treatment in treatments)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ChoiceChip(
+                      label: Text(treatment.name ?? 'N/A'),
+                      selected: true,
+                      selectedColor: Colors.black,
+                      showCheckmark: false,
+                      checkmarkColor: Colors.white,
+                      labelStyle: TextStyle(
+                        color: CustomColors.whiteColor,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
                       ),
+                      onSelected: (selected) {},
                     ),
-                ],
-              ),
-          ],
+                    if (treatment.sideAreas!.isNotEmpty)
+                      Padding(
+                        padding: EdgeInsets.only(top: 10.h),
+                        child: Wrap(
+                          spacing: 8.w,
+                          runSpacing: 8.h,
+                          children: treatment.sideAreas!.map((sideArea) {
+                            return ChoiceChip(
+                              label: Text(sideArea.name ?? 'N/A'),
+                              selected: false,
+                              selectedColor: Colors.blue,
+                              checkmarkColor: Colors.white,
+                              labelStyle: TextStyle(
+                                color: Colors.black,
+                                fontSize: 13.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              onSelected: (_) {},
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                  ],
+                ),
+            ],
+          ),
         );
       },
     );
@@ -452,6 +497,7 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
                 ref
                     .read(doctorProvider.notifier)
                     .updateDoctorTreatment(
+                      email: widget.doctor!.email!,
                       clinicUserId: widget.doctor!.id!,
                       name: _nameController.text.trim(),
                       phone: _phoneController.text.trim(),
@@ -465,6 +511,7 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
                       email: _emailController.text.trim(),
                       phone: _phoneController.text.trim(),
                       specialization: _specializationController.text.trim(),
+                      image: _imageNotifier.value,
                     );
               }
             },

@@ -8,6 +8,7 @@ class UpdateDoctorRequest extends BaseRequest {
   final String specialization;
   final String phone;
   final List<Availability> availability;
+  final String? image;
 
   UpdateDoctorRequest({
     required this.clinicUserId,
@@ -16,6 +17,7 @@ class UpdateDoctorRequest extends BaseRequest {
     required this.specialization,
     required this.phone,
     required this.availability,
+    this.image,
   });
 
   @override
@@ -27,6 +29,7 @@ class UpdateDoctorRequest extends BaseRequest {
       'specialization': specialization,
       'phone': phone,
       'availability': availability.map((a) => a.toJson()).toList(),
+      'image': image,
     };
   }
 }

@@ -663,6 +663,7 @@ class _MangeDoctorsInjectorsScreenState
                   child: PatientSelectionTile(
                     title: state.doctors[index].name ?? 'N/A',
                     subTitle: state.doctors[index].email ?? 'N/A',
+                    imageUrl: state.doctors[index].image,
                     isSelected: state.selectedDoctor == state.doctors[index],
                   ),
                 );
