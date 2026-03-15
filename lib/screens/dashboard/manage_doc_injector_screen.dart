@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -593,13 +594,25 @@ class _MangeDoctorsInjectorsScreenState
         children: [
           Row(
             children: [
-              // ClipOval(
-              //   child: Image.asset(PngAssets.person, height: 96.w, width: 96.w),
-              // ),
-              CircleAvatar(
-                radius: 96.w / 2,
-                child: Icon(Icons.person, size: 30.sp),
-              ),
+              if (selectedDoctor.image != null)
+                ClipOval(
+                  child: CachedNetworkImage(
+                    imageUrl: selectedDoctor.image!,
+                    height: 96.w,
+                    width: 96.w,
+                    errorWidget: (_, _, _) {
+                      return CircleAvatar(
+                        radius: 96.w / 2,
+                        child: Icon(Icons.person, size: 30.sp),
+                      );
+                    },
+                  ),
+                )
+              else
+                CircleAvatar(
+                  radius: 96.w / 2,
+                  child: Icon(Icons.person, size: 30.sp),
+                ),
               SizedBox(width: 15.w),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
@@ -35,11 +36,12 @@ class PatientSelectionTile extends StatelessWidget {
         children: [
           if (imageUrl != null)
             ClipOval(
-              child: Image.network(
-                imageUrl!,
+              child: CachedNetworkImage(
+                imageUrl: imageUrl!,
+                fit: BoxFit.cover,
                 height: 63.w,
                 width: 63.w,
-                errorBuilder: (_, error, s) {
+                errorWidget: (_, error, s) {
                   if (imageUrl!.contains('alyssa')) {
                     log('ERROR: $error');
                   }

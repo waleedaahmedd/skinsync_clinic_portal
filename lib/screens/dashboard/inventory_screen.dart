@@ -219,14 +219,25 @@ class _InventoryScreenState extends ConsumerState<InventoryScreen> {
                 ),
                 SizedBox(height: 8.h),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      '\$${200.toStringAsFixed(2)}',
+                      '\$${item.originalPrice.toStringAsFixed(2)}',
                       style: CustomFonts.black14w600.copyWith(
                         color: CustomColors.purpleColor,
                       ),
                     ),
+                    if (item.discountedPrice > 0 &&
+                        item.discountedPrice != item.originalPrice) ...{
+                      SizedBox(width: 10.w),
+                      Text(
+                        '\$${item.originalPrice.toStringAsFixed(2)}',
+                        style: CustomFonts.black12w400.copyWith(
+                          color: CustomColors.purpleColor,
+                          decoration: TextDecoration.lineThrough,
+                        ),
+                      ),
+                    },
+                    Spacer(),
                     Text(
                       'per unit',
                       style: CustomFonts.grey14w500.copyWith(fontSize: 12.sp),

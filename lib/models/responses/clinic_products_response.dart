@@ -27,6 +27,10 @@ class ClinicProduct {
   final String name;
   final String unit;
   final int totalQuantity;
+  final int originalPrice;
+  final int discount;
+  final String discountType;
+  final int discountedPrice;
 
   ClinicProduct({
     required this.clinicProductId,
@@ -35,23 +39,22 @@ class ClinicProduct {
     required this.name,
     required this.unit,
     required this.totalQuantity,
+    required this.originalPrice,
+    required this.discount,
+    required this.discountType,
+    required this.discountedPrice,
   });
 
   factory ClinicProduct.fromJson(Map<String, dynamic> json) => ClinicProduct(
-    clinicProductId: json["clinic_product_id"] ?? 0,
-    productId: json["product_id"] ?? 0,
-    image: json["image"] ?? "",
-    name: json["name"] ?? "",
-    unit: json["unit"] ?? "",
-    totalQuantity: json["total_quantity"] ?? 0,
+    clinicProductId: json["clinic_product_id"],
+    productId: json["product_id"],
+    image: json["image"],
+    name: json["name"],
+    unit: json["unit"],
+    totalQuantity: json["total_quantity"],
+    originalPrice: json["original_price"],
+    discount: json["discount"],
+    discountType: json["discount_type"],
+    discountedPrice: json["discounted_price"],
   );
-
-  Map<String, dynamic> toJson() => {
-    "clinic_product_id": clinicProductId,
-    "product_id": productId,
-    "image": image,
-    "name": name,
-    "unit": unit,
-    "total_quantity": totalQuantity,
-  };
 }

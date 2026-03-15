@@ -221,20 +221,18 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
                     child: ValueListenableBuilder(
                       valueListenable: _imageNotifier,
                       builder: (_, image, _) {
-                        if (image == null) {
-                          return CircleAvatar(
-                            radius: 50.r,
-                            child: Icon(
-                              Icons.person_outline,
-                              size: 30.sp,
-                              color: CustomColors.whiteColor,
-                            ),
-                          );
-                        }
                         return ClipRRect(
                           borderRadius: BorderRadiusGeometry.circular(50.r),
                           child: CachedNetworkImage(
-                            imageUrl: image.path,
+                            imageUrl: image?.path ?? widget.doctor?.image ?? '',
+                            errorWidget: (_, _, _) => CircleAvatar(
+                              radius: 50.r,
+                              child: Icon(
+                                Icons.person_outline,
+                                size: 30.sp,
+                                color: CustomColors.whiteColor,
+                              ),
+                            ),
                             fit: BoxFit.cover,
                             width: 100.r,
                             height: 100.r,
