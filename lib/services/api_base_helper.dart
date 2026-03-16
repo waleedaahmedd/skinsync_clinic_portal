@@ -3,8 +3,11 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:skinsync_clinic_portal/app_init.dart';
 import 'package:skinsync_clinic_portal/models/responses/refresh_token_response.dart';
+import 'package:skinsync_clinic_portal/screens/sign_in_screen.dart';
 import 'package:skinsync_clinic_portal/services/locator.dart';
 import 'package:skinsync_clinic_portal/services/storage_service.dart';
 
@@ -152,12 +155,22 @@ class ApiBaseHelper {
     }
     final refreshExpiry = await _storage.getRefreshTokenExpiry();
     if (refreshExpiry?.isBefore(now) ?? true) {
-      _storage.clearToken();
+      await _storage.clearToken();
+      Navigator.pushNamedAndRemoveUntil(
+        navigatorKey.currentContext!,
+        SignInScreen.routeName,
+        (_) => false,
+      );
       return;
     }
     final refreshToken = await _storage.getRefreshToken();
     if (refreshToken == null) {
-      _storage.clearToken();
+      await _storage.clearToken();
+      Navigator.pushNamedAndRemoveUntil(
+        navigatorKey.currentContext!,
+        SignInScreen.routeName,
+        (_) => false,
+      );
       return;
     }
     log('EXPIRY: $expiry');
