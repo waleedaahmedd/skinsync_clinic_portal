@@ -50,10 +50,14 @@ class InventoryViewModel extends BaseViewModel<InventoryState> {
           discountedPrice: num.parse(discountedPrice),
         ),
       );
+      final products = List.of(state.products);
+      products.removeWhere(
+        (p) => p.clinicProductId == newProduct.clinicProductId,
+      );
       state = state.copyWith(
         loading: false,
         addProductLoading: false,
-        products: [newProduct, ...state.products],
+        products: [...products, newProduct],
         inventoryAdded: true,
       );
     });
