@@ -34,7 +34,8 @@ enum Endpoint {
   getFeature("clinic/features"),
   roles("clinic/roles"),
   catalog('clinic/products/catalog'),
-  clinicProducts('clinic/products');
+  clinicProducts('clinic/products'),
+  getMe("clinic/me"),;
 
   final String path;
   const Endpoint(this.path);

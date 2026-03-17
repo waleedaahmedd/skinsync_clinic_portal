@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skinsync_clinic_portal/screens/about_screen.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/mange_staff_screen.dart';
 import 'package:skinsync_clinic_portal/screens/notification_screen.dart';
+import 'package:skinsync_clinic_portal/view_models/auth_view_model.dart';
 
 import '../business_info_screen.dart';
 import '../change_password_screen.dart';
@@ -175,36 +177,52 @@ class ProfileScreen extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(15.r),
       ),
-      child: Column(
-        children: [
-          Container(
-            width: 70.w,
-            height: 70.w,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.grey.shade300,
-              border: Border.all(color: Colors.white, width: 3.w),
-            ),
-            child: Icon(Icons.person, size: 40.sp, color: Colors.grey.shade600),
-          ),
-          SizedBox(height: 12.h),
-          Text(
-            "John Doe",
-            style: TextStyle(
-              fontSize: 18.sp,
-              fontWeight: FontWeight.w600,
-              color: Colors.black87,
-            ),
-          ),
-          SizedBox(height: 4.h),
-          Text(
-            "john@example.com",
-            style: TextStyle(
-              fontSize: 13.sp,
-              color: Colors.black.withValues(alpha: 0.7),
-            ),
-          ),
-        ],
+      child: Consumer(
+        builder: (context, ref, _) {
+          final name = ref.watch(authViewModelProvider).user?.name;
+          final image = ref.watch(authViewModelProvider).user?.clinic?.logo;
+          final email = ref.watch(authViewModelProvider).user?.email;
+          return Column(
+            children: [
+              Container(
+                width: 70.w,
+                height: 70.w,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.grey.shade300,
+                  border: Border.all(color: Colors.white, width: 3.w),
+                ),
+                child: ClipOval(
+                  child: Image.network(
+                    image ?? '',
+                    height: 80.r,
+                    width: 80.r,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Icon(Icons.broken_image, size: 40.sp);
+                    },
+                  ),
+                ),
+              ),
+              SizedBox(height: 12.h),
+              Text(
+                name ?? "N/A",
+                style: TextStyle(
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black87,
+                ),
+              ),
+              SizedBox(height: 4.h),
+              Text(
+                email ?? 'N/A',
+                style: TextStyle(
+                  fontSize: 13.sp,
+                  color: Colors.black.withValues(alpha: 0.7),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

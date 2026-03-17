@@ -24,4 +24,5 @@ abstract class AuthRepository {
   Future<BaseApiResponseModel> resetPassword({
     required ResetPasswordRequest req,
   });
+   Future<LoginResponseModel> getMe();
 }

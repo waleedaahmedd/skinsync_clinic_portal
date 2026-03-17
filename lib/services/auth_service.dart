@@ -90,6 +90,21 @@ class AuthService implements AuthRepository {
 
     return response;
   }
+
+    @override
+  Future<LoginResponseModel> getMe() async {
+     final jsonResponse = await _api.get(Endpoint.getMe,);
+    final response = BaseApiResponseModel<LoginResponseModel>.fromJson(
+      jsonResponse,
+      (json) => LoginResponseModel.fromJson(json as Map<String, dynamic>),
+    );
+
+    if (!response.isSuccess) {
+      throw BadRequestException(response.message);
+    }
+
+    return response.data!;
+  }
   // @override
   // Future<BaseApiResponseModel> forgetPassword({
   //   required ForgetPasswordRequest req,

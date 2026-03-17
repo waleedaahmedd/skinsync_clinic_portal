@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
+import 'package:skinsync_clinic_portal/view_models/auth_view_model.dart';
 
 import '../screens/dashboard/home_screen.dart';
 import '../screens/sign_in_screen.dart';
@@ -40,20 +42,33 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           context.isLandscape ? SizedBox(width: 30.r) : SizedBox.shrink(),
           context.isLandscape
-              ? ClipOval(
-                  child: Image.asset(
-                    PngAssets.person,
-                    width: 44.r,
-                    height: 44.r,
-                  ),
-                )
+              ? Consumer(
+                builder: (context,ref,_) {
+                  final image = ref.watch(authViewModelProvider).user?.clinic?.logo ;
+                  return ClipOval(
+                      child: Image.network(
+                        image ?? "",
+                        width: 44.r,
+                        height: 44.r,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Icon(Icons.broken_image,size: 22.sp,);
+                        },
+                      ),
+                    );
+                }
+              )
               : SizedBox.shrink(),
 
           context.isLandscape
               ? Row(
                   children: [
                     SizedBox(width: 20.w),
-                    Text('Scarlet Fox', style: CustomFonts.black16w600),
+                    Consumer(
+                      builder: (context,ref,_) {
+                        final name = ref.watch(authViewModelProvider).user?.name;
+                        return Text(name ?? "N/A", style: CustomFonts.black16w600);
+                      }
+                    ),
                     SizedBox(width: 20.w),
                     PopupMenuButton(
                       offset: Offset(0, 40.h),
