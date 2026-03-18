@@ -48,7 +48,7 @@ class SecureStorageService {
 
   Future<void> clearToken() async {
     _token = null;
-    await _storage.delete(key: _tokenKey.name);
+    await _storage.deleteAll();
     ColoredPrint.red("Token Cleared");
     _authStateController.add(false);
   }

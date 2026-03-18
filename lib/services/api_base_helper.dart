@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:skinsync_clinic_portal/app_init.dart';
 import 'package:skinsync_clinic_portal/models/responses/refresh_token_response.dart';
@@ -24,13 +24,18 @@ class ApiBaseHelper {
   // ---------------- SAFE REQUEST WRAPPER ----------------
 
   Future<T> _safeRequest<T>(Future<T> Function() request) async {
-    await _checkInternet();
-    await _refreshToken();
     try {
+      await _checkInternet();
+      await _refreshToken();
       return await request();
     } on SocketException {
       throw const NoInternetException();
-    } on AppException {
+    } on AppException catch (e, s) {
+      log(e.toString(), stackTrace: s);
+      if (e is UnauthorizedException) {
+        await _storage.clearToken();
+        GoRouter.of(navigatorKey.currentContext!).go(SignInScreen.routeName);
+      }
       rethrow;
     } catch (e) {
       throw UnknownException(e.toString());
@@ -148,6 +153,9 @@ class ApiBaseHelper {
   }
 
   Future<void> _refreshToken() async {
+    if (_storage.token == null) {
+      return;
+    }
     final expiry = await _storage.getAccessTokenExpiry();
     final now = DateTime.now();
     if (expiry?.isAfter(now) ?? false) {
@@ -155,23 +163,11 @@ class ApiBaseHelper {
     }
     final refreshExpiry = await _storage.getRefreshTokenExpiry();
     if (refreshExpiry?.isBefore(now) ?? true) {
-      await _storage.clearToken();
-      Navigator.pushNamedAndRemoveUntil(
-        navigatorKey.currentContext!,
-        SignInScreen.routeName,
-        (_) => false,
-      );
-      return;
+      throw UnauthorizedException('Unauthorized');
     }
     final refreshToken = await _storage.getRefreshToken();
     if (refreshToken == null) {
-      await _storage.clearToken();
-      Navigator.pushNamedAndRemoveUntil(
-        navigatorKey.currentContext!,
-        SignInScreen.routeName,
-        (_) => false,
-      );
-      return;
+      throw UnauthorizedException('Unauthorized');
     }
     log('EXPIRY: $expiry');
     log('REFRESH EXPIRY: $refreshExpiry');
@@ -183,7 +179,7 @@ class ApiBaseHelper {
     log('RESPONSE: ${json.body}');
     final response = RefreshTokenResponse.fromJson(_processResponse(json));
     if (!response.isSuccess) {
-      throw Exception(response.message);
+      throw UnauthorizedException('Unauthorized');
     }
     final secureStorage = locator<SecureStorageService>();
     await secureStorage.saveToken(response.data!.accessToken!);
