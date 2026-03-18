@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:skinsync_clinic_portal/view_models/auth_view_model.dart';
 
 class WelcomeBannerWidget extends StatelessWidget {
   const WelcomeBannerWidget({super.key});
@@ -20,13 +22,18 @@ class WelcomeBannerWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Welcome back, John Smith! 👋",
-            style: TextStyle(
-              fontSize: 20.sp,
-              fontWeight: FontWeight.w600,
-              color: Colors.black87,
-            ),
+          Consumer(
+            builder: (context,ref,_) {
+                 final name = ref.watch(authViewModelProvider).user?.name;
+              return Text(
+                "Welcome back, $name 👋",
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black87,
+                ),
+              );
+            }
           ),
           SizedBox(height: 6.h),
           Text(

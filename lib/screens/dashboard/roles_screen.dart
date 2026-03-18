@@ -79,9 +79,7 @@ class _RolesScreenState extends ConsumerState<RolesScreen> {
               builder: (context, ref, _) {
                 final loading = ref.watch(roleProvider).loading;
                 if (loading) {
-                  return Expanded(
-                    child: Center(child: CircularProgressIndicator()),
-                  );
+                  return Center(child: CircularProgressIndicator());
                 }
                 return Expanded(
                   child: ListView.separated(
@@ -89,10 +87,7 @@ class _RolesScreenState extends ConsumerState<RolesScreen> {
                     separatorBuilder: (context, index) =>
                         SizedBox(height: 16.h),
                     itemBuilder: (context, index) {
-                      final role = ref.watch(roleProvider).roles[index];
-                      final selectedRole = ref.watch(roleProvider).selectedRole;
-                      final isExpanded = selectedRole?.roleId == role.roleId;
-
+                      final selectedRole = ref.watch(roleProvider).roles[index];
                       return Card(
                         elevation: 0,
                         shape: RoundedRectangleBorder(
@@ -104,10 +99,7 @@ class _RolesScreenState extends ConsumerState<RolesScreen> {
                           onExpansionChanged: (value) {
                             final vm = ref.read(roleProvider.notifier);
 
-                            if (value) {
-                              vm.setSelectedRole(role);
-                            } else {
-                              vm.setSelectedRole(null);
+                            if (!value) {
                               vm.clear();
                             }
                           },
@@ -127,7 +119,7 @@ class _RolesScreenState extends ConsumerState<RolesScreen> {
                             ),
                           ),
                           title: Text(
-                            role.roleName?.toUpperCase() ?? "N/A",
+                            selectedRole.roleName?.toUpperCase() ?? "N/A",
                             style: CustomFonts.black18w600,
                           ),
                           subtitle: Text(
@@ -135,10 +127,153 @@ class _RolesScreenState extends ConsumerState<RolesScreen> {
                             style: CustomFonts.grey14w400,
                           ),
                           children: [
-                            if (selectedRole != null && isExpanded)
-                              _buildExpansionChildern(
-                                selectedRole: selectedRole,
+                            Padding(
+                              padding: EdgeInsets.all(20.w),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "Permission Matrix",
+                                        style: CustomFonts.black16w700,
+                                      ),
+                                      ElevatedButton.icon(
+                                        onPressed: () {},
+                                        icon: const Icon(
+                                          Icons.save_outlined,
+                                          size: 16,
+                                        ),
+                                        label: Text(
+                                          "Save",
+                                          style: CustomFonts.white14w500,
+                                        ),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              CustomColors.blackColor,
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 16.w,
+                                            vertical: 8.h,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 16.h),
+                                  ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    itemCount: selectedRole.features!.length,
+                                    itemBuilder: (context, index) {
+                                      return Padding(
+                                        padding: EdgeInsets.only(bottom: 10.h),
+                                        child: Container(
+                                          width: double.infinity,
+                                          padding: EdgeInsets.all(10.w),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: CustomColors.borderColor,
+                                            ),
+                                            borderRadius: BorderRadius.circular(
+                                              12.r,
+                                            ),
+                                            color: Colors.white,
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                selectedRole
+                                                        .features![index]
+                                                        .featureTitle ??
+                                                    "N/A",
+                                                style: CustomFonts.black16w600,
+                                              ),
+                                              SizedBox(height: 10.h),
+
+                                              Wrap(
+                                                spacing: 8.w,
+                                                runSpacing: 8.h,
+                                                children: List.generate(
+                                                  selectedRole
+                                                      .features![index]
+                                                      .permissions!
+                                                      .length,
+                                                  (index) {
+                                                    final permissions = selectedRole
+                                                        .features![index]
+                                                        .permissions![index];
+                                                    final select = selectedRole
+                                                        .features![index]
+                                                        .activePermissionIds!
+                                                        .contains(
+                                                          permissions
+                                                              .permissionId,
+                                                        );
+
+                                                    return ChoiceChip(
+                                                      label: Text(
+                                                        permissions
+                                                                .permissionTitle ??
+                                                            "N/A",
+                                                      ),
+                                                      selected: select,
+                                                      selectedColor:
+                                                          Colors.black,
+                                                      checkmarkColor:
+                                                          Colors.white,
+                                                      labelStyle: TextStyle(
+                                                        color: select
+                                                            ? Colors.white
+                                                            : Colors.black,
+                                                        fontSize: 13.sp,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                      onSelected: (value) {
+                                                        if (value) {
+                                                          if (permissions
+                                                                  .permissionId !=
+                                                              null) {
+                                                            selectedRole
+                                                                .features![index]
+                                                                .activePermissionIds!
+                                                                .add(
+                                                                  permissions
+                                                                      .permissionId!,
+                                                                );
+                                                          }
+                                                        }
+                                                        if (!value) {
+                                                          if (permissions
+                                                                  .permissionId !=
+                                                              null) {
+                                                            selectedRole
+                                                                .features![index]
+                                                                .activePermissionIds!
+                                                                .remove(
+                                                                  permissions
+                                                                      .permissionId!,
+                                                                );
+                                                          }
+                                                        }
+                                                      },
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ],
                               ),
+                            ),
                           ],
                         ),
                       );
@@ -153,128 +288,64 @@ class _RolesScreenState extends ConsumerState<RolesScreen> {
     );
   }
 
-  Widget _buildExpansionChildern({required Roles selectedRole}) {
-    return Padding(
-      padding: EdgeInsets.all(20.w),
+  Widget _buildFeatureContainer({
+    required Features feature,
+    required WidgetRef ref,
+  }) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(10.w),
+      decoration: BoxDecoration(
+        border: Border.all(color: CustomColors.borderColor),
+        borderRadius: BorderRadius.circular(12.r),
+        color: Colors.white,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Permission Matrix", style: CustomFonts.black16w700),
-              Consumer(
-                builder: (context, ref, _) {
-                  final loading = ref.watch(roleProvider).updateRole;
-                  return IgnorePointer(
-                    ignoring: loading,
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        ref.read(roleProvider.notifier).updateRole().then((
-                          value,
-                        ) {
-                          if (value == true) {
-                            ref.read(roleProvider.notifier).getRole();
-                          }
-                        });
-                      },
-                      icon: const Icon(Icons.save_outlined, size: 16),
-                      label: loading
-                          ? SizedBox(
-                              height: 20.h,
-                              width: 20.w,
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                              ),
-                            )
-                          : Text("Save", style: CustomFonts.white14w500),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: CustomColors.blackColor,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 16.w,
-                          vertical: 8.h,
-                        ),
-                      ),
-                    ),
-                  );
+          Text(feature.featureTitle ?? "N/A", style: CustomFonts.black16w600),
+          SizedBox(height: 10.h),
+
+          Wrap(
+            spacing: 8.w,
+            runSpacing: 8.h,
+            children: List.generate(feature.permissions!.length, (index) {
+              final permissions = feature.permissions![index];
+              final select = feature.activePermissionIds!.contains(
+                permissions.permissionId,
+              );
+
+              return ChoiceChip(
+                label: Text(permissions.permissionTitle ?? "N/A"),
+                selected: select,
+                selectedColor: Colors.black,
+                checkmarkColor: Colors.white,
+                labelStyle: TextStyle(
+                  color: select ? Colors.white : Colors.black,
+                  fontSize: 13.sp,
+                  fontWeight: FontWeight.w500,
+                ),
+                onSelected: (value) {
+                  if (value) {
+                    if (permissions.permissionId != null) {
+                      feature.activePermissionIds!.add(
+                        permissions.permissionId!,
+                      );
+                    }
+                  }
+                  if (!value) {
+                    if (permissions.permissionId != null) {
+                      feature.activePermissionIds!.remove(
+                        permissions.permissionId!,
+                      );
+                    }
+                  }
                 },
-              ),
-            ],
+              );
+            }),
           ),
-          SizedBox(height: 16.h),
-          _buildFeatureList(selectedRole: selectedRole),
         ],
       ),
-    );
-  }
-
-  Widget _buildFeatureList({required Roles selectedRole}) {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: selectedRole.features!.length,
-      itemBuilder: (context, featureIndex) {
-        final feature = selectedRole.features![featureIndex];
-        return Padding(
-          padding: EdgeInsets.only(bottom: 10.h),
-          child: Container(
-            width: double.infinity,
-            padding: EdgeInsets.all(10.w),
-            decoration: BoxDecoration(
-              border: Border.all(color: CustomColors.borderColor),
-              borderRadius: BorderRadius.circular(12.r),
-              color: Colors.white,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  feature.featureTitle ?? "N/A",
-                  style: CustomFonts.black16w600,
-                ),
-                SizedBox(height: 10.h),
-                _buildPermissionChips(feature, featureIndex),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildPermissionChips(Features feature, int featureIndex) {
-    return Wrap(
-      spacing: 8.w,
-      runSpacing: 8.h,
-      children: List.generate(feature.permissions!.length, (permissionIndex) {
-        final permission = feature.permissions![permissionIndex];
-        final isSelected = feature.activePermissionIds!.contains(
-          permission.permissionId,
-        );
-
-        return ChoiceChip(
-          label: Text(permission.permissionTitle ?? "N/A"),
-          selected: isSelected,
-          selectedColor: Colors.black,
-          checkmarkColor: Colors.white,
-          labelStyle: TextStyle(
-            color: isSelected ? Colors.white : Colors.black,
-            fontSize: 13.sp,
-            fontWeight: FontWeight.w500,
-          ),
-          onSelected: (value) {
-            if (permission.permissionId != null) {
-              ref
-                  .read(roleProvider.notifier)
-                  .toggleRolePermission(
-                    featureIndex: featureIndex,
-                    permissionId: permission.permissionId!,
-                    selected: value,
-                  );
-            }
-          },
-        );
-      }),
     );
   }
 }

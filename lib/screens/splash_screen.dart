@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skinsync_clinic_portal/screens/sign_in_screen.dart';
+import 'package:skinsync_clinic_portal/view_models/auth_view_model.dart';
 
 import '../services/locator.dart';
 import '../services/storage_service.dart';
@@ -9,15 +11,15 @@ import '../utils/assets.dart';
 import '../utils/color_constant.dart';
 import 'dashboard/home_screen.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
   static const String routeName = '/';
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  ConsumerState<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends ConsumerState<SplashScreen> {
   bool _animate = false;
   final int _duration = 1000; // animation duration
 
@@ -35,7 +37,13 @@ class _SplashScreenState extends State<SplashScreen> {
 
       if (mounted) {
         if (locator<SecureStorageService>().isLoggedIn) {
-          context.goNamed(HomeScreen.routeName);
+          await ref.read(authViewModelProvider.notifier).callGetMe().then((value) {
+            if (value) {
+              context.goNamed(HomeScreen.routeName);
+            } else {
+              context.goNamed(SignInScreen.routeName);
+            }
+          });
         } else {
           context.goNamed(SignInScreen.routeName);
         }
