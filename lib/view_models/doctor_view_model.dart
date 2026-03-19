@@ -51,6 +51,7 @@ class DoctorViewModel extends BaseViewModel<DoctorState> {
     required String specialization,
     required String email,
     required String phone,
+    required int consultationFee,
     XFile? image,
   }) async {
     return await runSafely(() async {
@@ -77,6 +78,7 @@ class DoctorViewModel extends BaseViewModel<DoctorState> {
           contactInfo: ContactInfo(email: email, phone: phone),
           treatments: state.treatments,
           availability: state.availability,
+          consultationFee: consultationFee
         ),
       );
       state = state.copyWith(loading: false, success: true);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../utils/custom_fonts.dart';
@@ -14,6 +15,7 @@ class BuildTextField extends StatelessWidget {
   final Widget? prefixIcon;
   final bool readOnly;
   final bool enabled;
+  final List<TextInputFormatter>? inputFormatters;
 
   const BuildTextField({
     super.key,
@@ -27,6 +29,7 @@ class BuildTextField extends StatelessWidget {
     this.prefixIcon,
     this.readOnly = false,
     this.enabled = true,
+    this.inputFormatters,
   });
 
   @override
@@ -37,6 +40,7 @@ class BuildTextField extends StatelessWidget {
         Text(label, style: CustomFonts.black14w500),
         SizedBox(height: 10.h),
         TextFormField(
+          inputFormatters: inputFormatters,
           controller: controller,
           maxLines: maxLines,
           readOnly: readOnly,

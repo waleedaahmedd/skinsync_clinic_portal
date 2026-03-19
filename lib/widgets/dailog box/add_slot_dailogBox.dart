@@ -3,6 +3,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:material_duration_picker/material_duration_picker.dart';
 import 'package:skinsync_clinic_portal/models/requests/register_doctor_request.dart';
 import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
@@ -17,7 +18,7 @@ class AddSlotDialog extends StatefulWidget {
 
 class _AddSlotDialogState extends State<AddSlotDialog> {
   List<String> selectedDays = [];
-
+  Duration _selectedDuration = Duration(minutes: 30);
   List<String> daysOfWeek = [
     "Monday",
     "Tuesday",
@@ -76,6 +77,12 @@ class _AddSlotDialogState extends State<AddSlotDialog> {
     final now = DateTime.now();
     final dt = DateTime(now.year, now.month, now.day, time.hour, time.minute);
     return TimeOfDay.fromDateTime(dt).format(context);
+  }
+
+  String _formatDuration(Duration duration) {
+    final hours = duration.inHours.toString().padLeft(2, '0');
+    final minutes = duration.inMinutes.remainder(60).toString().padLeft(2, '0');
+    return '$hours:$minutes';
   }
 
   @override
@@ -173,6 +180,54 @@ class _AddSlotDialogState extends State<AddSlotDialog> {
               ],
             ),
             SizedBox(height: 20.h),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Gap Between Appointment', style: CustomFonts.black14w500),
+                SizedBox(height: 8.h),
+                InkWell(
+                  onTap: () async {
+                    final picked = await showDurationPicker(
+                      context: context,
+                      initialDuration: _selectedDuration,
+                    );
+                    if (picked != null) {
+                      if (picked > const Duration(hours: 3)) {
+                        EasyLoading.showError(
+                          'Duration cannot exceed 3 hours!',
+                        );
+                        return;
+                      }
+                      setState(() => _selectedDuration = picked);
+                    }
+                  },
+                  child: Container(
+                    height: 48.h,
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.r),
+                      border: Border.all(color: Colors.grey[300]!),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          _formatDuration(_selectedDuration),
+                          style: CustomFonts.black14w500,
+                        ),
+                        Icon(
+                          Icons.timer_outlined,
+                          size: 20.sp,
+                          color: Colors.grey,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
+            SizedBox(height: 20.h),
             Wrap(
               spacing: 8.w,
               runSpacing: 8.h,
@@ -262,6 +317,7 @@ class _AddSlotDialogState extends State<AddSlotDialog> {
                           startTime: startTime!,
                           endTime: endTime!,
                           days: selectedDays,
+                          nextSlotAfter:  _formatDuration(_selectedDuration),
                         );
                         Navigator.pop(context, availability);
                       },
