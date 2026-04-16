@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:skinsync_clinic_portal/utils/assets.dart';
 import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
+import 'package:skinsync_clinic_portal/widgets/dailog%20box/add_notes_dailog.dart';
 import 'package:skinsync_clinic_portal/widgets/pdf_expansiontile_.dart';
 
 class AppointmentReadyDailog extends StatefulWidget {
@@ -367,21 +368,29 @@ class _AppointmentReadyDailogState extends State<AppointmentReadyDailog> {
                       ],
                     ),
                     SizedBox(height: 20.h),
-                    Container(
-                      width: double.infinity,
-                      alignment: Alignment.center,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 17.w,
-                        vertical: 13.h,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15.r),
-                        border: Border.all(color: Colors.grey.shade300),
-                        color: CustomColors.whiteColor,
-                      ),
-                      child: Text(
-                        "Add Treatment Note",
-                        style: CustomFonts.black18w600,
+                    GestureDetector(
+                      onTap: (){
+                        showDialog(
+                          context: context,
+                          builder: (context) => AddNotesDailog(),
+                        );
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 17.w,
+                          vertical: 13.h,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15.r),
+                          border: Border.all(color: Colors.grey.shade300),
+                          color: CustomColors.whiteColor,
+                        ),
+                        child: Text(
+                          "Add Treatment Note",
+                          style: CustomFonts.black18w600,
+                        ),
                       ),
                     ),
                   ],
