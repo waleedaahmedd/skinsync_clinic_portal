@@ -15,7 +15,7 @@ import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 import 'package:skinsync_clinic_portal/utils/validators.dart';
 import 'package:skinsync_clinic_portal/widgets/dailog%20box/add_slot_dailogBox.dart';
-import 'package:skinsync_clinic_portal/widgets/dailog%20box/select_treatment_dialog.dart';
+import 'package:skinsync_clinic_portal/widgets/dailog%20box/select_treatment_dailog.dart';
 
 import '../utils/enums.dart';
 import '../utils/string_utils.dart';

@@ -6,6 +6,7 @@ import '../utils/custom_fonts.dart';
 
 class BuildTextField extends StatelessWidget {
   final String label;
+  final TextStyle? labelStyle, hintStyle;
   final TextEditingController controller;
   final String hintText;
   final int maxLines;
@@ -20,6 +21,8 @@ class BuildTextField extends StatelessWidget {
   const BuildTextField({
     super.key,
     required this.label,
+    this.labelStyle,
+    this.hintStyle,
     required this.controller,
     required this.hintText,
     this.maxLines = 1,
@@ -37,7 +40,7 @@ class BuildTextField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: CustomFonts.black14w500),
+        Text(label, style: labelStyle ?? CustomFonts.black14w500),
         SizedBox(height: 10.h),
         TextFormField(
           inputFormatters: inputFormatters,
@@ -52,7 +55,9 @@ class BuildTextField extends StatelessWidget {
           decoration: InputDecoration(
             prefixIcon: prefixIcon,
             hintText: hintText,
-            hintStyle: TextStyle(fontSize: 14.sp, color: Colors.grey[400]),
+            hintStyle:
+                hintStyle ??
+                TextStyle(fontSize: 14.sp, color: Colors.grey[400]),
             filled: true,
             fillColor: Colors.white,
             contentPadding: EdgeInsets.symmetric(

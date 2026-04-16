@@ -1,14 +1,23 @@
+import 'dart:ui' as ui;
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:skinsync_clinic_portal/screens/dashboard/appointment_screen.dart';
+import 'package:skinsync_clinic_portal/screens/dashboard/patient_management_detail.dart';
 import 'package:skinsync_clinic_portal/utils/assets.dart';
 import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 import 'package:skinsync_clinic_portal/utils/theme.dart';
+import 'package:skinsync_clinic_portal/view_models/auth_view_model.dart';
+import 'package:skinsync_clinic_portal/widgets/appointment_tile_widget.dart';
 import 'package:skinsync_clinic_portal/widgets/dailog%20box/chat_dailog.dart';
 import 'package:skinsync_clinic_portal/widgets/dailog%20box/notes_dailog.dart';
 import 'package:skinsync_clinic_portal/widgets/dailog%20box/simulations_detail_dailog_box.dart';
+import 'package:skinsync_clinic_portal/widgets/signpad_widget.dart';
 import 'package:skinsync_clinic_portal/widgets/treatment_container.dart';
 
 class PatientMangementWidget extends StatefulWidget {
@@ -253,7 +262,12 @@ class _PatientMangementWidgetState extends State<PatientMangementWidget> {
             shrinkWrap: true,
             itemCount: 3,
             itemBuilder: (context, index) {
-              return TreatmentContainer();
+              return AppointmentTileWidget(
+                onTap: () {
+                  context.go(PatientManagementDetailScreen.routeName);
+                },
+                appointment: dummyAppointments[index],
+              );
             },
           ),
         ],
@@ -318,129 +332,151 @@ class _PatientMangementWidgetState extends State<PatientMangementWidget> {
             "Prefers natural-looking results",
             style: CustomFonts.grey18w500,
           ),
-          SizedBox(height: 19.h),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 19.h),
 
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16.r),
-              border: Border.all(color: Colors.grey.shade300),
-            ),
-            child: Column(
-              crossAxisAlignment: .start,
-              children: [
-                Row(
-                  children: [
-                    Image.asset(PngAssets.pdf, height: 33.h, width: 44.w),
-                    SizedBox(width: 14.w),
-                    Column(
-                      crossAxisAlignment: .start,
-                      children: [
-                        Text(
-                          "Client Intake Form.pdf",
-                          style: CustomFonts.black12w600,
+          for (int i = 0; i < 3; i++)
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 9.h),
+              child: ExpansionTile(
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(color: Colors.grey.shade300),
+                  borderRadius: BorderRadius.circular(16.r),
+                ),
+                collapsedShape: RoundedRectangleBorder(
+                  side: BorderSide(color: Colors.grey.shade300),
+                  borderRadius: BorderRadius.circular(16.r),
+                ),
+                clipBehavior: Clip.antiAlias,
+                leading: Image.asset(PngAssets.pdf, height: 33.h, width: 44.w),
+                title: Text(
+                  "Client Intake Form.pdf",
+                  style: CustomFonts.black12w600,
+                ),
+                subtitle: Text(
+                  "867 Kb    14 Feb 2022 at 11:30 am",
+                  style: CustomFonts.grey14w400,
+                ),
+                trailing: SvgPicture.asset(
+                  SvgAssets.downloadIcon,
+                  height: 20.w,
+                  width: 20.w,
+                ),
+                childrenPadding: EdgeInsets.symmetric(
+                  horizontal: 22.w,
+                  vertical: 19.h,
+                ),
+                children: [
+                  Divider(height: 0, color: CustomColors.greyColor),
+                  SizedBox(height: 10.h),
+                  Row(
+                    mainAxisAlignment: .spaceBetween,
+                    children: [
+                      Text("Text Field 1", style: CustomFonts.grey14w400),
+                      Text("Client Input", style: CustomFonts.black14w400),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: .spaceBetween,
+                    children: [
+                      Text("Text Field 2", style: CustomFonts.grey14w400),
+                      Text("Client Input", style: CustomFonts.black14w400),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: .spaceBetween,
+                    children: [
+                      Text("Text Field 2", style: CustomFonts.grey14w400),
+                      Text("Client Input", style: CustomFonts.black14w400),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: .spaceBetween,
+
+                    children: [
+                      SizedBox(
+                        height: 54.h,
+                        width: 101.w,
+                        child: Image.asset(
+                          (PngAssets.signature),
+                          fit: BoxFit.cover,
                         ),
-                        Text(
-                          "867 Kb    14 Feb 2022 at 11:30 am",
-                          style: CustomFonts.grey14w400,
-                        ),
-                      ],
-                    ),
-                    Spacer(),
-                   SvgPicture.asset(SvgAssets.downloadIcon,height: 20.w,width: 20.w,),
-                  ],
-                ),
-                SizedBox(height: 16.h),
-                Divider(height: 0, color: CustomColors.greyColor),
-                SizedBox(height: 10.h),
-                Row(
-                  mainAxisAlignment: .spaceBetween,
-                  children: [
-                    Text("Text Field 1", style: CustomFonts.grey14w400),
-                    Text("Client Input", style: CustomFonts.black14w400),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: .spaceBetween,
-                  children: [
-                    Text("Text Field 2", style: CustomFonts.grey14w400),
-                    Text("Client Input", style: CustomFonts.black14w400),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: .spaceBetween,
-                  children: [
-                    Text("Text Field 2", style: CustomFonts.grey14w400),
-                    Text("Client Input", style: CustomFonts.black14w400),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: .spaceBetween,
-                  children: [_buildSignBox(), _buildSignBox()],
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 19.h),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 19.h),
+                      ),
+                      Spacer(),
+                      Consumer(
+                        builder: (context, ref, _) {
+                          final signature = ref
+                              .watch(authViewModelProvider)
+                              .signature;
+                          if (signature != null) {
+                       return    RawImage(image: signature, height: 60.h, fit: BoxFit.contain);
+                          }
 
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16.r),
-              border: Border.all(color: Colors.grey.shade300),
-            ),
-            child: Row(
-              children: [
-                Image.asset(PngAssets.pdf, height: 33.h, width: 44.w),
-                SizedBox(width: 14.w),
-                Column(
-                  crossAxisAlignment: .start,
-                  children: [
-                    Text(
-                      "Client Intake Form.pdf",
-                      style: CustomFonts.black12w600,
-                    ),
-                    Text(
-                      "867 Kb    14 Feb 2022 at 11:30 am",
-                      style: CustomFonts.grey14w400,
-                    ),
-                  ],
-                ),
-                Spacer(),
-                SvgPicture.asset(SvgAssets.downloadIcon,height: 20.w,width: 20.w,),
-              ],
-            ),
-          ),
-          SizedBox(height: 19.h),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 19.h),
+                          return GestureDetector(
+                            onTap: () async {
+                              final ui.Image? signature =
+                                  await ESignatureDialog.show(context);
+                              if (signature != null) {
+                                ref
+                                    .read(authViewModelProvider.notifier)
+                                    .saveSignature(signature);
+                              }
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(9.w),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: CustomColors.blackColor,
+                                ),
+                                borderRadius: BorderRadius.circular(8.r),
+                                color: CustomColors.greyColor,
+                              ),
 
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16.r),
-              border: Border.all(color: Colors.grey.shade300),
+                              child: Text(
+                                " + Draw Signature",
+                                style: CustomFonts.black12w400,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 6.h),
+                  Row(
+                    mainAxisAlignment: .spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: .start,
+                        children: [
+                          Container(
+                            width: 105.w,
+                            height: 1.h,
+                            color: CustomColors.blackColor,
+                          ),
+                          Text(
+                            "Patient Signature",
+                            style: CustomFonts.black14w400,
+                          ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: .start,
+                        children: [
+                          Container(
+                            width: 105.w,
+                            height: 1.h,
+                            color: CustomColors.blackColor,
+                          ),
+                          Text(
+                            "Clinic Signature",
+                            style: CustomFonts.black14w400,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-            child: Row(
-              children: [
-                Image.asset(PngAssets.pdf, height: 33.h, width: 44.w),
-                SizedBox(width: 14.w),
-                Column(
-                  crossAxisAlignment: .start,
-                  children: [
-                    Text(
-                      "Client Intake Form.pdf",
-                      style: CustomFonts.black12w600,
-                    ),
-                    Text(
-                      "867 Kb    14 Feb 2022 at 11:30 am",
-                      style: CustomFonts.grey14w400,
-                    ),
-                  ],
-                ),
-                Spacer(),
-              SvgPicture.asset(SvgAssets.downloadIcon,height: 20.w,width: 20.w,),
-              ],
-            ),
-          ),
         ],
       ),
     );
@@ -486,7 +522,7 @@ class _PatientMangementWidgetState extends State<PatientMangementWidget> {
               ),
               Spacer(),
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   showDialog<bool>(
                     context: context,
                     builder: (context) => ChatDailog(),
@@ -494,9 +530,15 @@ class _PatientMangementWidgetState extends State<PatientMangementWidget> {
                 },
                 child: Container(
                   padding: EdgeInsets.all(14.r),
-                  decoration: BoxDecoration(color: CustomColors.greyColor,
-                  shape: BoxShape.circle),
-                  child: SvgPicture.asset(SvgAssets.message,height: 20.w,width: 20.w,),
+                  decoration: BoxDecoration(
+                    color: CustomColors.greyColor,
+                    shape: BoxShape.circle,
+                  ),
+                  child: SvgPicture.asset(
+                    SvgAssets.message,
+                    height: 20.w,
+                    width: 20.w,
+                  ),
                 ),
               ),
             ],

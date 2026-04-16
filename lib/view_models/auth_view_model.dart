@@ -1,3 +1,5 @@
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -35,7 +37,6 @@ class AuthViewModel extends BaseViewModel<AuthState> {
 
     if (token != null && token.isNotEmpty) {
       state = state.copyWith(isAuthenticated: true);
-    
     }
   }
 
@@ -113,6 +114,14 @@ class AuthViewModel extends BaseViewModel<AuthState> {
         false;
   }
 
+void saveSignature(ui.Image image) {
+  state = state.copyWith(signature: image);
+}
+
+void clearSignature() {
+  state = state.copyWith(signature: null);
+}
+
   Future<bool> createNewPassword({
     required String email,
     required String newPassword,
@@ -150,6 +159,7 @@ class AuthState {
   final bool obscureNew;
   final bool obscureConfirm;
   final String resetToken;
+  final ui.Image? signature;
 
   AuthState({
     this.loading = false,
@@ -161,6 +171,7 @@ class AuthState {
     this.obscureNew = true,
     this.obscureConfirm = true,
     this.resetToken = '',
+    this.signature,
   });
 
   AuthState copyWith({
@@ -173,6 +184,7 @@ class AuthState {
     bool? obscureCurrent,
     bool? obscureNew,
     bool? obscureConfirm,
+    ui.Image? signature,
   }) {
     return AuthState(
       loading: loading ?? this.loading,
@@ -184,6 +196,7 @@ class AuthState {
       obscureNew: obscureNew ?? this.obscureNew,
       obscureConfirm: obscureConfirm ?? this.obscureConfirm,
       resetToken: resetToken ?? this.resetToken,
+      signature: signature ?? this.signature,
     );
   }
 }

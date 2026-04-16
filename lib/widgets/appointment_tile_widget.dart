@@ -5,7 +5,6 @@ import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 import 'package:skinsync_clinic_portal/widgets/borderd_container_widget.dart';
 
 import '../screens/dashboard/appointment_screen.dart';
-import 'dailog box/patient_detail_dailog.dart';
 
 // class AppointmentTileWidget extends StatelessWidget {
 //   const AppointmentTileWidget({super.key});
@@ -91,19 +90,15 @@ import 'dailog box/patient_detail_dailog.dart';
 // }
 
 class AppointmentTileWidget extends StatelessWidget {
+  final VoidCallback? onTap;
   final AppointmentModel appointment;
 
-  const AppointmentTileWidget({super.key, required this.appointment});
+  const AppointmentTileWidget({super.key, required this.appointment ,this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        showDialog(
-          context: context,
-          builder: (_) => PatientDetailDailog(/*appointment: appointment*/),
-        );
-      },
+      onTap:onTap ?? (){},
       child: BorderdContainerWidget(
         margin: EdgeInsets.only(bottom: 15.h),
         child: Row(
@@ -126,10 +121,7 @@ class AppointmentTileWidget extends StatelessWidget {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
-                      appointment.patientName,
-                      style: CustomFonts.black17w600,
-                    ),
+                    Text(appointment.patientName, style: CustomFonts.black17w600),
                     SizedBox(width: 10.w),
                     Container(
                       decoration: BoxDecoration(

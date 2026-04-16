@@ -463,7 +463,7 @@ class _BusinessInformationScreenState extends State<BusinessInformationScreen> {
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.black,
               foregroundColor: Colors.white,
-              padding: EdgeInsets.symmetric(vertical: 20.h),
+              padding: EdgeInsets.zero,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.r),
               ),
@@ -482,7 +482,7 @@ class _BusinessInformationScreenState extends State<BusinessInformationScreen> {
             },
             style: OutlinedButton.styleFrom(
               foregroundColor: Colors.black,
-              padding: EdgeInsets.symmetric(vertical: 20.h),
+              padding: EdgeInsets.zero,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.r),
               ),
