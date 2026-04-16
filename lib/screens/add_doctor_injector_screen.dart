@@ -3,9 +3,11 @@ import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:material_duration_picker/material_duration_picker.dart';
 import 'package:skinsync_clinic_portal/models/requests/register_doctor_request.dart';
 import 'package:skinsync_clinic_portal/models/responses/register_doctor_response.dart';
 import 'package:skinsync_clinic_portal/models/treatment_model.dart';
@@ -38,6 +40,8 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   final _imageNotifier = ValueNotifier<XFile?>(null);
+  final _feeController = TextEditingController();
+ 
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -105,6 +109,7 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
     _specializationController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
+    _feeController.dispose();
     super.dispose();
   }
 
@@ -294,6 +299,17 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
                     keyboardType: TextInputType.phone,
                     validator: Validators.phone,
                   ),
+                  SizedBox(height: 16.h),
+
+                  BuildTextField(
+                    label: "Consultation Fee",
+                    hintText: "Consultation Fee",
+                    controller: _feeController,
+                    keyboardType: TextInputType.number,
+                    validator: Validators.empty,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  ),
+
                   SizedBox(height: 16.h),
                   _buildTreatmentChips(),
                   SizedBox(height: 16.h),
@@ -500,6 +516,7 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
                       name: _nameController.text.trim(),
                       phone: _phoneController.text.trim(),
                       specialization: _specializationController.text.trim(),
+                      image: _imageNotifier.value,
                     );
               } else {
                 ref
@@ -510,6 +527,7 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
                       phone: _phoneController.text.trim(),
                       specialization: _specializationController.text.trim(),
                       image: _imageNotifier.value,
+                      consultationFee: int.parse(_feeController.text)
                     );
               }
             },

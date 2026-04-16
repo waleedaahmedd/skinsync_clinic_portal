@@ -31,6 +31,7 @@ class Doctor {
   final String? phone;
   final List<Treatment>? treatments;
   final List<Availability>? availability;
+  
 
   const Doctor({
     this.id,

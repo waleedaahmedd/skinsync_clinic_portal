@@ -10,10 +10,93 @@ import '../../widgets/appointment_horizontal_tile_widget.dart';
 import '../../widgets/calender_widget.dart';
 import '../../widgets/custom_dropdown_widget.dart';
 
-class AppointmentScreen extends StatelessWidget {
+class AppointmentScreen extends StatefulWidget {
   static const String routeName = '/appointment';
 
-  const AppointmentScreen({super.key});
+  AppointmentScreen({super.key});
+
+  @override
+  State<AppointmentScreen> createState() => _AppointmentScreenState();
+}
+
+class _AppointmentScreenState extends State<AppointmentScreen> {
+  final List<AppointmentModel> dummyAppointments = [
+    AppointmentModel(
+      patientName: 'Sarah Johnson',
+      treatment: 'Botox',
+      date: '10/29/2025',
+      time: '10:00 AM',
+      doctor: 'Dr. Smith',
+      amount: 350,
+      status: 'Completed',
+      isToday: false,
+    ),
+    AppointmentModel(
+      patientName: 'Emma Davis',
+      treatment: 'Filler',
+      date: '10/30/2025',
+      time: '11:00 AM',
+      doctor: 'Dr. Lee',
+      amount: 450,
+      status: 'Completed',
+      isToday: false,
+    ),
+    AppointmentModel(
+      patientName: 'James Brown',
+      treatment: 'Laser',
+      date: '04/16/2026',
+      time: '09:00 AM',
+      doctor: 'Dr. Smith',
+      amount: 600,
+      status: 'Upcoming',
+      isToday: true,
+    ),
+    AppointmentModel(
+      patientName: 'Olivia White',
+      treatment: 'Hydrafacial',
+      date: '04/16/2026',
+      time: '02:00 PM',
+      doctor: 'Dr. Adams',
+      amount: 250,
+      status: 'Upcoming',
+      isToday: true,
+    ),
+    AppointmentModel(
+      patientName: 'Liam Wilson',
+      treatment: 'Microneedling',
+      date: '04/17/2026',
+      time: '03:00 PM',
+      doctor: 'Dr. Lee',
+      amount: 300,
+      status: 'Upcoming',
+      isToday: false,
+    ),
+    AppointmentModel(
+      patientName: 'Sophia Moore',
+      treatment: 'Chemical Peel',
+      date: '04/15/2026',
+      time: '01:00 PM',
+      doctor: 'Dr. Adams',
+      amount: 200,
+      status: 'Cancelled',
+      isToday: false,
+    ),
+  ];
+
+  String _selectedFilter = 'All Appointments';
+
+  List<AppointmentModel> get _filteredAppointments {
+    switch (_selectedFilter) {
+      case 'Today Appointments':
+        return dummyAppointments.where((a) => a.isToday).toList();
+      case 'Past Appointments':
+        return dummyAppointments
+            .where((a) => a.status == 'Completed' || a.status == 'Cancelled')
+            .toList();
+      default:
+        return dummyAppointments;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,80 +134,139 @@ class AppointmentScreen extends StatelessWidget {
               SizedBox(height: 14.h),
               SizedBox(height: 800.h, child: AppointmentsCalendar()),
               SizedBox(height: 15.h),
-              BorderdContainerWidget(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Today's Schedule", style: CustomFonts.black17w600),
-                    SizedBox(height: 17.h),
-                    Center(
-                      child: Text(
-                        "No appointments scheduled for today",
-                        style: CustomFonts.black17w500,
-                      ),
-                    ),
-                    SizedBox(height: 20.h),
-                  ],
-                ),
-              ),
-              SizedBox(height: 15.h),
+              // BorderdContainerWidget(
+              //   child: Column(
+              //     crossAxisAlignment: CrossAxisAlignment.start,
+              //     children: [
+              //       Text("Today's Schedule", style: CustomFonts.black17w600),
+              //       SizedBox(height: 17.h),
+              //       Center(
+              //         child: Text(
+              //           "No appointments scheduled for today",
+              //           style: CustomFonts.black17w500,
+              //         ),
+              //       ),
+              //       SizedBox(height: 20.h),
+              //     ],
+              //   ),
+              // ),
+              // SizedBox(height: 15.h),
               BorderdContainerWidget(
                 child: Row(
                   children: [
                     Expanded(
-                      flex: 3,
+                      flex: 5,
                       child: CupertinoSearchTextField(
                         style: CustomFonts.black17w500,
                         backgroundColor: Color(0xFFF3F3F5),
                       ),
                     ),
-                    SizedBox(width: 20.w),
+                    SizedBox(width: 10.w),
                     Expanded(
+                      flex: 2,
                       child: CustomDropdown(
-                        hint: "All Regions",
-                        value: "All Regions",
+                        hint: "All Appointments",
+                        value: "All Appointments",
                         items: [
-                          "All Regions",
-                          "Region 1",
-                          "Region 2",
-                          "Region 3",
+                          "All Appointments",
+                          "Past Appointments",
+                          "Today Appointments",
                         ],
-                        onChanged: (_) {},
+                        height: 42.h,
+                        onChanged: (value) => setState(
+                          () => _selectedFilter = value ?? 'All Appointments',
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10.w),
+                    Expanded(
+                      flex: 2,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: CustomColors.blackColor,
+                        ),
+                        padding: EdgeInsets.all(12.w),
+                        child: Row(
+                          crossAxisAlignment: .center,
+                          mainAxisAlignment: .center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.add,
+                              color: CustomColors.whiteColor,
+                              size: 16.sp,
+                            ),
+                            SizedBox(width: 5.w),
+                            Text(
+                              "New Appointment",
+                              style: CustomFonts.white13w400,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 15.h),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: CustomColors.blackColor,
-                  ),
-                  padding: EdgeInsets.all(9.w),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.add,
-                        color: CustomColors.whiteColor,
-                        size: 16.sp,
-                      ),
-                      SizedBox(width: 5.w),
-                      Text("New Appointment", style: CustomFonts.white13w400),
-                    ],
-                  ),
-                ),
-              ),
+              // SizedBox(height: 15.h),
+              // Align(
+              //   alignment: Alignment.centerRight,
+              //   child: Container(
+              //     decoration: BoxDecoration(
+              //       borderRadius: BorderRadius.circular(10),
+              //       color: CustomColors.blackColor,
+              //     ),
+              //     padding: EdgeInsets.all(9.w),
+              //     child: Row(
+              //       mainAxisSize: MainAxisSize.min,
+              //       children: [
+              //         Icon(
+              //           Icons.add,
+              //           color: CustomColors.whiteColor,
+              //           size: 16.sp,
+              //         ),
+              //         SizedBox(width: 5.w),
+              //         Text("New Appointment", style: CustomFonts.white13w400),
+              //       ],
+              //     ),
+              //   ),
+              // ),
               SizedBox(height: 15.h),
 
-              ...List.generate(5, (index) => AppointmentTileWidget()),
+              // ...List.generate(5, (index) => AppointmentTileWidget()),
+              ...List.generate(
+                _filteredAppointments.length,
+                (index) => AppointmentTileWidget(
+                  appointment: _filteredAppointments[index],
+                ),
+              ),
             ],
           ),
         ),
       ),
     );
   }
+}
+
+class AppointmentModel {
+  final String patientName;
+  final String treatment;
+  final String date;
+  final String time;
+  final String doctor;
+  final double amount;
+  final String status; // 'Completed', 'Upcoming', 'Cancelled'
+  final bool isToday;
+
+  const AppointmentModel({
+    required this.patientName,
+    required this.treatment,
+    required this.date,
+    required this.time,
+    required this.doctor,
+    required this.amount,
+    required this.status,
+    required this.isToday,
+  });
 }

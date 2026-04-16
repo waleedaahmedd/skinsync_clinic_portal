@@ -1,15 +1,18 @@
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:skinsync_clinic_portal/screens/dashboard/patient_management.dart';
 import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:skinsync_clinic_portal/widgets/pateint_treatment_selection_tile.dart';
+
 import '../../utils/assets.dart';
 
 class PatientManagementDetailScreen extends StatelessWidget {
-  static const String routeName = '/patient-management-detail';
+  static const String path = 'details';
+  static const String routeName =
+      '${PatientManagementScreen.routeName}/details';
   const PatientManagementDetailScreen({super.key});
 
   @override
