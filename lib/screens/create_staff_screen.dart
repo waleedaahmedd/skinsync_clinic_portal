@@ -13,6 +13,7 @@ import '../widgets/header__with_back_btn.dart';
 import 'business_info_screen.dart';
 
 class CreateStaffScreen extends StatefulWidget {
+  static const String routeName = '/create-staff';
   const CreateStaffScreen({super.key});
 
   @override
@@ -252,6 +253,8 @@ class _CreateStaffScreenState extends State<CreateStaffScreen> {
             label: 'Treatment Name',
             controller: _treatmentNameController,
             hintText: 'e.g., Botox, Dermal Fillers',
+            labelStyle: CustomFonts.black18w600,
+            hintStyle: CustomFonts.grey18w400,
           ),
           SizedBox(height: 20.h),
           // Category Dropdown
@@ -286,6 +289,8 @@ class _CreateStaffScreenState extends State<CreateStaffScreen> {
             controller: _descriptionController,
             hintText: 'Describe the treatment and its benefits',
             maxLines: 5,
+            labelStyle: CustomFonts.black18w600,
+            hintStyle: CustomFonts.grey18w400,
           ),
           SizedBox(height: 32.h),
           // Buttons Row
@@ -378,22 +383,12 @@ class _CreateStaffScreenState extends State<CreateStaffScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 13.sp,
-            fontWeight: FontWeight.w500,
-            color: Colors.black87,
-          ),
-        ),
+        Text(label, style: CustomFonts.black18w600),
         SizedBox(height: 8.h),
         DropdownButtonHideUnderline(
           child: DropdownButton2<String>(
             isExpanded: true,
-            hint: Text(
-              hintText,
-              style: TextStyle(fontSize: 14.sp, color: Colors.grey[400]),
-            ),
+            hint: Text(hintText, style: CustomFonts.grey18w400),
             value: value,
             items: items
                 .map(
@@ -471,7 +466,7 @@ class _CreateStaffScreenState extends State<CreateStaffScreen> {
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.black,
               foregroundColor: Colors.white,
-              padding: EdgeInsets.symmetric(vertical: 20.h),
+              padding: EdgeInsets.zero,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.r),
               ),
@@ -490,7 +485,7 @@ class _CreateStaffScreenState extends State<CreateStaffScreen> {
             },
             style: OutlinedButton.styleFrom(
               foregroundColor: Colors.black,
-              padding: EdgeInsets.symmetric(vertical: 20.h),
+              padding: EdgeInsets.zero,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.r),
               ),

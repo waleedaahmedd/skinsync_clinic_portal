@@ -1,10 +1,12 @@
 import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skinsync_clinic_portal/models/responses/register_doctor_response.dart';
 import 'package:skinsync_clinic_portal/screens/about_screen.dart';
 import 'package:skinsync_clinic_portal/screens/business_info_screen.dart';
 import 'package:skinsync_clinic_portal/screens/change_password_screen.dart';
+import 'package:skinsync_clinic_portal/screens/create_staff_screen.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/inventory_screen.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/manage_doc_injector_screen.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/mange_staff_screen.dart';
@@ -13,9 +15,11 @@ import 'package:skinsync_clinic_portal/screens/dashboard/payment_history_screen.
 import 'package:skinsync_clinic_portal/screens/dashboard/profile_screen.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/roles_screen.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/treatment_screen.dart';
+import 'package:skinsync_clinic_portal/screens/dynamic_pricing.dart';
 import 'package:skinsync_clinic_portal/screens/notification_screen.dart';
 import 'package:skinsync_clinic_portal/screens/sign_in_screen.dart';
 import 'package:skinsync_clinic_portal/screens/signup_screen.dart';
+import 'package:skinsync_clinic_portal/screens/update_treatment_screen.dart';
 import 'package:skinsync_clinic_portal/services/storage_service.dart';
 
 import 'app_init.dart';
@@ -37,6 +41,7 @@ class RouteGenerator {
     SignUpScreen.routeName,
   ];
   static final GoRouter router = GoRouter(
+    debugLogDiagnostics: kDebugMode,
     navigatorKey: navigatorKey,
     redirect: (context, state) async {
       final route = state.uri.toString();
@@ -86,12 +91,13 @@ class RouteGenerator {
             name: PatientManagementScreen.routeName,
             path: PatientManagementScreen.routeName,
             builder: (_, _) => PatientManagementScreen(),
-          ),
-
-          GoRoute(
-            name: PatientManagementDetailScreen.routeName,
-            path: PatientManagementDetailScreen.routeName, // Top-level route
-            builder: (_, _) => PatientManagementDetailScreen(),
+            routes: [
+              GoRoute(
+                name: PatientManagementDetailScreen.path,
+                path: PatientManagementDetailScreen.path,
+                builder: (_, _) => PatientManagementDetailScreen(),
+              ),
+            ],
           ),
           GoRoute(
             name: AppointmentScreen.routeName,
@@ -173,6 +179,21 @@ class RouteGenerator {
         name: NotificationScreen.routeName,
         path: NotificationScreen.routeName,
         builder: (_, _) => NotificationScreen(),
+      ),
+      GoRoute(
+        name: CreateStaffScreen.routeName,
+        path: CreateStaffScreen.routeName,
+        builder: (_, _) => CreateStaffScreen(),
+      ),
+      GoRoute(
+        name: UpdateTreatmentScreen.routeName,
+        path: UpdateTreatmentScreen.routeName,
+        builder: (_, _) => UpdateTreatmentScreen(),
+      ),
+      GoRoute(
+        path: DynamicPricing.routeName,
+        name: DynamicPricing.routeName,
+        builder: (_, _) => DynamicPricing(),
       ),
     ],
   );

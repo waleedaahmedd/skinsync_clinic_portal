@@ -5,11 +5,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skinsync_clinic_portal/screens/about_screen.dart';
 import 'package:skinsync_clinic_portal/screens/dashboard/mange_staff_screen.dart';
+import 'package:skinsync_clinic_portal/screens/dynamic_pricing.dart';
 import 'package:skinsync_clinic_portal/screens/notification_screen.dart';
 import 'package:skinsync_clinic_portal/view_models/auth_view_model.dart';
 
 import '../business_info_screen.dart';
 import '../change_password_screen.dart';
+import '../create_treatment_screen.dart';
+import '../update_treatment_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   static const String routeName = '/profile';
@@ -63,6 +66,14 @@ class ProfileScreen extends StatelessWidget {
                     },
                   ),
                   _SettingItemData(
+                    icon: Icons.calendar_month_outlined,
+                    title: "Dynamic Pricing",
+                    subtitle: "Configure dynamic pricing for off-peak hours",
+                    onTap: () {
+                      context.pushNamed(DynamicPricing.routeName);
+                    },
+                  ),
+                  _SettingItemData(
                     icon: Icons.people_outline,
                     title: "Manage Staff",
                     subtitle: "Manage clinic staff and services",
@@ -76,32 +87,31 @@ class ProfileScreen extends StatelessWidget {
 
             SizedBox(height: 20.h),
 
-            // Treatment Management
-            // Padding(
-            //   padding: EdgeInsets.symmetric(horizontal: 16.w),
-            //   child: _buildSettingsSection(
-            //     title: "Treatment Management",
-            //     items: [
-            //       _SettingItemData(
-            //         icon: Icons.add_circle_outline,
-            //         title: "Create Treatment",
-            //         subtitle: "Add new treatments and services",
-            //         onTap: () {
-            //           context.push(CreateTreatmentScreen.routeName);
-            //         },
-            //       ),
-            //       _SettingItemData(
-            //         icon: Icons.edit_outlined,
-            //         title: "Update Treatment",
-            //         subtitle: "Edit existing treatment details",
-            //         onTap: () {
-            //           context.push(UpdateTreatmentScreen.routeName);
-            //         },
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            // SizedBox(height: 20.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: _buildSettingsSection(
+                title: "Treatment Management",
+                items: [
+                  _SettingItemData(
+                    icon: Icons.add_circle_outline,
+                    title: "Create Treatment",
+                    subtitle: "Add new treatments and services",
+                    onTap: () {
+                      context.push(CreateTreatmentScreen.routeName);
+                    },
+                  ),
+                  _SettingItemData(
+                    icon: Icons.edit_outlined,
+                    title: "Update Treatment",
+                    subtitle: "Edit existing treatment details",
+                    onTap: () {
+                      context.push(UpdateTreatmentScreen.routeName);
+                    },
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 20.h),
 
             // password security
             Padding(
@@ -110,9 +120,17 @@ class ProfileScreen extends StatelessWidget {
                 title: "Security",
                 items: [
                   _SettingItemData(
+                    icon: Icons.shield_outlined,
+                    title: "Two-Factor Authentication",
+                    subtitle: "Update password and security settings",
+                    onTap: () {
+                      context.push(ChangePasswordScreen.routeName);
+                    },
+                  ),
+                  _SettingItemData(
                     icon: Icons.lock_open,
                     title: "Password & Security",
-                    subtitle: "Update password and security settings",
+                    subtitle: "Add extra security to your account",
                     onTap: () {
                       context.push(ChangePasswordScreen.routeName);
                     },
