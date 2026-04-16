@@ -38,8 +38,8 @@ class SuccessDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       backgroundColor: Colors.transparent,
-      insetPadding: EdgeInsets.symmetric(horizontal: 40.w),
       child: Container(
+        width: MediaQuery.of(context).size.width * 0.3,
         padding: EdgeInsets.symmetric(vertical: 28.h, horizontal: 24.w),
         decoration: BoxDecoration(
           color: Colors.white,
