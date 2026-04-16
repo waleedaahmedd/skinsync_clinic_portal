@@ -86,6 +86,7 @@ class AppointmentScreen extends StatefulWidget {
 class _AppointmentScreenState extends State<AppointmentScreen> {
 
   String _selectedFilter = 'All Appointments';
+  String _selectedStatus = 'All Status';
 
   List<AppointmentModel> get _filteredAppointments {
     switch (_selectedFilter) {
@@ -165,7 +166,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                     ),
                     SizedBox(width: 10.w),
                     Expanded(
-                      flex: 2,
+                      flex: 3,
                       child: CustomDropdown(
                         hint: "All Appointments",
                         value: "All Appointments",
@@ -180,6 +181,28 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                         ),
                       ),
                     ),
+                    SizedBox(width: 10.w),
+                   
+                    Expanded(
+                      flex: 2,
+                      child: CustomDropdown(
+                        hint: "Status",
+                        value: _selectedStatus,
+                        items: [
+                          "All Status",
+                          "No Show",
+                          "Delayed",
+                          "Completed",
+                          "Arrived",
+                          "Ongoing"
+                        ],
+                        height: 42.h,
+                        onChanged: (value) => setState(
+                          () => _selectedStatus = value ?? 'All Status',
+                        ),
+                      ),
+                    ),
+                
                     SizedBox(width: 10.w),
                     Expanded(
                       flex: 2,

@@ -61,4 +61,6 @@ enum BaseUrls {
 
 enum AuthScreen { login, forgetPassword, verifyOtp, createNewPassword }
 
+enum AppointmentStatus { allStatus, noShow, delayed,completed,arrived,ongoing}
+
 enum DiscountType { per, flat }
