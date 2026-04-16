@@ -11,6 +11,7 @@ class CustomDropdown<T> extends StatelessWidget {
   final List<T>? items;
   final Function(T?) onChanged;
   final Widget Function(T)? builder;
+  final double? height;
 
   const CustomDropdown({
     super.key,
@@ -18,6 +19,7 @@ class CustomDropdown<T> extends StatelessWidget {
     required this.value,
     required this.items,
     required this.onChanged,
+    this.height,
     this.builder,
   });
 
@@ -25,7 +27,7 @@ class CustomDropdown<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     final dropdownItems = items ?? []; // fallback to empty list
     return SizedBox(
-      height: 55.h,
+      height: height ??55.h,
       child: DropdownButtonFormField2<T>(
         isExpanded: true,
         value: value,
