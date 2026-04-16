@@ -19,6 +19,7 @@ abstract class CustomColors {
   static const Color navigationRailBackground = Color(0xFFDEF8FF);
   static const Color drakPurpleColor = Color(0xFF4F39F6);
   static const Color fillColor = Color(0xffF3F3F5);
+  static const Color green = Color(0xFF12BD09);
   
 
   static const Color errorColor = Color(0xFFEF4444);

@@ -28,6 +28,7 @@ abstract class PngAssets {
   static const String empty = '${_assets}empty.png';
   static const String pdf = '${_assets}pdf.png';
   static const String signature = '${_assets}signature.png';
+  static const String masterLogo = '${_assets}master_logo.png';
 }
 
 abstract class SvgAssets {
@@ -78,6 +79,7 @@ abstract class SvgAssets {
   static const String pdfOutLined = '${_assets}pdf_outlined.svg';
   static const String plus = '${_assets}plus.svg';
   static const String discount = '${_assets}discount.svg';
+  static const String scan = '${_assets}scan.svg';
 
   // bottom nav icons
   static const String notification = "${_assets}notification.svg";
