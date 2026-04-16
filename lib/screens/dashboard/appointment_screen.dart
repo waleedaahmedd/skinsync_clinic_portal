@@ -12,6 +12,7 @@ import '../../widgets/custom_dropdown_widget.dart';
 import '../../widgets/dailog box/create_invoice_dailog.dart';
 import '../../widgets/dailog box/note_dailog.dart';
 import '../../widgets/dailog box/scheduled_next_appointment.dart';
+import '../../widgets/dailog box/select_time_slot_dailog.dart';
 
 class AppointmentScreen extends StatefulWidget {
   static const String routeName = '/appointment';
@@ -266,13 +267,13 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                 (index) => AppointmentTileWidget(
                   appointment: _filteredAppointments[index],
                   onTap: () {
-                    // showDialog(
-                    //   context: context,
-                    //   builder: (_) => ScheduledNextAppointment(),
-                    // );
+                    showDialog(
+                      context: context,
+                      builder: (_) => SelectTimeSlotDialog(),
+                    );
                     // CreateInvoiceDialog.show(context, invoiceNumber: 'SSA5002');
 
-                    AddNoteDialog.show(context);
+                    //AddNoteDialog.show(context);
                     print('object');
                   },
                 ),

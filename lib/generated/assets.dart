@@ -16,41 +16,56 @@ class $AssetsPngGen {
   const $AssetsPngGen();
 
   final AssetGenImage apple = const AssetGenImage('assets/png/apple.png');
+  final AssetGenImage appointmentCalendar = const AssetGenImage(
+    'assets/png/appointment_calendar.png',
+  );
   final AssetGenImage beforeAfter = const AssetGenImage(
-      'assets/png/before_after.png');
+    'assets/png/before_after.png',
+  );
   final AssetGenImage blur = const AssetGenImage('assets/png/blur.png');
   final AssetGenImage email = const AssetGenImage('assets/png/email.png');
   final AssetGenImage empty = const AssetGenImage('assets/png/empty.png');
   final AssetGenImage face = const AssetGenImage('assets/png/face.png');
   final AssetGenImage faceMarks = const AssetGenImage(
-      'assets/png/face_marks.png');
+    'assets/png/face_marks.png',
+  );
   final AssetGenImage getnotified = const AssetGenImage(
-      'assets/png/getnotified.png');
+    'assets/png/getnotified.png',
+  );
   final AssetGenImage google = const AssetGenImage('assets/png/google.png');
   final AssetGenImage hand = const AssetGenImage('assets/png/hand.png');
   final AssetGenImage image = const AssetGenImage('assets/png/image.png');
   final AssetGenImage laserTreatment = const AssetGenImage(
-      'assets/png/laser_treatment.png');
+    'assets/png/laser_treatment.png',
+  );
   final AssetGenImage logo = const AssetGenImage('assets/png/logo.png');
   final AssetGenImage masterLogo = const AssetGenImage(
-      'assets/png/master_logo.png');
+    'assets/png/master_logo.png',
+  );
   final AssetGenImage notification = const AssetGenImage(
-      'assets/png/notification.png');
+    'assets/png/notification.png',
+  );
   final AssetGenImage pdf = const AssetGenImage('assets/png/pdf.png');
   final AssetGenImage person = const AssetGenImage('assets/png/person.png');
   final AssetGenImage signature = const AssetGenImage(
-      'assets/png/signature.png');
+    'assets/png/signature.png',
+  );
   final AssetGenImage signupVector = const AssetGenImage(
-      'assets/png/signup_vector.png');
+    'assets/png/signup_vector.png',
+  );
   final AssetGenImage simulation = const AssetGenImage(
-      'assets/png/simulation.png');
+    'assets/png/simulation.png',
+  );
   final AssetGenImage splashLogo = const AssetGenImage(
-      'assets/png/splash_logo.png');
+    'assets/png/splash_logo.png',
+  );
   final AssetGenImage syringe = const AssetGenImage('assets/png/syringe.png');
   final AssetGenImage treatmentImage = const AssetGenImage(
-      'assets/png/treatment_image.png');
+    'assets/png/treatment_image.png',
+  );
   final AssetGenImage treatmentimage = const AssetGenImage(
-      'assets/png/treatmentimage.png');
+    'assets/png/treatmentimage.png',
+  );
   final AssetGenImage vector = const AssetGenImage('assets/png/vector.png');
   final AssetGenImage vector2 = const AssetGenImage('assets/png/vector2.png');
 }
@@ -60,24 +75,31 @@ class $AssetsSvgGen {
 
   final SvgGenImage ai = const SvgGenImage('assets/svg/ai.svg');
   final SvgGenImage aiStar = const SvgGenImage('assets/svg/ai_star.svg');
+  final SvgGenImage alert = const SvgGenImage('assets/svg/alert.svg');
   final SvgGenImage apple = const SvgGenImage('assets/svg/apple.svg');
   final SvgGenImage appointment = const SvgGenImage(
-      'assets/svg/appointment.svg');
+    'assets/svg/appointment.svg',
+  );
   final SvgGenImage appointmentfilled = const SvgGenImage(
-      'assets/svg/appointmentfilled.svg');
+    'assets/svg/appointmentfilled.svg',
+  );
   final SvgGenImage appointments = const SvgGenImage(
-      'assets/svg/appointments.svg');
+    'assets/svg/appointments.svg',
+  );
   final SvgGenImage arrowDownCircle = const SvgGenImage(
-      'assets/svg/arrow_down_circle.svg');
+    'assets/svg/arrow_down_circle.svg',
+  );
   final SvgGenImage authentication = const SvgGenImage(
-      'assets/svg/authentication.svg');
+    'assets/svg/authentication.svg',
+  );
   final SvgGenImage biometric = const SvgGenImage('assets/svg/biometric.svg');
   final SvgGenImage card = const SvgGenImage('assets/svg/card.svg');
   final SvgGenImage clinic = const SvgGenImage('assets/svg/clinic.svg');
   final SvgGenImage dail = const SvgGenImage('assets/svg/dail.svg');
   final SvgGenImage discount = const SvgGenImage('assets/svg/discount.svg');
   final SvgGenImage downloadIcon = const SvgGenImage(
-      'assets/svg/download_icon.svg');
+    'assets/svg/download_icon.svg',
+  );
   final SvgGenImage email = const SvgGenImage('assets/svg/email.svg');
   final SvgGenImage eye = const SvgGenImage('assets/svg/eye.svg');
   final SvgGenImage face = const SvgGenImage('assets/svg/face.svg');
@@ -96,29 +118,37 @@ class $AssetsSvgGen {
   final SvgGenImage message = const SvgGenImage('assets/svg/message.svg');
   final SvgGenImage myProfile = const SvgGenImage('assets/svg/my_profile.svg');
   final SvgGenImage notification = const SvgGenImage(
-      'assets/svg/notification.svg');
+    'assets/svg/notification.svg',
+  );
   final SvgGenImage patient = const SvgGenImage('assets/svg/patient.svg');
   final SvgGenImage payments = const SvgGenImage('assets/svg/payments.svg');
   final SvgGenImage pdfOutlined = const SvgGenImage(
-      'assets/svg/pdf_outlined.svg');
+    'assets/svg/pdf_outlined.svg',
+  );
   final SvgGenImage plus = const SvgGenImage('assets/svg/plus.svg');
   final SvgGenImage profile = const SvgGenImage('assets/svg/profile.svg');
   final SvgGenImage profileIcon = const SvgGenImage(
-      'assets/svg/profile_icon.svg');
+    'assets/svg/profile_icon.svg',
+  );
   final SvgGenImage profilefilled = const SvgGenImage(
-      'assets/svg/profilefilled.svg');
+    'assets/svg/profilefilled.svg',
+  );
   final SvgGenImage progress = const SvgGenImage('assets/svg/progress.svg');
   final SvgGenImage progressfilled = const SvgGenImage(
-      'assets/svg/progressfilled.svg');
+    'assets/svg/progressfilled.svg',
+  );
   final SvgGenImage receipts = const SvgGenImage('assets/svg/receipts.svg');
   final SvgGenImage saveTreatment = const SvgGenImage(
-      'assets/svg/save_treatment.svg');
+    'assets/svg/save_treatment.svg',
+  );
   final SvgGenImage scan = const SvgGenImage('assets/svg/scan.svg');
   final SvgGenImage stethoscope = const SvgGenImage(
-      'assets/svg/stethoscope.svg');
+    'assets/svg/stethoscope.svg',
+  );
   final SvgGenImage treatment = const SvgGenImage('assets/svg/treatment.svg');
   final SvgGenImage treatmentfilled = const SvgGenImage(
-      'assets/svg/treatmentfilled.svg');
+    'assets/svg/treatmentfilled.svg',
+  );
   final SvgGenImage treatments = const SvgGenImage('assets/svg/treatments.svg');
   final SvgGenImage trick = const SvgGenImage('assets/svg/trick.svg');
   final SvgGenImage user = const SvgGenImage('assets/svg/user.svg');
@@ -128,37 +158,55 @@ class $AssetsSvgGen {
 class $AssetsFontsGen {
   const $AssetsFontsGen();
 
-  final String fonntsComDegularDemoBlack = 'assets/fonts/fonnts.com-DegularDemo-Black.otf';
-  final String fonntsComDegularDemoBlackItalic = 'assets/fonts/fonnts.com-DegularDemo-BlackItalic.otf';
-  final String fonntsComDegularDemoBold = 'assets/fonts/fonnts.com-DegularDemo-Bold.otf';
-  final String fonntsComDegularDemoBoldItalic = 'assets/fonts/fonnts.com-DegularDemo-BoldItalic.otf';
-  final String fonntsComDegularDemoItalic = 'assets/fonts/fonnts.com-DegularDemo-Italic.otf';
-  final String fonntsComDegularDemoLight = 'assets/fonts/fonnts.com-DegularDemo-Light.otf';
-  final String fonntsComDegularDemoLightItalic = 'assets/fonts/fonnts.com-DegularDemo-LightItalic.otf';
-  final String fonntsComDegularDemoMedium = 'assets/fonts/fonnts.com-DegularDemo-Medium.otf';
-  final String fonntsComDegularDemoMediumItalic = 'assets/fonts/fonnts.com-DegularDemo-MediumItalic.otf';
-  final String fonntsComDegularDemoRegular = 'assets/fonts/fonnts.com-DegularDemo-Regular.otf';
-  final String fonntsComDegularDemoSemibold = 'assets/fonts/fonnts.com-DegularDemo-Semibold.otf';
-  final String fonntsComDegularDemoSemiboldItalic = 'assets/fonts/fonnts.com-DegularDemo-SemiboldItalic.otf';
-  final String fonntsComDegularDemoThin = 'assets/fonts/fonnts.com-DegularDemo-Thin.otf';
-  final String fonntsComDegularDemoThinItalic = 'assets/fonts/fonnts.com-DegularDemo-ThinItalic.otf';
+  final String fonntsComDegularDemoBlack =
+      'assets/fonts/fonnts.com-DegularDemo-Black.otf';
+  final String fonntsComDegularDemoBlackItalic =
+      'assets/fonts/fonnts.com-DegularDemo-BlackItalic.otf';
+  final String fonntsComDegularDemoBold =
+      'assets/fonts/fonnts.com-DegularDemo-Bold.otf';
+  final String fonntsComDegularDemoBoldItalic =
+      'assets/fonts/fonnts.com-DegularDemo-BoldItalic.otf';
+  final String fonntsComDegularDemoItalic =
+      'assets/fonts/fonnts.com-DegularDemo-Italic.otf';
+  final String fonntsComDegularDemoLight =
+      'assets/fonts/fonnts.com-DegularDemo-Light.otf';
+  final String fonntsComDegularDemoLightItalic =
+      'assets/fonts/fonnts.com-DegularDemo-LightItalic.otf';
+  final String fonntsComDegularDemoMedium =
+      'assets/fonts/fonnts.com-DegularDemo-Medium.otf';
+  final String fonntsComDegularDemoMediumItalic =
+      'assets/fonts/fonnts.com-DegularDemo-MediumItalic.otf';
+  final String fonntsComDegularDemoRegular =
+      'assets/fonts/fonnts.com-DegularDemo-Regular.otf';
+  final String fonntsComDegularDemoSemibold =
+      'assets/fonts/fonnts.com-DegularDemo-Semibold.otf';
+  final String fonntsComDegularDemoSemiboldItalic =
+      'assets/fonts/fonnts.com-DegularDemo-SemiboldItalic.otf';
+  final String fonntsComDegularDemoThin =
+      'assets/fonts/fonnts.com-DegularDemo-Thin.otf';
+  final String fonntsComDegularDemoThinItalic =
+      'assets/fonts/fonnts.com-DegularDemo-ThinItalic.otf';
 }
 
 class $AssetsDemoGen {
   const $AssetsDemoGen();
 
   final AssetGenImage scheduledNextAppointment = const AssetGenImage(
-      'assets/demo/ScheduledNextAppointment.png');
+    'assets/demo/ScheduledNextAppointment.png',
+  );
   final AssetGenImage person = const AssetGenImage('assets/demo/person.png');
+  final AssetGenImage selectSlot = const AssetGenImage(
+    'assets/demo/select_slot.png',
+  );
   final AssetGenImage simulationLandscape = const AssetGenImage(
-      'assets/demo/simulation_landscape.png');
+    'assets/demo/simulation_landscape.png',
+  );
 }
 
 class AssetGenImage {
   const AssetGenImage(this._assetName, {this.size, this.flavors = const {}});
 
   final String _assetName;
-
 
   final Size? size;
   final Set<String> flavors;
@@ -216,15 +264,8 @@ class AssetGenImage {
     );
   }
 
-  ImageProvider provider({
-    AssetBundle? bundle,
-    String? package,
-  }) {
-    return AssetImage(
-      _assetName,
-      bundle: bundle,
-      package: package,
-    );
+  ImageProvider provider({AssetBundle? bundle, String? package}) {
+    return AssetImage(_assetName, bundle: bundle, package: package);
   }
 
   Widget custom({
