@@ -134,35 +134,36 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
               SizedBox(height: 14.h),
               SizedBox(height: 800.h, child: AppointmentsCalendar()),
               SizedBox(height: 15.h),
-              BorderdContainerWidget(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Today's Schedule", style: CustomFonts.black17w600),
-                    SizedBox(height: 17.h),
-                    Center(
-                      child: Text(
-                        "No appointments scheduled for today",
-                        style: CustomFonts.black17w500,
-                      ),
-                    ),
-                    SizedBox(height: 20.h),
-                  ],
-                ),
-              ),
-              SizedBox(height: 15.h),
+              // BorderdContainerWidget(
+              //   child: Column(
+              //     crossAxisAlignment: CrossAxisAlignment.start,
+              //     children: [
+              //       Text("Today's Schedule", style: CustomFonts.black17w600),
+              //       SizedBox(height: 17.h),
+              //       Center(
+              //         child: Text(
+              //           "No appointments scheduled for today",
+              //           style: CustomFonts.black17w500,
+              //         ),
+              //       ),
+              //       SizedBox(height: 20.h),
+              //     ],
+              //   ),
+              // ),
+              // SizedBox(height: 15.h),
               BorderdContainerWidget(
                 child: Row(
                   children: [
                     Expanded(
-                      flex: 3,
+                      flex: 5,
                       child: CupertinoSearchTextField(
                         style: CustomFonts.black17w500,
                         backgroundColor: Color(0xFFF3F3F5),
                       ),
                     ),
-                    SizedBox(width: 20.w),
+                    SizedBox(width: 10.w),
                     Expanded(
+                      flex: 2,
                       child: CustomDropdown(
                         hint: "All Appointments",
                         value: "All Appointments",
@@ -177,32 +178,60 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                         ),
                       ),
                     ),
+                    SizedBox(width: 10.w),
+                    Expanded(
+                      flex: 2,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: CustomColors.blackColor,
+                        ),
+                        padding: EdgeInsets.all(12.w),
+                        child: Row(
+                          crossAxisAlignment: .center,
+                          mainAxisAlignment: .center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.add,
+                              color: CustomColors.whiteColor,
+                              size: 16.sp,
+                            ),
+                            SizedBox(width: 5.w),
+                            Text(
+                              "New Appointment",
+                              style: CustomFonts.white13w400,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
-              SizedBox(height: 15.h),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: CustomColors.blackColor,
-                  ),
-                  padding: EdgeInsets.all(9.w),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.add,
-                        color: CustomColors.whiteColor,
-                        size: 16.sp,
-                      ),
-                      SizedBox(width: 5.w),
-                      Text("New Appointment", style: CustomFonts.white13w400),
-                    ],
-                  ),
-                ),
-              ),
+              // SizedBox(height: 15.h),
+              // Align(
+              //   alignment: Alignment.centerRight,
+              //   child: Container(
+              //     decoration: BoxDecoration(
+              //       borderRadius: BorderRadius.circular(10),
+              //       color: CustomColors.blackColor,
+              //     ),
+              //     padding: EdgeInsets.all(9.w),
+              //     child: Row(
+              //       mainAxisSize: MainAxisSize.min,
+              //       children: [
+              //         Icon(
+              //           Icons.add,
+              //           color: CustomColors.whiteColor,
+              //           size: 16.sp,
+              //         ),
+              //         SizedBox(width: 5.w),
+              //         Text("New Appointment", style: CustomFonts.white13w400),
+              //       ],
+              //     ),
+              //   ),
+              // ),
               SizedBox(height: 15.h),
 
               // ...List.generate(5, (index) => AppointmentTileWidget()),
