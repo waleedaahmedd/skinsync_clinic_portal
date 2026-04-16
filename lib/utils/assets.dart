@@ -108,5 +108,7 @@ class DummyAssets {
 abstract class DemoAssets {
   static const String _asset = 'assets/demo/';
   static const String person = '${_asset}person.png';
+  static const String scheduledNextAppointment =
+      '${_asset}ScheduledNextAppointment.png';
   static const String simulationLandscape = '${_asset}simulation_landscape.png';
 }

@@ -9,6 +9,9 @@ import 'package:skinsync_clinic_portal/widgets/borderd_container_widget.dart';
 import '../../widgets/appointment_horizontal_tile_widget.dart';
 import '../../widgets/calender_widget.dart';
 import '../../widgets/custom_dropdown_widget.dart';
+import '../../widgets/dailog box/create_invoice_dailog.dart';
+import '../../widgets/dailog box/note_dailog.dart';
+import '../../widgets/dailog box/scheduled_next_appointment.dart';
 
 class AppointmentScreen extends StatefulWidget {
   static const String routeName = '/appointment';
@@ -19,72 +22,70 @@ class AppointmentScreen extends StatefulWidget {
   State<AppointmentScreen> createState() => _AppointmentScreenState();
 }
 
-  final List<AppointmentModel> dummyAppointments = [
-    AppointmentModel(
-      patientName: 'Sarah Johnson',
-      treatment: 'Botox',
-      date: '10/29/2025',
-      time: '10:00 AM',
-      doctor: 'Dr. Smith',
-      amount: 350,
-      status: 'Completed',
-      isToday: false,
-    ),
-    AppointmentModel(
-      patientName: 'Emma Davis',
-      treatment: 'Filler',
-      date: '10/30/2025',
-      time: '11:00 AM',
-      doctor: 'Dr. Lee',
-      amount: 450,
-      status: 'Completed',
-      isToday: false,
-    ),
-    AppointmentModel(
-      patientName: 'James Brown',
-      treatment: 'Laser',
-      date: '04/16/2026',
-      time: '09:00 AM',
-      doctor: 'Dr. Smith',
-      amount: 600,
-      status: 'Upcoming',
-      isToday: true,
-    ),
-    AppointmentModel(
-      patientName: 'Olivia White',
-      treatment: 'Hydrafacial',
-      date: '04/16/2026',
-      time: '02:00 PM',
-      doctor: 'Dr. Adams',
-      amount: 250,
-      status: 'Upcoming',
-      isToday: true,
-    ),
-    AppointmentModel(
-      patientName: 'Liam Wilson',
-      treatment: 'Microneedling',
-      date: '04/17/2026',
-      time: '03:00 PM',
-      doctor: 'Dr. Lee',
-      amount: 300,
-      status: 'Upcoming',
-      isToday: false,
-    ),
-    AppointmentModel(
-      patientName: 'Sophia Moore',
-      treatment: 'Chemical Peel',
-      date: '04/15/2026',
-      time: '01:00 PM',
-      doctor: 'Dr. Adams',
-      amount: 200,
-      status: 'Cancelled',
-      isToday: false,
-    ),
-  ];
-
+final List<AppointmentModel> dummyAppointments = [
+  AppointmentModel(
+    patientName: 'Sarah Johnson',
+    treatment: 'Botox',
+    date: '10/29/2025',
+    time: '10:00 AM',
+    doctor: 'Dr. Smith',
+    amount: 350,
+    status: 'Completed',
+    isToday: false,
+  ),
+  AppointmentModel(
+    patientName: 'Emma Davis',
+    treatment: 'Filler',
+    date: '10/30/2025',
+    time: '11:00 AM',
+    doctor: 'Dr. Lee',
+    amount: 450,
+    status: 'Completed',
+    isToday: false,
+  ),
+  AppointmentModel(
+    patientName: 'James Brown',
+    treatment: 'Laser',
+    date: '04/16/2026',
+    time: '09:00 AM',
+    doctor: 'Dr. Smith',
+    amount: 600,
+    status: 'Upcoming',
+    isToday: true,
+  ),
+  AppointmentModel(
+    patientName: 'Olivia White',
+    treatment: 'Hydrafacial',
+    date: '04/16/2026',
+    time: '02:00 PM',
+    doctor: 'Dr. Adams',
+    amount: 250,
+    status: 'Upcoming',
+    isToday: true,
+  ),
+  AppointmentModel(
+    patientName: 'Liam Wilson',
+    treatment: 'Microneedling',
+    date: '04/17/2026',
+    time: '03:00 PM',
+    doctor: 'Dr. Lee',
+    amount: 300,
+    status: 'Upcoming',
+    isToday: false,
+  ),
+  AppointmentModel(
+    patientName: 'Sophia Moore',
+    treatment: 'Chemical Peel',
+    date: '04/15/2026',
+    time: '01:00 PM',
+    doctor: 'Dr. Adams',
+    amount: 200,
+    status: 'Cancelled',
+    isToday: false,
+  ),
+];
 
 class _AppointmentScreenState extends State<AppointmentScreen> {
-
   String _selectedFilter = 'All Appointments';
   String _selectedStatus = 'All Status';
 
@@ -182,7 +183,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                       ),
                     ),
                     SizedBox(width: 10.w),
-                   
+
                     Expanded(
                       flex: 2,
                       child: CustomDropdown(
@@ -194,7 +195,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                           "Delayed",
                           "Completed",
                           "Arrived",
-                          "Ongoing"
+                          "Ongoing",
                         ],
                         height: 42.h,
                         onChanged: (value) => setState(
@@ -202,7 +203,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                         ),
                       ),
                     ),
-                
+
                     SizedBox(width: 10.w),
                     Expanded(
                       flex: 2,
@@ -264,6 +265,16 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                 _filteredAppointments.length,
                 (index) => AppointmentTileWidget(
                   appointment: _filteredAppointments[index],
+                  onTap: () {
+                    // showDialog(
+                    //   context: context,
+                    //   builder: (_) => ScheduledNextAppointment(),
+                    // );
+                    // CreateInvoiceDialog.show(context, invoiceNumber: 'SSA5002');
+
+                    AddNoteDialog.show(context);
+                    print('object');
+                  },
                 ),
               ),
             ],
