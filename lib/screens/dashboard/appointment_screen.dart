@@ -19,7 +19,6 @@ class AppointmentScreen extends StatefulWidget {
   State<AppointmentScreen> createState() => _AppointmentScreenState();
 }
 
-class _AppointmentScreenState extends State<AppointmentScreen> {
   final List<AppointmentModel> dummyAppointments = [
     AppointmentModel(
       patientName: 'Sarah Johnson',
@@ -82,6 +81,9 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
       isToday: false,
     ),
   ];
+
+
+class _AppointmentScreenState extends State<AppointmentScreen> {
 
   String _selectedFilter = 'All Appointments';
 

@@ -90,88 +90,92 @@ import '../screens/dashboard/appointment_screen.dart';
 // }
 
 class AppointmentTileWidget extends StatelessWidget {
+  final VoidCallback? onTap;
   final AppointmentModel appointment;
 
-  const AppointmentTileWidget({super.key, required this.appointment});
+  const AppointmentTileWidget({super.key, required this.appointment ,this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return BorderdContainerWidget(
-      margin: EdgeInsets.only(bottom: 15.h),
-      child: Row(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: CustomColors.lightBlueColor.withValues(alpha: 0.3),
-            ),
-            padding: EdgeInsets.all(12.w),
-            margin: EdgeInsets.symmetric(horizontal: 14.w),
-            child: Icon(
-              Icons.event_outlined,
-              color: CustomColors.lightBlueColor,
-            ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(appointment.patientName, style: CustomFonts.black17w600),
-                  SizedBox(width: 10.w),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: _statusColor(appointment.status),
-                    ),
-                    padding: EdgeInsets.all(9.w),
-                    child: Text(
-                      appointment.status,
-                      style: CustomFonts.white13w400,
-                    ),
-                  ),
-                ],
+    return GestureDetector(
+      onTap:onTap ?? (){},
+      child: BorderdContainerWidget(
+        margin: EdgeInsets.only(bottom: 15.h),
+        child: Row(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: CustomColors.lightBlueColor.withValues(alpha: 0.3),
               ),
-              SizedBox(height: 10.h),
-              Text(appointment.treatment, style: CustomFonts.black17w500),
-              SizedBox(height: 7.h),
-              Row(
-                children: [
-                  Icon(
-                    Icons.event_outlined,
-                    size: 17.sp,
-                    color: CustomColors.blackColor,
-                  ),
-                  SizedBox(width: 5.w),
-                  Text(appointment.date, style: CustomFonts.black17w500),
-                  SizedBox(width: 10.w),
-                  Icon(
-                    Icons.schedule,
-                    size: 17.sp,
-                    color: CustomColors.blackColor,
-                  ),
-                  SizedBox(width: 5.w),
-                  Text(appointment.time, style: CustomFonts.black17w500),
-                ],
+              padding: EdgeInsets.all(12.w),
+              margin: EdgeInsets.symmetric(horizontal: 14.w),
+              child: Icon(
+                Icons.event_outlined,
+                color: CustomColors.lightBlueColor,
               ),
-            ],
-          ),
-          Spacer(),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '\$${appointment.amount.toStringAsFixed(0)}',
-                style: CustomFonts.black21w600.copyWith(
-                  color: CustomColors.lightBlueColor,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(appointment.patientName, style: CustomFonts.black17w600),
+                    SizedBox(width: 10.w),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: _statusColor(appointment.status),
+                      ),
+                      padding: EdgeInsets.all(9.w),
+                      child: Text(
+                        appointment.status,
+                        style: CustomFonts.white13w400,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              SizedBox(height: 14.h),
-              Text(appointment.doctor, style: CustomFonts.black17w500),
-            ],
-          ),
-        ],
+                SizedBox(height: 10.h),
+                Text(appointment.treatment, style: CustomFonts.black17w500),
+                SizedBox(height: 7.h),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.event_outlined,
+                      size: 17.sp,
+                      color: CustomColors.blackColor,
+                    ),
+                    SizedBox(width: 5.w),
+                    Text(appointment.date, style: CustomFonts.black17w500),
+                    SizedBox(width: 10.w),
+                    Icon(
+                      Icons.schedule,
+                      size: 17.sp,
+                      color: CustomColors.blackColor,
+                    ),
+                    SizedBox(width: 5.w),
+                    Text(appointment.time, style: CustomFonts.black17w500),
+                  ],
+                ),
+              ],
+            ),
+            Spacer(),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '\$${appointment.amount.toStringAsFixed(0)}',
+                  style: CustomFonts.black21w600.copyWith(
+                    color: CustomColors.lightBlueColor,
+                  ),
+                ),
+                SizedBox(height: 14.h),
+                Text(appointment.doctor, style: CustomFonts.black17w500),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
