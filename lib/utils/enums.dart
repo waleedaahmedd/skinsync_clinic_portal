@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 enum SharedPreferencesKeys {
   themeModeKey("theme-mode"),
   accessTokenKey("access-token"),
@@ -61,6 +63,42 @@ enum BaseUrls {
 
 enum AuthScreen { login, forgetPassword, verifyOtp, createNewPassword }
 
-enum AppointmentStatus { allStatus, noShow, delayed,completed,arrived,ongoing}
+enum AppointmentStatus {
+  allStatus,
+  noShow,
+  delayed,
+  completed,
+  arrived,
+  ongoing;
+
+  String get label {
+    switch (this) {
+      case AppointmentStatus.allStatus:  return 'All Status';
+      case AppointmentStatus.noShow:     return 'No Show';
+      case AppointmentStatus.delayed:    return 'Delayed';
+      case AppointmentStatus.completed:  return 'Completed';
+      case AppointmentStatus.arrived:    return 'Arrived';
+      case AppointmentStatus.ongoing:    return 'Ongoing';
+    }
+  }
+
+  Color get color {
+    switch (this) {
+      case AppointmentStatus.allStatus:  return Colors.grey;
+      case AppointmentStatus.noShow:     return const Color(0xFF939393);
+      case AppointmentStatus.delayed:    return const Color(0xFFFB2C36);
+      case AppointmentStatus.completed:  return Colors.black;
+      case AppointmentStatus.arrived:    return const Color(0xFF155DFC);
+      case AppointmentStatus.ongoing:    return const Color(0xFFF2C54A);
+    }
+  }
+
+  static AppointmentStatus fromLabel(String label) {
+    return AppointmentStatus.values.firstWhere(
+      (e) => e.label == label,
+      orElse: () => AppointmentStatus.allStatus,
+    );
+  }
+}
 
 enum DiscountType { per, flat }

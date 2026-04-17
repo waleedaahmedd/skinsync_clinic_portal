@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
+import 'package:skinsync_clinic_portal/utils/enums.dart';
 import 'package:skinsync_clinic_portal/view_models/auth_view_model.dart';
 import 'package:skinsync_clinic_portal/widgets/appointment_tile_widget.dart';
 import 'package:skinsync_clinic_portal/widgets/borderd_container_widget.dart';
@@ -12,11 +13,6 @@ import 'package:skinsync_clinic_portal/widgets/dailog%20box/appointment_ready_da
 import '../../widgets/appointment_horizontal_tile_widget.dart';
 import '../../widgets/calender_widget.dart';
 import '../../widgets/custom_dropdown_widget.dart';
-import '../../widgets/dailog box/create_invoice_dailog.dart';
-import '../../widgets/dailog box/note_dailog.dart';
-import '../../widgets/dailog box/scheduled_next_appointment.dart';
-import '../../widgets/dailog box/select_time_slot_dailog.dart';
-import '../../widgets/dailog box/show_success_dailog.dart';
 
 class AppointmentScreen extends StatefulWidget {
   static const String routeName = '/appointment';
@@ -35,7 +31,7 @@ final List<AppointmentModel> dummyAppointments = [
     time: '10:00 AM',
     doctor: 'Dr. Smith',
     amount: 350,
-    status: 'Completed',
+    status: AppointmentStatus.arrived,
     isToday: false,
   ),
   AppointmentModel(
@@ -45,7 +41,7 @@ final List<AppointmentModel> dummyAppointments = [
     time: '11:00 AM',
     doctor: 'Dr. Lee',
     amount: 450,
-    status: 'Completed',
+    status: AppointmentStatus.ongoing,
     isToday: false,
   ),
   AppointmentModel(
@@ -55,7 +51,7 @@ final List<AppointmentModel> dummyAppointments = [
     time: '09:00 AM',
     doctor: 'Dr. Smith',
     amount: 600,
-    status: 'Upcoming',
+    status: AppointmentStatus.delayed,
     isToday: true,
   ),
   AppointmentModel(
@@ -65,7 +61,7 @@ final List<AppointmentModel> dummyAppointments = [
     time: '02:00 PM',
     doctor: 'Dr. Adams',
     amount: 250,
-    status: 'Upcoming',
+    status: AppointmentStatus.noShow,
     isToday: true,
   ),
   AppointmentModel(
@@ -75,7 +71,7 @@ final List<AppointmentModel> dummyAppointments = [
     time: '03:00 PM',
     doctor: 'Dr. Lee',
     amount: 300,
-    status: 'Upcoming',
+    status: AppointmentStatus.completed,
     isToday: false,
   ),
   AppointmentModel(
@@ -85,14 +81,14 @@ final List<AppointmentModel> dummyAppointments = [
     time: '01:00 PM',
     doctor: 'Dr. Adams',
     amount: 200,
-    status: 'Cancelled',
+    status: AppointmentStatus.ongoing,
     isToday: false,
   ),
 ];
 
 class _AppointmentScreenState extends State<AppointmentScreen> {
   String _selectedFilter = 'All Appointments';
-  String _selectedStatus = 'All Status';
+  AppointmentStatus _selectedStatus = AppointmentStatus.allStatus;
 
   List<AppointmentModel> get _filteredAppointments {
     switch (_selectedFilter) {
@@ -129,13 +125,12 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
                           return Consumer(
-                            builder: (context,ref,_) {
+                            builder: (context, ref, _) {
                               return AppointmentHorizontalTileWidget(
-                               
                                 index: index,
                                 selected: index == 0,
                               );
-                            }
+                            },
                           );
                         },
                       ),
@@ -185,6 +180,8 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                           "All Appointments",
                           "Past Appointments",
                           "Today Appointments",
+                          "Upcoming Appointments",
+                          "Rescheduled/Followup"
                         ],
                         height: 42.h,
                         onChanged: (value) => setState(
@@ -198,18 +195,15 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                       flex: 2,
                       child: CustomDropdown(
                         hint: "Status",
-                        value: _selectedStatus,
-                        items: [
-                          "All Status",
-                          "No Show",
-                          "Delayed",
-                          "Completed",
-                          "Arrived",
-                          "Ongoing",
-                        ],
+                        value: _selectedStatus.label,
+                        items: AppointmentStatus.values
+                            .map((e) => e.label)
+                            .toList(),
                         height: 42.h,
                         onChanged: (value) => setState(
-                          () => _selectedStatus = value ?? 'All Status',
+                          () => _selectedStatus = AppointmentStatus.fromLabel(
+                            value ?? 'All Status',
+                          ),
                         ),
                       ),
                     ),
@@ -273,25 +267,21 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
               // ...List.generate(5, (index) => AppointmentTileWidget()),
               ...List.generate(
                 _filteredAppointments.length,
-                (index) =>  Consumer(
-                  builder: (context,ref,_) {
+                (index) => Consumer(
+                  builder: (context, ref, _) {
                     return AppointmentTileWidget(
-                          appointment: _filteredAppointments[index],
-                          onTap: () {
-                             ref.read(authViewModelProvider.notifier).navigateDailogIndexToNext(0);
-                            showDialog(
-                              context: context,
-                              builder: (_) => AppointmentReadyDailog(),
-                            );
-                             
-                            
-                        
-                            //AddNoteDialog.show(context);
-                            print('object');
-                          },
-                      
+                      appointment: _filteredAppointments[index],
+                      onTap: () {
+                        ref
+                            .read(authViewModelProvider.notifier)
+                            .navigateDailogIndexToNext(0);
+                        showDialog(
+                          context: context,
+                          builder: (_) => AppointmentReadyDailog(),
+                        );
+                      },
                     );
-                  }
+                  },
                 ),
               ),
             ],
@@ -309,7 +299,7 @@ class AppointmentModel {
   final String time;
   final String doctor;
   final double amount;
-  final String status; // 'Completed', 'Upcoming', 'Cancelled'
+  final AppointmentStatus status; // 'Completed', 'Upcoming', 'Cancelled'
   final bool isToday;
 
   const AppointmentModel({

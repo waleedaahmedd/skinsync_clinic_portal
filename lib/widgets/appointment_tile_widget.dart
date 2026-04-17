@@ -126,11 +126,11 @@ class AppointmentTileWidget extends StatelessWidget {
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: _statusColor(appointment.status),
+                        color: appointment.status.color,
                       ),
                       padding: EdgeInsets.all(9.w),
                       child: Text(
-                        appointment.status,
+                        appointment.status.label,
                         style: CustomFonts.white13w400,
                       ),
                     ),

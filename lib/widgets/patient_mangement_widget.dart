@@ -14,6 +14,7 @@ import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 import 'package:skinsync_clinic_portal/utils/theme.dart';
 import 'package:skinsync_clinic_portal/view_models/auth_view_model.dart';
 import 'package:skinsync_clinic_portal/widgets/appointment_tile_widget.dart';
+import 'package:skinsync_clinic_portal/widgets/dailog%20box/appointment_ready_dailog.dart';
 import 'package:skinsync_clinic_portal/widgets/dailog%20box/chat_dailog.dart';
 import 'package:skinsync_clinic_portal/widgets/dailog%20box/notes_dailog.dart';
 import 'package:skinsync_clinic_portal/widgets/dailog%20box/simulations_detail_dailog_box.dart';
@@ -35,6 +36,11 @@ class _PatientMangementWidgetState extends State<PatientMangementWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         patientInfo(context: context),
+         SizedBox(height: 19.h),
+        selectionButtons(),
+        SizedBox(height: 19.h),
+        if (isTreatmentSelected) treatmentContent(),
+        if (!isTreatmentSelected) simulationContent(),
         SizedBox(height: 19.h),
         medicalInfo(context: context),
         SizedBox(height: 19.h),
@@ -74,10 +80,8 @@ class _PatientMangementWidgetState extends State<PatientMangementWidget> {
           ),
         ),
         SizedBox(height: 19.h),
-        selectionButtons(),
+        appointmentContent(),
         SizedBox(height: 19.h),
-        if (isTreatmentSelected) treatmentContent(),
-        if (!isTreatmentSelected) simulationContent(),
       ],
     );
   }
@@ -258,7 +262,7 @@ class _PatientMangementWidgetState extends State<PatientMangementWidget> {
           CupertinoSearchTextField(backgroundColor: Color(0xFFF3F3F5)),
           SizedBox(height: 19.h),
           ListView.separated(
-            separatorBuilder: (context, index) => SizedBox(height: 15.h),
+            separatorBuilder: (context, index) => SizedBox(height: 0.h),
             shrinkWrap: true,
             itemCount: 3,
             itemBuilder: (context, index) {
@@ -266,7 +270,7 @@ class _PatientMangementWidgetState extends State<PatientMangementWidget> {
                 onTap: () {
                   context.go(PatientManagementDetailScreen.routeName);
                 },
-                appointment: dummyAppointments[index],
+                appointment: dummyAppointments[4],
               );
             },
           ),
@@ -274,6 +278,49 @@ class _PatientMangementWidgetState extends State<PatientMangementWidget> {
       ),
     );
   }
+
+  Widget appointmentContent() {
+    return Container(
+      padding: EdgeInsets.all(15.w),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15.r),
+        border: Border.all(color: Colors.grey.shade300),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("Appointments", style: CustomFonts.black22w600),
+          SizedBox(height: 20.h),
+          // CupertinoSearchTextField(backgroundColor: Color(0xFFF3F3F5)),
+          // SizedBox(height: 19.h),
+          ListView.separated(
+            separatorBuilder: (context, index) => SizedBox(height: 0.h),
+            shrinkWrap: true,
+            itemCount: 3,
+            itemBuilder: (context, index) {
+              return  Consumer(
+                  builder: (context,ref,_) {
+                    return AppointmentTileWidget(
+                          appointment: dummyAppointments[index],
+                          onTap: () {
+                             ref.read(authViewModelProvider.notifier).navigateDailogIndexToNext(0);
+                            showDialog(
+                              context: context,
+                              builder: (_) => AppointmentReadyDailog(),
+                            );
+                          },
+                    );
+                  }
+                );
+              
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+ 
 
   Widget medicalInfo({required BuildContext context}) {
     return Container(

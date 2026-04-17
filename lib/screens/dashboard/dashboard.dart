@@ -14,7 +14,6 @@ import '../../widgets/custom_app_bar.dart';
 import 'home_screen.dart';
 import 'manage_doc_injector_screen.dart';
 import 'mange_staff_screen.dart';
-import 'patient_ai_management.dart';
 import 'patient_management.dart';
 import 'profile_screen.dart';
 import 'treatment_screen.dart';
@@ -84,12 +83,12 @@ class Dashboard extends StatelessWidget {
                         chipIcon: Iconsax.profile_2user,
                         routeName: PatientManagementScreen.routeName,
                       ),
-                      _buildRailItem(
-                        context: context,
-                        title: 'Patient AI Management',
-                        chipIcon: Iconsax.chart_34,
-                        routeName: PatientAiManagementScreen.routeName,
-                      ),
+                      // _buildRailItem(
+                      //   context: context,
+                      //   title: 'Patient AI Management',
+                      //   chipIcon: Iconsax.chart_34,
+                      //   routeName: PatientAiManagementScreen.routeName,
+                      // ),
                       _buildRailItem(
                         context: context,
                         title: 'Appointments',
