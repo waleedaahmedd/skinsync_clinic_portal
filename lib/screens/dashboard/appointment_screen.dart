@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
+import 'package:skinsync_clinic_portal/view_models/auth_view_model.dart';
 import 'package:skinsync_clinic_portal/widgets/appointment_tile_widget.dart';
 import 'package:skinsync_clinic_portal/widgets/borderd_container_widget.dart';
+import 'package:skinsync_clinic_portal/widgets/dailog%20box/appointment_ready_dailog.dart';
 
 import '../../widgets/appointment_horizontal_tile_widget.dart';
 import '../../widgets/calender_widget.dart';
@@ -125,9 +128,14 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                         itemCount: 6,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
-                          return AppointmentHorizontalTileWidget(
-                            index: index,
-                            selected: index == 0,
+                          return Consumer(
+                            builder: (context,ref,_) {
+                              return AppointmentHorizontalTileWidget(
+                               
+                                index: index,
+                                selected: index == 0,
+                              );
+                            }
                           );
                         },
                       ),
@@ -265,20 +273,25 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
               // ...List.generate(5, (index) => AppointmentTileWidget()),
               ...List.generate(
                 _filteredAppointments.length,
-                (index) => AppointmentTileWidget(
-                  appointment: _filteredAppointments[index],
-                  onTap: () {
-                    // showDialog(
-                    //   context: context,
-                    //   builder: (_) => SelectTimeSlotDialog(),
-                    // );
-                    // CreateInvoiceDialog.show(context, invoiceNumber: 'SSA5002');
-
-                    SuccessDialog.show(context);
-
-                    //AddNoteDialog.show(context);
-                    print('object');
-                  },
+                (index) =>  Consumer(
+                  builder: (context,ref,_) {
+                    return AppointmentTileWidget(
+                          appointment: _filteredAppointments[index],
+                          onTap: () {
+                             ref.read(authViewModelProvider.notifier).navigateDailogIndexToNext(0);
+                            showDialog(
+                              context: context,
+                              builder: (_) => AppointmentReadyDailog(),
+                            );
+                             
+                            
+                        
+                            //AddNoteDialog.show(context);
+                            print('object');
+                          },
+                      
+                    );
+                  }
                 ),
               ),
             ],

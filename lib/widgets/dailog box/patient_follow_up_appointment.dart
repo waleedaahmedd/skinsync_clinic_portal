@@ -3,9 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skinsync_clinic_portal/utils/assets.dart';
 import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
+import 'package:skinsync_clinic_portal/widgets/dailog%20box/follow_up_later_dailog.dart';
 
 
 class PatientFollowUpAppointment extends StatelessWidget {
@@ -39,7 +41,13 @@ class PatientFollowUpAppointment extends StatelessWidget {
              children: [
                Expanded(
                  child: GestureDetector(
-                  onTap :() {},
+                  onTap :() {
+                     context.pop();
+                    showDialog(
+                        context: context,
+                        builder: (context) => FollowUpLater(),
+                      );
+                  },
                    child: Container(
                    alignment: .center,
                     padding: EdgeInsets.symmetric(vertical: 13.h),
@@ -54,7 +62,9 @@ class PatientFollowUpAppointment extends StatelessWidget {
                SizedBox(width: 10.w,),
                Expanded(
                  child: GestureDetector(
-                  onTap :() {},
+                  onTap :() {
+                    context.pop();
+                  },
                    child: Container(
                    alignment: .center,
                     padding: EdgeInsets.symmetric(vertical: 13.h),

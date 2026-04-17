@@ -147,6 +147,15 @@ void clearSignature() {
     newPasswordController.dispose();
     confirmPasswordController.dispose();
   }
+
+void navigateDailogIndexToNext(int  value){
+ state = state.copyWith(navigateDailogIndex: value);
+}
+
+void resetnavigateDailogIndex(){
+  state = state.copyWith(navigateDailogIndex: 1);
+}
+
 }
 
 class AuthState {
@@ -160,6 +169,7 @@ class AuthState {
   final bool obscureConfirm;
   final String resetToken;
   final ui.Image? signature;
+  final int navigateDailogIndex;
 
   AuthState({
     this.loading = false,
@@ -172,6 +182,7 @@ class AuthState {
     this.obscureConfirm = true,
     this.resetToken = '',
     this.signature,
+    this.navigateDailogIndex = 0,
   });
 
   AuthState copyWith({
@@ -185,6 +196,7 @@ class AuthState {
     bool? obscureNew,
     bool? obscureConfirm,
     ui.Image? signature,
+    int? navigateDailogIndex,
   }) {
     return AuthState(
       loading: loading ?? this.loading,
@@ -197,6 +209,7 @@ class AuthState {
       obscureConfirm: obscureConfirm ?? this.obscureConfirm,
       resetToken: resetToken ?? this.resetToken,
       signature: signature ?? this.signature,
+      navigateDailogIndex: navigateDailogIndex ?? this.navigateDailogIndex,
     );
   }
 }

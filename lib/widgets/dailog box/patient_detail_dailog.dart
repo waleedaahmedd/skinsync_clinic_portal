@@ -64,7 +64,7 @@ class PatientDetailDailog extends StatelessWidget {
                           color: CustomColors.blackColor,
                           borderRadius: BorderRadius.circular(8.r),
                         ),
-                        child: Center(child: Text("End Appointment", style: CustomFonts.white18w500),),
+                        child: Center(child: Text("Continue", style: CustomFonts.white18w500),),
                       ),
                     ),
                   ),

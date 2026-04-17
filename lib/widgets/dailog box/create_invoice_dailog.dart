@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skinsync_clinic_portal/utils/assets.dart';
 import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
+import 'package:skinsync_clinic_portal/view_models/auth_view_model.dart';
+import 'package:skinsync_clinic_portal/widgets/dailog%20box/appointment_ready_dailog.dart';
 
 class CreateInvoiceDialog extends StatefulWidget {
   final String invoiceNumber;
@@ -146,23 +150,35 @@ class _CreateInvoiceDialogState extends State<CreateInvoiceDialog> {
             /// Buttons
             Row(
               children: [
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 16.h),
-                      decoration: BoxDecoration(
-                        color: CustomColors.blackColor,
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Send Invoice & Consent',
-                          style: CustomFonts.white16w600,
+                Consumer(
+                  builder: (context,ref,_) {
+                    return Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          ref.read(authViewModelProvider.notifier).navigateDailogIndexToNext(1);
+                          context.pop();
+                          
+                          showDialog(
+                            context: context,
+                            builder: (context) => AppointmentReadyDailog(),
+                          );
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 16.h),
+                          decoration: BoxDecoration(
+                            color: CustomColors.blackColor,
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Send Invoice & Consent',
+                              style: CustomFonts.white16w600,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
+                    );
+                  }
                 ),
                 SizedBox(width: 12.w),
                 Expanded(

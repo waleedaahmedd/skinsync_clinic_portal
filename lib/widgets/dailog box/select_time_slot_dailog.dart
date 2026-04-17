@@ -3,9 +3,11 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skinsync_clinic_portal/utils/assets.dart';
 import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
+import 'package:skinsync_clinic_portal/widgets/dailog%20box/show_success_dailog.dart';
 import 'package:skinsync_clinic_portal/widgets/patient_mangement_widget.dart';
 
 class SelectTimeSlotDialog extends StatelessWidget {
@@ -64,7 +66,13 @@ class SelectTimeSlotDialog extends StatelessWidget {
                 children: [
                   Expanded(
                     child: GestureDetector(
-                      onTap: () => Navigator.pop(context),
+                      onTap: (){
+                         context.pop();
+                        showDialog(
+                        context: context,
+                        builder: (context) => SuccessDialog(),
+                      );
+                      },
                       child: Container(
                         padding: EdgeInsets.symmetric(
                           horizontal: 12.w,

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:skinsync_clinic_portal/view_models/auth_view_model.dart';
+import 'package:skinsync_clinic_portal/widgets/dailog%20box/appointment_ready_dailog.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../utils/theme.dart';
@@ -238,34 +241,52 @@ class _AppointmentsCalendarState extends State<AppointmentsCalendar> {
   }
 
   Widget _appointmentCard(Appointment a) {
-    return Container(
-      // margin: const EdgeInsets.only(bottom: 6),
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: a.highlighted
-            ? const Color(0xFFA7F3D0)
-            : const Color(0xFFF3F4F6),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            a.clinic,
-            style: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.w600),
+    return Consumer(
+      builder: (context, ref, _) {
+        return GestureDetector(
+          onTap: () {
+            ref
+                .read(authViewModelProvider.notifier)
+                .navigateDailogIndexToNext(0);
+            showDialog(
+              context: context,
+              builder: (_) => AppointmentReadyDailog(),
+            );
+          },
+          child: Container(
+            // margin: const EdgeInsets.only(bottom: 6),
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: a.highlighted
+                  ? const Color(0xFFA7F3D0)
+                  : const Color(0xFFF3F4F6),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  a.clinic,
+                  style: TextStyle(
+                    fontSize: 10.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  a.service,
+                  style: TextStyle(fontSize: 9.sp, color: Colors.black54),
+                ),
+                // SizedBox(height: 4.h),
+                Text(
+                  a.time,
+                  style: TextStyle(fontSize: 9.sp, color: Colors.black45),
+                ),
+              ],
+            ),
           ),
-          SizedBox(height: 4.h),
-          Text(
-            a.service,
-            style: TextStyle(fontSize: 9.sp, color: Colors.black54),
-          ),
-          // SizedBox(height: 4.h),
-          Text(
-            a.time,
-            style: TextStyle(fontSize: 9.sp, color: Colors.black45),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
