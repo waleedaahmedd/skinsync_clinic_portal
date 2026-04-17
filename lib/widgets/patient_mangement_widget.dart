@@ -1,14 +1,23 @@
+import 'dart:ui' as ui;
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:skinsync_clinic_portal/screens/dashboard/appointment_screen.dart';
+import 'package:skinsync_clinic_portal/screens/dashboard/patient_management_detail.dart';
 import 'package:skinsync_clinic_portal/utils/assets.dart';
 import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 import 'package:skinsync_clinic_portal/utils/theme.dart';
+import 'package:skinsync_clinic_portal/view_models/auth_view_model.dart';
+import 'package:skinsync_clinic_portal/widgets/appointment_tile_widget.dart';
 import 'package:skinsync_clinic_portal/widgets/dailog%20box/chat_dailog.dart';
 import 'package:skinsync_clinic_portal/widgets/dailog%20box/notes_dailog.dart';
 import 'package:skinsync_clinic_portal/widgets/dailog%20box/simulations_detail_dailog_box.dart';
+import 'package:skinsync_clinic_portal/widgets/signpad_widget.dart';
 import 'package:skinsync_clinic_portal/widgets/treatment_container.dart';
 
 class PatientMangementWidget extends StatefulWidget {
@@ -253,7 +262,12 @@ class _PatientMangementWidgetState extends State<PatientMangementWidget> {
             shrinkWrap: true,
             itemCount: 3,
             itemBuilder: (context, index) {
-              return TreatmentContainer();
+              return AppointmentTileWidget(
+                onTap: () {
+                  context.go(PatientManagementDetailScreen.routeName);
+                },
+                appointment: dummyAppointments[index],
+              );
             },
           ),
         ],
@@ -376,7 +390,89 @@ class _PatientMangementWidgetState extends State<PatientMangementWidget> {
                   ),
                   Row(
                     mainAxisAlignment: .spaceBetween,
-                    children: [_buildSignBox(), _buildSignBox()],
+
+                    children: [
+                      SizedBox(
+                        height: 54.h,
+                        width: 101.w,
+                        child: Image.asset(
+                          (PngAssets.signature),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      Spacer(),
+                      Consumer(
+                        builder: (context, ref, _) {
+                          final signature = ref
+                              .watch(authViewModelProvider)
+                              .signature;
+                          if (signature != null) {
+                       return    RawImage(image: signature, height: 60.h, fit: BoxFit.contain);
+                          }
+
+                          return GestureDetector(
+                            onTap: () async {
+                              final ui.Image? signature =
+                                  await ESignatureDialog.show(context);
+                              if (signature != null) {
+                                ref
+                                    .read(authViewModelProvider.notifier)
+                                    .saveSignature(signature);
+                              }
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(9.w),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: CustomColors.blackColor,
+                                ),
+                                borderRadius: BorderRadius.circular(8.r),
+                                color: CustomColors.greyColor,
+                              ),
+
+                              child: Text(
+                                " + Draw Signature",
+                                style: CustomFonts.black12w400,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 6.h),
+                  Row(
+                    mainAxisAlignment: .spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: .start,
+                        children: [
+                          Container(
+                            width: 105.w,
+                            height: 1.h,
+                            color: CustomColors.blackColor,
+                          ),
+                          Text(
+                            "Patient Signature",
+                            style: CustomFonts.black14w400,
+                          ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: .start,
+                        children: [
+                          Container(
+                            width: 105.w,
+                            height: 1.h,
+                            color: CustomColors.blackColor,
+                          ),
+                          Text(
+                            "Clinic Signature",
+                            style: CustomFonts.black14w400,
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ],
               ),

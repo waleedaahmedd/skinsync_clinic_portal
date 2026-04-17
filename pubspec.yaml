@@ -61,6 +61,7 @@ dependencies:
   cached_network_image: ^3.4.1
   firebase_storage: ^13.1.0
   material_duration_picker: ^0.1.1
+  syncfusion_flutter_signaturepad: ^33.1.49
 
 dev_dependencies:
   flutter_test:

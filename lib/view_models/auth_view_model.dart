@@ -1,3 +1,5 @@
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -35,7 +37,6 @@ class AuthViewModel extends BaseViewModel<AuthState> {
 
     if (token != null && token.isNotEmpty) {
       state = state.copyWith(isAuthenticated: true);
-    
     }
   }
 
@@ -113,6 +114,14 @@ class AuthViewModel extends BaseViewModel<AuthState> {
         false;
   }
 
+void saveSignature(ui.Image image) {
+  state = state.copyWith(signature: image);
+}
+
+void clearSignature() {
+  state = state.copyWith(signature: null);
+}
+
   Future<bool> createNewPassword({
     required String email,
     required String newPassword,
@@ -138,6 +147,15 @@ class AuthViewModel extends BaseViewModel<AuthState> {
     newPasswordController.dispose();
     confirmPasswordController.dispose();
   }
+
+void navigateDailogIndexToNext(int  value){
+ state = state.copyWith(navigateDailogIndex: value);
+}
+
+void resetnavigateDailogIndex(){
+  state = state.copyWith(navigateDailogIndex: 1);
+}
+
 }
 
 class AuthState {
@@ -150,6 +168,8 @@ class AuthState {
   final bool obscureNew;
   final bool obscureConfirm;
   final String resetToken;
+  final ui.Image? signature;
+  final int navigateDailogIndex;
 
   AuthState({
     this.loading = false,
@@ -161,6 +181,8 @@ class AuthState {
     this.obscureNew = true,
     this.obscureConfirm = true,
     this.resetToken = '',
+    this.signature,
+    this.navigateDailogIndex = 0,
   });
 
   AuthState copyWith({
@@ -173,6 +195,8 @@ class AuthState {
     bool? obscureCurrent,
     bool? obscureNew,
     bool? obscureConfirm,
+    ui.Image? signature,
+    int? navigateDailogIndex,
   }) {
     return AuthState(
       loading: loading ?? this.loading,
@@ -184,6 +208,8 @@ class AuthState {
       obscureNew: obscureNew ?? this.obscureNew,
       obscureConfirm: obscureConfirm ?? this.obscureConfirm,
       resetToken: resetToken ?? this.resetToken,
+      signature: signature ?? this.signature,
+      navigateDailogIndex: navigateDailogIndex ?? this.navigateDailogIndex,
     );
   }
 }

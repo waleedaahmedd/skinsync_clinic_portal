@@ -10,7 +10,7 @@ import 'package:skinsync_clinic_portal/utils/responsive.dart';
 import 'package:skinsync_clinic_portal/view_models/inventory_view_model.dart';
 import 'package:skinsync_clinic_portal/widgets/build_textfield.dart';
 
-import '../../widgets/dailog box/add_product_dialog.dart';
+import '../../widgets/dailog box/add_product_dailog.dart';
 
 class InventoryScreen extends ConsumerStatefulWidget {
   static const String routeName = '/inventory_screen';
