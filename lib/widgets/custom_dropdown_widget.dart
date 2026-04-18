@@ -25,9 +25,9 @@ class CustomDropdown<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dropdownItems = items ?? []; // fallback to empty list
+    final dropdownItems = items ?? [];
     return SizedBox(
-      height: height ??55.h,
+      height: height ?? 55.h,
       child: DropdownButtonFormField2<T>(
         isExpanded: true,
         value: value,
@@ -37,7 +37,7 @@ class CustomDropdown<T> extends StatelessWidget {
           filled: true,
           contentPadding: EdgeInsets.symmetric(
             horizontal: 12.w,
-            vertical: 15.h,
+            // vertical: 15.h,
           ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.r),

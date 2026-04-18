@@ -19,7 +19,6 @@ import 'package:skinsync_clinic_portal/widgets/dailog%20box/chat_dailog.dart';
 import 'package:skinsync_clinic_portal/widgets/dailog%20box/notes_dailog.dart';
 import 'package:skinsync_clinic_portal/widgets/dailog%20box/simulations_detail_dailog_box.dart';
 import 'package:skinsync_clinic_portal/widgets/signpad_widget.dart';
-import 'package:skinsync_clinic_portal/widgets/treatment_container.dart';
 
 class PatientMangementWidget extends StatefulWidget {
   const PatientMangementWidget({super.key});
@@ -36,13 +35,11 @@ class _PatientMangementWidgetState extends State<PatientMangementWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         patientInfo(context: context),
-         SizedBox(height: 19.h),
+        SizedBox(height: 19.h),
         selectionButtons(),
         SizedBox(height: 19.h),
         if (isTreatmentSelected) treatmentContent(),
         if (!isTreatmentSelected) simulationContent(),
-        SizedBox(height: 19.h),
-        medicalInfo(context: context),
         SizedBox(height: 19.h),
         allergies(),
         SizedBox(height: 19.h),
@@ -81,6 +78,8 @@ class _PatientMangementWidgetState extends State<PatientMangementWidget> {
         ),
         SizedBox(height: 19.h),
         appointmentContent(),
+        SizedBox(height: 19.h),
+        medicalInfo(context: context),
         SizedBox(height: 19.h),
       ],
     );
@@ -298,29 +297,28 @@ class _PatientMangementWidgetState extends State<PatientMangementWidget> {
             shrinkWrap: true,
             itemCount: 3,
             itemBuilder: (context, index) {
-              return  Consumer(
-                  builder: (context,ref,_) {
-                    return AppointmentTileWidget(
-                          appointment: dummyAppointments[index],
-                          onTap: () {
-                             ref.read(authViewModelProvider.notifier).navigateDailogIndexToNext(0);
-                            showDialog(
-                              context: context,
-                              builder: (_) => AppointmentReadyDailog(),
-                            );
-                          },
-                    );
-                  }
-                );
-              
+              return Consumer(
+                builder: (context, ref, _) {
+                  return AppointmentTileWidget(
+                    appointment: dummyAppointments[index],
+                    onTap: () {
+                      ref
+                          .read(authViewModelProvider.notifier)
+                          .navigateDailogIndexToNext(0);
+                      showDialog(
+                        context: context,
+                        builder: (_) => AppointmentReadyDailog(),
+                      );
+                    },
+                  );
+                },
+              );
             },
           ),
         ],
       ),
     );
   }
-
- 
 
   Widget medicalInfo({required BuildContext context}) {
     return Container(
@@ -454,7 +452,11 @@ class _PatientMangementWidgetState extends State<PatientMangementWidget> {
                               .watch(authViewModelProvider)
                               .signature;
                           if (signature != null) {
-                       return    RawImage(image: signature, height: 60.h, fit: BoxFit.contain);
+                            return RawImage(
+                              image: signature,
+                              height: 60.h,
+                              fit: BoxFit.contain,
+                            );
                           }
 
                           return GestureDetector(

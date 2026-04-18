@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:skinsync_clinic_portal/view_models/auth_view_model.dart';
+import 'package:skinsync_clinic_portal/services/locator.dart';
+import 'package:skinsync_clinic_portal/services/storage_service.dart';
 
 class WelcomeBannerWidget extends StatelessWidget {
   const WelcomeBannerWidget({super.key});
@@ -22,18 +22,19 @@ class WelcomeBannerWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Consumer(
-            builder: (context,ref,_) {
-                 final name = ref.watch(authViewModelProvider).user?.name;
+          FutureBuilder(
+            future: locator<SecureStorageService>().getUser(),
+            builder: (context, snapshot) {
+              final name = snapshot.data?.name;
               return Text(
-                "Welcome back, $name 👋",
+                name != null ? 'Welcome back, $name 👋' : 'Welcome back 👋',
                 style: TextStyle(
                   fontSize: 20.sp,
                   fontWeight: FontWeight.w600,
                   color: Colors.black87,
                 ),
               );
-            }
+            },
           ),
           SizedBox(height: 6.h),
           Text(

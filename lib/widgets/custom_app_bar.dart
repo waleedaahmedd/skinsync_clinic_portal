@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:skinsync_clinic_portal/models/user_model.dart';
 import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
-import 'package:skinsync_clinic_portal/view_models/auth_view_model.dart';
 
 import '../screens/sign_in_screen.dart';
 import '../services/locator.dart';
@@ -13,9 +12,32 @@ import '../services/storage_service.dart';
 import '../utils/assets.dart';
 import '../utils/responsive.dart';
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   final bool showLogo;
   const CustomAppBar({super.key, this.showLogo = false});
+
+  @override
+  State<CustomAppBar> createState() => _CustomAppBarState();
+
+  @override
+  Size get preferredSize => Size(double.infinity, 101.h);
+}
+
+class _CustomAppBarState extends State<CustomAppBar> {
+  UserModel? user;
+
+  @override
+  void initState() {
+    super.initState();
+    _init();
+  }
+
+  Future<void> _init() async {
+    user = await locator<SecureStorageService>().getUser();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +49,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (showLogo)
+          if (widget.showLogo)
             Row(
               children: [
                 Image.asset(PngAssets.splashLogo, width: 40.w),
-                SizedBox(width: 10.w,),
+                SizedBox(width: 10.w),
                 Image.asset(PngAssets.logo),
-                SizedBox(width: 15.w,),
+                SizedBox(width: 15.w),
               ],
             ),
           context.isLandscape
@@ -51,24 +73,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           context.isLandscape ? SizedBox(width: 30.r) : SizedBox.shrink(),
           context.isLandscape
-              ? Consumer(
-                  builder: (context, ref, _) {
-                    final image = ref
-                        .watch(authViewModelProvider)
-                        .user
-                        ?.clinic
-                        ?.logo;
-                    return ClipOval(
-                      child: Image.network(
-                        image ?? "",
-                        width: 44.r,
-                        height: 44.r,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Icon(Icons.broken_image, size: 22.sp);
-                        },
-                      ),
-                    );
-                  },
+              ? ClipOval(
+                  child: Image.network(
+                    user?.clinic?.logo ?? "",
+                    width: 44.r,
+                    height: 44.r,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Icon(Icons.broken_image, size: 22.sp);
+                    },
+                  ),
                 )
               : SizedBox.shrink(),
 
@@ -76,18 +89,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               ? Row(
                   children: [
                     SizedBox(width: 20.w),
-                    Consumer(
-                      builder: (context, ref, _) {
-                        final name = ref
-                            .watch(authViewModelProvider)
-                            .user
-                            ?.name;
-                        return Text(
-                          name ?? "N/A",
-                          style: CustomFonts.black16w600,
-                        );
-                      },
-                    ),
+                    Text(user?.name ?? "N/A", style: CustomFonts.black16w600),
                     SizedBox(width: 20.w),
                     PopupMenuButton(
                       offset: Offset(0, 40.h),
@@ -183,7 +185,4 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ],
     );
   }
-
-  @override
-  Size get preferredSize => Size(double.infinity, 101.h);
 }

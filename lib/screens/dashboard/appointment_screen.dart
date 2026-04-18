@@ -181,7 +181,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                           "Past Appointments",
                           "Today Appointments",
                           "Upcoming Appointments",
-                          "Rescheduled/Followup"
+                          "Rescheduled/Followup",
                         ],
                         height: 42.h,
                         onChanged: (value) => setState(
