@@ -16,6 +16,7 @@ import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 import 'package:skinsync_clinic_portal/utils/validators.dart';
 import 'package:skinsync_clinic_portal/widgets/dailog%20box/add_slot_dailogBox.dart';
 import 'package:skinsync_clinic_portal/widgets/dailog%20box/select_treatment_dailog.dart';
+import 'package:skinsync_clinic_portal/widgets/phone_widget.dart';
 
 import '../utils/enums.dart';
 import '../utils/string_utils.dart';
@@ -41,7 +42,7 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
   final _phoneController = TextEditingController();
   final _imageNotifier = ValueNotifier<XFile?>(null);
   final _feeController = TextEditingController();
- 
+
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -292,6 +293,11 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
                     readOnly: isEditing,
                   ),
                   SizedBox(height: 16.h),
+                  Text("Phone Number", style: CustomFonts.black14w500),
+                  PhoneWidget(controller: _phoneController),
+                  SizedBox(height: 10.h),
+                  PhoneWidget(controller: _phoneController),
+                  SizedBox(height: 16.h),
                   BuildTextField(
                     label: "Phone Number",
                     hintText: "+1 (555) 123-4567",
@@ -527,7 +533,7 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
                       phone: _phoneController.text.trim(),
                       specialization: _specializationController.text.trim(),
                       image: _imageNotifier.value,
-                      consultationFee: int.parse(_feeController.text)
+                      consultationFee: int.parse(_feeController.text),
                     );
               }
             },
