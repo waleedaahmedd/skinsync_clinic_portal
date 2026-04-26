@@ -7,6 +7,8 @@ class UpdateDoctorRequest extends BaseRequest {
   final String name;
   final String specialization;
   final String phone;
+  final String? cc;
+  final String? country;
   final List<Availability> availability;
   final String? image;
 
@@ -16,6 +18,8 @@ class UpdateDoctorRequest extends BaseRequest {
     required this.name,
     required this.specialization,
     required this.phone,
+    this.cc,
+    this.country,
     required this.availability,
     this.image,
   });
@@ -28,6 +32,8 @@ class UpdateDoctorRequest extends BaseRequest {
       'name': name,
       'specialization': specialization,
       'phone': phone,
+      'cc': cc,
+      'country': country,
       'availability': availability.map((a) => a.toJson()).toList(),
       'image': image,
     };

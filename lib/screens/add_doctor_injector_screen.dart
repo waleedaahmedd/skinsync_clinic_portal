@@ -294,16 +294,15 @@ class _AddTreatmentScreenState extends ConsumerState<AddDoctorInjectorScreen> {
                   ),
                   SizedBox(height: 16.h),
                   Text("Phone Number", style: CustomFonts.black14w500),
-                  PhoneWidget(controller: _phoneController),
-                  SizedBox(height: 10.h),
-                  PhoneWidget(controller: _phoneController),
-                  SizedBox(height: 16.h),
-                  BuildTextField(
-                    label: "Phone Number",
-                    hintText: "+1 (555) 123-4567",
+                  SizedBox(height: 8.h),
+                  PhoneWidget(
                     controller: _phoneController,
-                    keyboardType: TextInputType.phone,
-                    validator: Validators.phone,
+                    initialCountryCode:
+                        widget.doctor?.country ??
+                        ref.watch(doctorProvider).countryCode,
+                    onCountryChanged: (country) {
+                      ref.read(doctorProvider.notifier).setCountry(country);
+                    },
                   ),
                   SizedBox(height: 16.h),
 

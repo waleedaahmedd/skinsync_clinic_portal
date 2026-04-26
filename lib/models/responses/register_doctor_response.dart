@@ -29,9 +29,10 @@ class Doctor {
   final String? image;
   final String? specialization;
   final String? phone;
+  final String? cc;
+  final String? country;
   final List<Treatment>? treatments;
   final List<Availability>? availability;
-  
 
   const Doctor({
     this.id,
@@ -44,6 +45,8 @@ class Doctor {
     this.image,
     this.specialization,
     this.phone,
+    this.cc,
+    this.country,
     this.treatments,
     this.availability,
   });
@@ -59,6 +62,8 @@ class Doctor {
     image: json["image"],
     specialization: json["specialization"],
     phone: json["phone"],
+    cc: json["cc"],
+    country: json["country"],
     treatments: json["treatments"] == null
         ? []
         : List<Treatment>.from(

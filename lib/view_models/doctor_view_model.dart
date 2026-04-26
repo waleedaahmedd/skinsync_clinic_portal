@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:camera/camera.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skinsync_clinic_portal/models/requests/register_doctor_request.dart';
 import 'package:skinsync_clinic_portal/models/requests/update_doctors_treament_request.dart';
@@ -23,6 +24,14 @@ class DoctorViewModel extends BaseViewModel<DoctorState> {
       return;
     }
     state = state.copyWith(role: role);
+  }
+
+  void setCountry(CountryCode? country) {
+    state = state.copyWith(
+      country: country,
+      cc: country?.dialCode,
+      countryIso: country?.code,
+    );
   }
 
   void setInitialTreatments(List<TreatmentModel> treatments) {
@@ -75,10 +84,15 @@ class DoctorViewModel extends BaseViewModel<DoctorState> {
           name: name,
           image: imageUrl,
           specialization: specialization,
-          contactInfo: ContactInfo(email: email, phone: phone),
+          contactInfo: ContactInfo(
+            email: email,
+            phone: phone,
+            cc: state.cc!,
+            country: state.countryCode!,
+          ),
           treatments: state.treatments,
           availability: state.availability,
-          consultationFee: consultationFee
+          consultationFee: consultationFee,
         ),
       );
       state = state.copyWith(loading: false, success: true);
@@ -123,6 +137,8 @@ class DoctorViewModel extends BaseViewModel<DoctorState> {
         name: name,
         specialization: specialization,
         phone: phone,
+        cc: state.cc,
+        country: state.countryCode,
         availability: state.availability,
         image: imageUrl,
         treatments: state.treatments.map((t) {
@@ -183,6 +199,9 @@ class DoctorState {
   final Doctor? selectedDoctor;
   final bool success;
   final List<Availability> availability;
+  final CountryCode? country;
+  final String? cc;
+  final String? countryCode;
 
   const DoctorState({
     this.role,
@@ -192,6 +211,9 @@ class DoctorState {
     this.selectedDoctor,
     this.success = false,
     this.availability = const [],
+    this.country,
+    this.cc,
+    this.countryCode,
   });
 
   DoctorState copyWith({
@@ -202,6 +224,9 @@ class DoctorState {
     Doctor? selectedDoctor,
     bool? success,
     List<Availability>? availability,
+    CountryCode? country,
+    String? cc,
+    String? countryIso,
   }) {
     return DoctorState(
       loading: loading ?? this.loading,
@@ -211,6 +236,9 @@ class DoctorState {
       selectedDoctor: selectedDoctor ?? this.selectedDoctor,
       success: success ?? false,
       availability: availability ?? this.availability,
+      country: country ?? this.country,
+      cc: cc ?? this.cc,
+      countryCode: countryIso ?? this.countryCode,
     );
   }
 

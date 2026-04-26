@@ -22,7 +22,7 @@ class RegisterDoctorRequest extends BaseRequest {
     required this.contactInfo,
     required this.treatments,
     required this.availability,
-    required this.consultationFee
+    required this.consultationFee,
   });
 
   @override
@@ -35,7 +35,7 @@ class RegisterDoctorRequest extends BaseRequest {
       'contact_info': contactInfo.toJson(),
       'treatments': treatments.map((t) => t.toRequest()).toList(),
       'availability': availability.map((a) => a.toJson()).toList(),
-      'consultation_fee': consultationFee
+      'consultation_fee': consultationFee,
     };
   }
 }
@@ -43,11 +43,18 @@ class RegisterDoctorRequest extends BaseRequest {
 class ContactInfo {
   final String email;
   final String phone;
+  final String cc;
+  final String country;
 
-  const ContactInfo({required this.email, required this.phone});
+  const ContactInfo({
+    required this.email,
+    required this.phone,
+    required this.cc,
+    required this.country,
+  });
 
   Map<String, dynamic> toJson() {
-    return {'email': email, 'phone': phone};
+    return {'email': email, 'phone': phone, 'cc': cc, 'country': country};
   }
 }
 
@@ -61,7 +68,7 @@ class Availability {
     required this.startTime,
     required this.endTime,
     required this.days,
-    required this.nextSlotAfter
+    required this.nextSlotAfter,
   });
 
   Map<String, dynamic> toJson() {
@@ -69,7 +76,7 @@ class Availability {
       'start_time': '${startTime.hour}:${startTime.minute}',
       'end_time': '${endTime.hour}:${endTime.minute}',
       'days': days,
-      'next_slot_after': nextSlotAfter ,
+      'next_slot_after': nextSlotAfter,
     };
   }
 
@@ -78,7 +85,7 @@ class Availability {
       startTime: _getTimeOfDayFromString(json['start_time']),
       endTime: _getTimeOfDayFromString(json['end_time']),
       days: List<String>.from(json['days']),
-      nextSlotAfter: json['next_slot_after'] ?? ''
+      nextSlotAfter: json['next_slot_after'] ?? '',
     );
   }
 

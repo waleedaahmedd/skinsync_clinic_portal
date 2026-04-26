@@ -7,11 +7,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 
 import '../utils/color_constant.dart';
-import '../view_models/auth_view_model.dart';
 
 class PhoneWidget extends ConsumerWidget {
   final TextEditingController controller;
   final ValueSetter<String>? onChanged;
+  final ValueSetter<CountryCode>? onCountryChanged;
+  final String? initialCountryCode;
 
   final bool showLabel;
   final bool filled;
@@ -22,6 +23,8 @@ class PhoneWidget extends ConsumerWidget {
     super.key,
     required this.controller,
     this.onChanged,
+    this.onCountryChanged,
+    this.initialCountryCode,
     this.isEditable = false,
     this.showLabel = true,
     this.filled = false,
@@ -80,9 +83,6 @@ class PhoneWidget extends ConsumerWidget {
     required BuildContext context,
     required WidgetRef ref,
   }) {
-    final authVM = ref.watch(authViewModelProvider);
-    final authNotifier = ref.read(authViewModelProvider.notifier);
-
     return IntrinsicHeight(
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -90,12 +90,10 @@ class PhoneWidget extends ConsumerWidget {
           GestureDetector(
             onTap: () {},
             child: CountryCodePicker(
-              onChanged: (country) {
-                authNotifier.setCountry(country);
-              },
+              onChanged: onCountryChanged,
               dialogSize: Size(400.w, 600.w),
               textStyle: CustomFonts.black14w500,
-              initialSelection: authVM.country?.code ?? "GB",
+              initialSelection: initialCountryCode ?? "GB",
               showCountryOnly: false,
               showOnlyCountryWhenClosed: false,
               alignLeft: false,
