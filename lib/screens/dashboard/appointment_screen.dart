@@ -5,22 +5,24 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skinsync_clinic_portal/utils/color_constant.dart';
 import 'package:skinsync_clinic_portal/utils/custom_fonts.dart';
 import 'package:skinsync_clinic_portal/utils/enums.dart';
+import 'package:skinsync_clinic_portal/view_models/appointment_view_model.dart';
 import 'package:skinsync_clinic_portal/view_models/auth_view_model.dart';
 import 'package:skinsync_clinic_portal/widgets/appointment_tile_widget.dart';
 import 'package:skinsync_clinic_portal/widgets/borderd_container_widget.dart';
 import 'package:skinsync_clinic_portal/widgets/dailog%20box/appointment_ready_dailog.dart';
+import 'package:skinsync_clinic_portal/widgets/number_paginator.dart';
 
 import '../../widgets/appointment_horizontal_tile_widget.dart';
 import '../../widgets/calender_widget.dart';
 import '../../widgets/custom_dropdown_widget.dart';
 
-class AppointmentScreen extends StatefulWidget {
+class AppointmentScreen extends ConsumerStatefulWidget {
   static const String routeName = '/appointment';
 
   AppointmentScreen({super.key});
 
   @override
-  State<AppointmentScreen> createState() => _AppointmentScreenState();
+  ConsumerState<AppointmentScreen> createState() => _AppointmentScreenState();
 }
 
 final List<AppointmentModel> dummyAppointments = [
@@ -86,9 +88,10 @@ final List<AppointmentModel> dummyAppointments = [
   ),
 ];
 
-class _AppointmentScreenState extends State<AppointmentScreen> {
-  String _selectedFilter = 'All Appointments';
+class _AppointmentScreenState extends ConsumerState<AppointmentScreen> {
+  AppointmentFilter _selectedFilter = AppointmentFilter.all;
   AppointmentStatus _selectedStatus = AppointmentStatus.allStatus;
+  int _currentPage = 0;
 
   List<AppointmentModel> get _filteredAppointments {
     switch (_selectedFilter) {
@@ -101,6 +104,14 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
       default:
         return dummyAppointments;
     }
+  }
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(appointmentProvider.notifier).getAppointments();
+    });
+    super.initState();
   }
 
   @override
@@ -173,38 +184,47 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                     SizedBox(width: 10.w),
                     Expanded(
                       flex: 3,
-                      child: CustomDropdown(
-                        hint: "All Appointments",
-                        value: "All Appointments",
-                        items: [
-                          "All Appointments",
-                          "Past Appointments",
-                          "Today Appointments",
-                          "Upcoming Appointments",
-                          "Rescheduled/Followup",
-                        ],
-                        height: 42.h,
-                        onChanged: (value) => setState(
-                          () => _selectedFilter = value ?? 'All Appointments',
-                        ),
+                      child: Consumer(
+                        builder: (context, ref, _) {
+                           final appointmentState = ref.watch(appointmentProvider);
+                          
+                          return CustomDropdown(
+                            hint: "All Appointments",
+                            value: appointmentState.filter?.label,
+                            items: AppointmentFilter.values
+                                .map((e) => e.label)
+                                .toList(),
+                            height: 42.h,
+                            onChanged: (value) {
+                              ref.read(appointmentProvider.notifier).setFilter(AppointmentFilter.fromLabel(value ?? 'All Appointments'));
+                              
+                             
+                            },
+                          );
+                        }
                       ),
                     ),
                     SizedBox(width: 10.w),
 
                     Expanded(
                       flex: 2,
-                      child: CustomDropdown(
-                        hint: "Status",
-                        value: _selectedStatus.label,
-                        items: AppointmentStatus.values
-                            .map((e) => e.label)
-                            .toList(),
-                        height: 42.h,
-                        onChanged: (value) => setState(
-                          () => _selectedStatus = AppointmentStatus.fromLabel(
-                            value ?? 'All Status',
-                          ),
-                        ),
+                      child: Consumer(
+                        builder: (context,ref,_) {
+                          final appointmentState = ref.watch(appointmentProvider);
+                          return CustomDropdown(
+                            hint: "Status",
+                            value: appointmentState.status?.label,
+                            items: AppointmentStatus.values
+                                .map((e) => e.label)
+                                .toList(),
+                            height: 42.h,
+                            onChanged: (value) {
+
+                              ref.read(appointmentProvider.notifier).setStatus(AppointmentStatus.fromLabel(value ?? 'All Status'));
+                             
+                            },
+                          );
+                        }
                       ),
                     ),
 
@@ -265,31 +285,82 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
               SizedBox(height: 15.h),
 
               // ...List.generate(5, (index) => AppointmentTileWidget()),
-              ...List.generate(
-                _filteredAppointments.length,
-                (index) => Consumer(
-                  builder: (context, ref, _) {
-                    return AppointmentTileWidget(
-                      appointment: _filteredAppointments[index],
-                      onTap: () {
-                        ref
-                            .read(authViewModelProvider.notifier)
-                            .navigateDailogIndexToNext(0);
-                        showDialog(
-                          context: context,
-                          builder: (_) => AppointmentReadyDailog(),
+              Consumer(
+                builder: (context, ref, _) {
+                  final appointmentState = ref.watch(appointmentProvider);
+
+                   final loading = appointmentState.loading;
+                      if (loading) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
                         );
-                      },
-                    );
-                  },
-                ),
+                      }
+                      if (appointmentState.appointmentList == null ||
+                          appointmentState.appointmentList!.isEmpty) {
+                        return  Center(
+                          child: Text("No appointments found",style: CustomFonts.black15w600,),
+                        );
+                      }
+
+                  return ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: appointmentState.appointmentList?.length ?? 0,
+                    itemBuilder: (context, index) {
+                     
+                      final appointment = _filteredAppointments[index];
+                  
+                      return AppointmentTileWidget(
+                        appointment: appointment,
+                        onTap: () {
+                          ref
+                              .read(authViewModelProvider.notifier)
+                              .navigateDailogIndexToNext(0);
+                  
+                          showDialog(
+                            context: context,
+                            builder: (_) => AppointmentReadyDailog(),
+                          );
+                        },
+                      );
+                    },
+                  );
+                },
               ),
+
+              _buildFooter(),
             ],
           ),
         ),
       ),
     );
   }
+
+   Widget _buildFooter() {
+    return Consumer(
+      builder: (context,ref,_) {
+        final totalPage = ref.watch(appointmentProvider).totalPage ?? 0;
+        final page = ref.watch(appointmentProvider).page;
+        if(totalPage == 0) {
+          return SizedBox.shrink();
+        }
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('Showing Results ${page}-${totalPage}', style: CustomFonts.grey14w400),
+            NumberPaginator(
+              totalPages: totalPage,
+              currentPage: page,
+              onPageChanged: (page) {
+                ref.read(appointmentProvider.notifier).setPageNumber(page);
+              },
+            ),
+          ],
+        );
+      }
+    );
+  }
+
 }
 
 class AppointmentModel {

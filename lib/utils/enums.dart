@@ -37,7 +37,8 @@ enum Endpoint {
   roles("clinic/roles"),
   catalog('clinic/products/catalog'),
   clinicProducts('clinic/products'),
-  getMe("clinic/me"),;
+  getAppointment('clinic/appointments'),
+  getMe("clinic/me");
 
   final String path;
   const Endpoint(this.path);
@@ -53,7 +54,7 @@ enum Endpoint {
 
 enum BaseUrls {
   // api('http://3.128.27.193/api/');
-  api('https://api.skinsyncai.com/api/');
+  api('https://api-qa.skinsyncai.com/api/');
   // api('https://s21hn0m8-8084.asse.devtunnels.ms/api/');
 
   final String url;
@@ -69,27 +70,44 @@ enum AppointmentStatus {
   delayed,
   completed,
   arrived,
+  rescheduled,
   ongoing;
 
   String get label {
     switch (this) {
-      case AppointmentStatus.allStatus:  return 'All Status';
-      case AppointmentStatus.noShow:     return 'No Show';
-      case AppointmentStatus.delayed:    return 'Delayed';
-      case AppointmentStatus.completed:  return 'Completed';
-      case AppointmentStatus.arrived:    return 'Arrived';
-      case AppointmentStatus.ongoing:    return 'Ongoing';
+      case AppointmentStatus.allStatus:
+        return 'All Status';
+      case AppointmentStatus.noShow:
+        return 'No Show';
+      case AppointmentStatus.delayed:
+        return 'Delayed';
+      case AppointmentStatus.completed:
+        return 'Completed';
+      case AppointmentStatus.arrived:
+        return 'Arrived';
+      case AppointmentStatus.ongoing:
+        return 'Ongoing';
+      case AppointmentStatus.rescheduled:
+        return 'Rescheduled';
     }
   }
 
   Color get color {
     switch (this) {
-      case AppointmentStatus.allStatus:  return Colors.grey;
-      case AppointmentStatus.noShow:     return const Color(0xFF939393);
-      case AppointmentStatus.delayed:    return const Color(0xFFFB2C36);
-      case AppointmentStatus.completed:  return Colors.black;
-      case AppointmentStatus.arrived:    return const Color(0xFF155DFC);
-      case AppointmentStatus.ongoing:    return const Color(0xFFF2C54A);
+      case AppointmentStatus.allStatus:
+        return Colors.grey;
+      case AppointmentStatus.noShow:
+        return const Color(0xFF939393);
+      case AppointmentStatus.delayed:
+        return const Color(0xFFFB2C36);
+      case AppointmentStatus.completed:
+        return Colors.black;
+      case AppointmentStatus.arrived:
+        return const Color(0xFF155DFC);
+      case AppointmentStatus.ongoing:
+        return const Color(0xFFF2C54A);
+      case AppointmentStatus.rescheduled:
+        return const Color(0xFFFFA500);
     }
   }
 
@@ -97,6 +115,60 @@ enum AppointmentStatus {
     return AppointmentStatus.values.firstWhere(
       (e) => e.label == label,
       orElse: () => AppointmentStatus.allStatus,
+    );
+  }
+
+  static AppointmentStatus fromApi(String? value) {
+    switch (value?.toLowerCase()) {
+      case 'no_show':
+        return AppointmentStatus.noShow;
+      case 'delayed':
+        return AppointmentStatus.delayed;
+
+      case 'completed':
+        return AppointmentStatus.completed;
+
+      case 'arrived':
+        return AppointmentStatus.arrived;
+
+      case 'ongoing':
+        return AppointmentStatus.ongoing;
+
+      case 'rescheduled':
+        return AppointmentStatus.rescheduled;
+
+      default:
+        return AppointmentStatus.allStatus;
+    }
+  }
+}
+
+enum AppointmentFilter {
+  all,
+  past,
+  today,
+  upcoming,
+  followup;
+
+  String get label {
+    switch (this) {
+      case AppointmentFilter.all:
+        return "All Appointments";
+      case AppointmentFilter.past:
+        return "Past Appointments";
+      case AppointmentFilter.today:
+        return "Today Appointments";
+      case AppointmentFilter.upcoming:
+        return "Upcoming Appointments";
+      case AppointmentFilter.followup:
+        return "Followup";
+    }
+  }
+
+  static AppointmentFilter fromLabel(String label) {
+    return AppointmentFilter.values.firstWhere(
+      (e) => e.label == label,
+      orElse: () => AppointmentFilter.all,
     );
   }
 }
