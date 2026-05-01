@@ -4,10 +4,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skinsync_clinic_portal/view_models/auth_view_model.dart';
 import 'package:skinsync_clinic_portal/widgets/dailog%20box/appointment_ready_dailog.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:timetable/timetable.dart';
 
 import '../utils/theme.dart';
 
-class Appointment {
+enum CalendarViewMode { month, week, day }
+
+class Appointment extends Event {
   final String clinic;
   final String service;
   final String time;
@@ -17,8 +20,20 @@ class Appointment {
     required this.clinic,
     required this.service,
     required this.time,
+    required super.start,
+    required super.end,
     this.highlighted = false,
   });
+
+  Appointment toUtc() {
+    return Appointment(
+      clinic: clinic,
+      service: service,
+      time: time,
+      start: start.copyWith(isUtc: true),
+      end: end.copyWith(isUtc: true),
+    );
+  }
 }
 
 class AppointmentsCalendar extends StatefulWidget {
@@ -28,8 +43,14 @@ class AppointmentsCalendar extends StatefulWidget {
   State<AppointmentsCalendar> createState() => _AppointmentsCalendarState();
 }
 
-class _AppointmentsCalendarState extends State<AppointmentsCalendar> {
+class _AppointmentsCalendarState extends State<AppointmentsCalendar>
+    with TickerProviderStateMixin {
   DateTime _focusedDay = DateTime(2025, 10, 1);
+  CalendarViewMode _viewMode = CalendarViewMode.month;
+  late final _dateController = DateController(
+    initialDate: _focusedDay.atStartOfDay.copyWith(isUtc: true),
+    visibleRange: VisibleDateRange.week(),
+  );
 
   final Map<DateTime, List<Appointment>> _appointments = {
     DateTime(2025, 10, 3): [
@@ -37,6 +58,8 @@ class _AppointmentsCalendarState extends State<AppointmentsCalendar> {
         clinic: 'Glow Skin Clinic',
         service: 'Dermal Fillers – Cheeks',
         time: '11:00 AM - 12:00 PM',
+        start: DateTime(2025, 10, 3, 11),
+        end: DateTime(2025, 10, 3, 15),
         highlighted: true,
       ),
     ],
@@ -45,6 +68,8 @@ class _AppointmentsCalendarState extends State<AppointmentsCalendar> {
         clinic: 'Glow Skin Clinic',
         service: 'Dermal Fillers – Cheeks',
         time: '11:00 AM - 12:00 PM',
+        start: DateTime(2025, 10, 8, 11),
+        end: DateTime(2025, 10, 8, 15),
       ),
     ],
     DateTime(2025, 10, 9): [
@@ -52,6 +77,8 @@ class _AppointmentsCalendarState extends State<AppointmentsCalendar> {
         clinic: 'Glow Skin Clinic',
         service: 'Dermal Fillers – Cheeks',
         time: '11:00 AM - 12:00 PM',
+        start: DateTime(2025, 10, 9, 11),
+        end: DateTime(2025, 10, 9, 15),
       ),
     ],
     DateTime(2025, 10, 13): [
@@ -59,6 +86,8 @@ class _AppointmentsCalendarState extends State<AppointmentsCalendar> {
         clinic: 'Glow Skin Clinic',
         service: 'Dermal Fillers – Cheeks',
         time: '11:00 AM - 12:00 PM',
+        start: DateTime(2025, 10, 13, 11),
+        end: DateTime(2025, 10, 13, 15),
       ),
     ],
     DateTime(2025, 10, 14): [
@@ -66,6 +95,8 @@ class _AppointmentsCalendarState extends State<AppointmentsCalendar> {
         clinic: 'Glow Skin Clinic',
         service: 'Dermal Fillers – Cheeks',
         time: '11:00 AM - 12:00 PM',
+        start: DateTime(2025, 10, 14, 11),
+        end: DateTime(2025, 10, 14, 15),
       ),
     ],
     DateTime(2025, 10, 23): [
@@ -73,6 +104,8 @@ class _AppointmentsCalendarState extends State<AppointmentsCalendar> {
         clinic: 'Glow Skin Clinic',
         service: 'Dermal Fillers – Cheeks',
         time: '11:00 AM - 12:00 PM',
+        start: DateTime(2025, 10, 23, 11),
+        end: DateTime(2025, 10, 23, 15),
       ),
     ],
   };
@@ -82,10 +115,6 @@ class _AppointmentsCalendarState extends State<AppointmentsCalendar> {
     return _appointments[key] ?? [];
   }
 
-  /// --------------------
-  /// UI
-  /// --------------------
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -93,9 +122,12 @@ class _AppointmentsCalendarState extends State<AppointmentsCalendar> {
       children: [
         _monthHeader(),
         const SizedBox(height: 16),
-        _weekHeader(),
-        const SizedBox(height: 8),
-        Expanded(child: _calendar()),
+        if (_viewMode == CalendarViewMode.month) ...[
+          _weekHeader(),
+          const SizedBox(height: 8),
+          Expanded(child: _calendar()),
+        ] else
+          Expanded(child: _timetable()),
       ],
     );
   }
@@ -117,16 +149,30 @@ class _AppointmentsCalendarState extends State<AppointmentsCalendar> {
             style: const TextStyle(fontWeight: FontWeight.w600),
           ),
         ),
-        const Spacer(),
         IconButton(
           icon: const Icon(Icons.chevron_left),
           onPressed: () {
             setState(() {
-              _focusedDay = DateTime(
-                _focusedDay.year,
-                _focusedDay.month - 1,
-                1,
-              );
+              if (_viewMode == CalendarViewMode.day) {
+                _focusedDay = _focusedDay.subtract(Duration(days: 1));
+                _dateController.animateTo(
+                  _focusedDay.copyWith(isUtc: true),
+                  vsync: this,
+                );
+              } else if (_viewMode == CalendarViewMode.week) {
+                _focusedDay = _focusedDay.subtract(Duration(days: 7));
+                _dateController.animateTo(
+                  _focusedDay.copyWith(isUtc: true),
+                  vsync: this,
+                );
+              } else {
+                _focusedDay = DateTime(
+                  _focusedDay.year,
+                  _focusedDay.month - 1,
+                  1,
+                );
+              }
+              setState(() {});
             });
           },
         ),
@@ -134,13 +180,60 @@ class _AppointmentsCalendarState extends State<AppointmentsCalendar> {
           icon: const Icon(Icons.chevron_right),
           onPressed: () {
             setState(() {
-              _focusedDay = DateTime(
-                _focusedDay.year,
-                _focusedDay.month + 1,
-                1,
-              );
+              if (_viewMode == CalendarViewMode.day) {
+                _focusedDay = _focusedDay.add(Duration(days: 1));
+                _dateController.animateTo(
+                  _focusedDay.copyWith(isUtc: true),
+                  vsync: this,
+                );
+              } else if (_viewMode == CalendarViewMode.week) {
+                _focusedDay = _focusedDay.add(Duration(days: 7));
+                _dateController.animateTo(
+                  _focusedDay.copyWith(isUtc: true),
+                  vsync: this,
+                );
+              } else {
+                _focusedDay = DateTime(
+                  _focusedDay.year,
+                  _focusedDay.month + 1,
+                  1,
+                );
+              }
+              setState(() {});
             });
           },
+        ),
+        const Spacer(),
+        SegmentedButton<CalendarViewMode>(
+          segments: const [
+            ButtonSegment(
+              value: CalendarViewMode.month,
+              label: Text('Month', style: TextStyle(fontSize: 12)),
+            ),
+            ButtonSegment(
+              value: CalendarViewMode.week,
+              label: Text('Week', style: TextStyle(fontSize: 12)),
+            ),
+            ButtonSegment(
+              value: CalendarViewMode.day,
+              label: Text('Day', style: TextStyle(fontSize: 12)),
+            ),
+          ],
+          selected: {_viewMode},
+          onSelectionChanged: (Set<CalendarViewMode> newSelection) {
+            setState(() {
+              _viewMode = newSelection.first;
+            });
+            if (_viewMode == CalendarViewMode.day) {
+              _dateController.visibleRange = VisibleDateRange.days(1);
+            } else {
+              _dateController.visibleRange = VisibleDateRange.week();
+            }
+          },
+          style: ButtonStyle(
+            visualDensity: VisualDensity.compact,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
         ),
       ],
     );
@@ -169,21 +262,16 @@ class _AppointmentsCalendarState extends State<AppointmentsCalendar> {
 
   Widget _calendar() {
     return TableCalendar(
-      // rowHeight: 190.h,
       shouldFillViewport: true,
       firstDay: DateTime.utc(2020, 1, 1),
       lastDay: DateTime.utc(2030, 12, 31),
       focusedDay: _focusedDay,
-
       headerVisible: false,
       daysOfWeekVisible: false,
-
       eventLoader: _getEvents,
-
       calendarStyle: const CalendarStyle(
         cellMargin: EdgeInsets.symmetric(horizontal: 4),
         markerSize: 0.0,
-
         cellPadding: EdgeInsets.zero,
         outsideDaysVisible: true,
       ),
@@ -198,16 +286,27 @@ class _AppointmentsCalendarState extends State<AppointmentsCalendar> {
           return _dayCell(day, const [], isOutside: true);
         },
       ),
-
       onPageChanged: (day) {
-        _focusedDay = day;
+        setState(() {
+          _focusedDay = day;
+        });
       },
     );
   }
 
-  /// --------------------
-  /// DAY CELL
-  /// --------------------
+  Widget _timetable() {
+    return TimetableConfig<Appointment>(
+      dateController: _dateController,
+      eventBuilder: (context, event) => _appointmentCard(event),
+      eventProvider: eventProviderFromFixedList(
+        _appointments.entries
+            .expand((e) => e.value)
+            .map((appointment) => appointment.toUtc())
+            .toList(),
+      ),
+      child: MultiDateTimetable<Appointment>(),
+    );
+  }
 
   Widget _dayCell(
     DateTime day,
@@ -254,7 +353,6 @@ class _AppointmentsCalendarState extends State<AppointmentsCalendar> {
             );
           },
           child: Container(
-            // margin: const EdgeInsets.only(bottom: 6),
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: a.highlighted
@@ -277,7 +375,6 @@ class _AppointmentsCalendarState extends State<AppointmentsCalendar> {
                   a.service,
                   style: TextStyle(fontSize: 9.sp, color: Colors.black54),
                 ),
-                // SizedBox(height: 4.h),
                 Text(
                   a.time,
                   style: TextStyle(fontSize: 9.sp, color: Colors.black45),

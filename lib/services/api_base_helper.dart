@@ -47,7 +47,7 @@ class ApiBaseHelper {
   Future<dynamic> get(
     Endpoint endpoint, {
     Map<String, String>? pathParams,
-    Map<String, String>? queryParams,
+    Map<String, String?>? queryParams,
   }) {
     return _safeRequest(() async {
       final urlPath = pathParams != null

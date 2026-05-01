@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_duration_picker/material_duration_picker.dart';
+import 'package:timetable/timetable.dart';
 
 import 'route_generator.dart';
 import 'utils/color_constant.dart';
 import 'utils/screen_size.dart';
 import 'utils/theme.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -52,6 +53,7 @@ class AppInit extends StatelessWidget {
                     GlobalWidgetsLocalizations.delegate,
                     GlobalCupertinoLocalizations.delegate,
                     GlobalMaterialDurationPickerLocalizations.delegate,
+                    TimetableLocalizationsDelegate(),
                   ],
                   supportedLocales: const [Locale('en')],
                   debugShowCheckedModeBanner: false,

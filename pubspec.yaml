@@ -63,6 +63,7 @@ dependencies:
   material_duration_picker: ^0.1.1
   syncfusion_flutter_signaturepad: ^33.1.49
   country_code_picker: ^3.4.1
+  timetable: ^1.0.0-alpha.15
 
 dev_dependencies:
   flutter_test:
