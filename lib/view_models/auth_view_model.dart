@@ -1,5 +1,6 @@
 import 'dart:ui' as ui;
 
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -114,13 +115,13 @@ class AuthViewModel extends BaseViewModel<AuthState> {
         false;
   }
 
-void saveSignature(ui.Image image) {
-  state = state.copyWith(signature: image);
-}
+  void saveSignature(ui.Image image) {
+    state = state.copyWith(signature: image);
+  }
 
-void clearSignature() {
-  state = state.copyWith(signature: null);
-}
+  void clearSignature() {
+    state = state.copyWith(signature: null);
+  }
 
   Future<bool> createNewPassword({
     required String email,
@@ -148,14 +149,17 @@ void clearSignature() {
     confirmPasswordController.dispose();
   }
 
-void navigateDailogIndexToNext(int  value){
- state = state.copyWith(navigateDailogIndex: value);
-}
+  void navigateDailogIndexToNext(int value) {
+    state = state.copyWith(navigateDailogIndex: value);
+  }
 
-void resetnavigateDailogIndex(){
-  state = state.copyWith(navigateDailogIndex: 1);
-}
+  void resetnavigateDailogIndex() {
+    state = state.copyWith(navigateDailogIndex: 1);
+  }
 
+  void setCountry(CountryCode? country) {
+    state = state.copyWith(country: country);
+  }
 }
 
 class AuthState {
@@ -170,6 +174,7 @@ class AuthState {
   final String resetToken;
   final ui.Image? signature;
   final int navigateDailogIndex;
+  final CountryCode? country;
 
   AuthState({
     this.loading = false,
@@ -183,6 +188,7 @@ class AuthState {
     this.resetToken = '',
     this.signature,
     this.navigateDailogIndex = 0,
+    this.country,
   });
 
   AuthState copyWith({
@@ -197,6 +203,7 @@ class AuthState {
     bool? obscureConfirm,
     ui.Image? signature,
     int? navigateDailogIndex,
+    CountryCode? country,
   }) {
     return AuthState(
       loading: loading ?? this.loading,
@@ -210,6 +217,7 @@ class AuthState {
       resetToken: resetToken ?? this.resetToken,
       signature: signature ?? this.signature,
       navigateDailogIndex: navigateDailogIndex ?? this.navigateDailogIndex,
+      country: country ?? this.country,
     );
   }
 }

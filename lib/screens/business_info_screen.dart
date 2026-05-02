@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import '../utils/custom_fonts.dart';
 import '../utils/responsive.dart';
 import '../widgets/header__with_back_btn.dart';
+import '../widgets/phone_widget.dart';
 
 class BusinessInformationScreen extends StatefulWidget {
   const BusinessInformationScreen({super.key});
@@ -290,10 +291,13 @@ class _BusinessInformationScreenState extends State<BusinessInformationScreen> {
           Row(
             children: [
               Expanded(
-                child: BuildTextField(
-                  label: 'Phone Number',
-                  controller: _phoneNumberController,
-                  hintText: '+1 (555) 123-4567',
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Phone Number", style: CustomFonts.black18w600),
+                    SizedBox(height: 8.h),
+                    PhoneWidget(controller: _phoneNumberController),
+                  ],
                 ),
               ),
               SizedBox(width: 16.w),
