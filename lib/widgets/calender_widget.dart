@@ -91,7 +91,7 @@ class _AppointmentsCalendarState extends State<AppointmentsCalendar> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _monthHeader(),
+        _buildHeader(),
         const SizedBox(height: 16),
         _weekHeader(),
         const SizedBox(height: 8),
@@ -100,7 +100,7 @@ class _AppointmentsCalendarState extends State<AppointmentsCalendar> {
     );
   }
 
-  Widget _monthHeader() {
+  Widget _buildHeader() {
     return Row(
       children: [
         SizedBox(height: 19.h),
